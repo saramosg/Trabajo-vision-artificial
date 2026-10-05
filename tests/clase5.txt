@@ -1,0 +1,869 @@
+--- PAGE 1 chars=803 ---
+Ecuacionesdiferenciales-Notasdectases-
+tcuacionesdiferencialesexactas-
+c o n s i d e r e m o s
+u n a
+E . D
+e s c r i t a
+e n
+l a forma
+MIxiyldxtNlyyldy-0.lt)
+d o n d e My N
+s o n
+funciones
+definidas
+e n
+u n a región
+R
+d e l
+plano.
+D i r e m o s que
+l a
+E .D
+I I )
+e s
+e x a c t a
+e n
+R,
+s i
+e x i s t e
+u n a
+función
+t h y )
+definida
+e n
+l a
+región
+R
+y
+t a l
+q u e
+¥+1421
+
+Miky) , dj
+= N u i t , t h y ) E R .
+E l
+siguiente
+re s u l t a d o
+n o s
+proporciona
+condiciones
+bajo
+l a s
+c u a l e s
+l a
+E . D
+( I )
+e s
+e x a c t a
+e n
+u n a
+región
+R .
+T e o r e m a
+( c r i t e r i o
+d e
+e x a c t i t u d )
+considere
+u n a
+región
+R - _ { N i t t i
+: q
+Ya}.
+Suponga
+q u e
+M , N :
+R
+-
+R
+s o n
+funciones
+c o n
+d e r i v a d a s
+parciales continuas
+e n
+R .
+L a
+E . D
+( I )
+e s
+e x a c t a
+e n
+R
+s i
+y
+sólo
+s i
+
+--- PAGE 2 chars=764 ---
+%f1riyl-ojlx.gl, t w i t e r .
+Ve a m o s
+c o m o
+u s a r
+e s t e
+criterio.
+C o n s i d e re m o s
+l a
+ecuación
+diferencial
+( x y z t x l d x t Y X Z d y - 0 . I N
+Te n e m o s
+que
+MN.gl
+=
+X y ' t
+X
+y
+Nixigi--YXZ
+tienen
+derivadas
+parciales
+continuas
+e n
+1122
+y
+además
+GIywil> 2 × 2 ,
+Oj
+=
+2 3 k
+.
+Por
+l o
+a n t e r i o r
+djyhyl-aflx.gl, T I N D E R
+y
+c o n c l u i m o s
+que
+l a
+E . D
+12)
+e s
+e x a c t a
+e n
+1122.
+Métodudesolución-
+Suponga
+q u e
+fix.gl
+e s
+u n a
+función
+diferenciable
+e n
+u n a
+región
+R E I R '
+y
+y > y i n
+e s
+u n a
+diferenciable
+e n
+u n
+i n t e r v a l o
+I E R ,
+t a l
+q u e
+I X . D N I )
+E
+R ,
+para
+K E I .
+Podemos
+definir
+u n a
+f u n c i ó n
+f- :
+I
+→
+I R
+×
+↳
+f l i g h t ) .
+N o t a r
+que
+e s t a
+e s
+u n a
+función
+d e
+u n a
+va r i a b l e .
+
+--- PAGE 3 chars=607 ---
+C a l c u l a m o s
+l a
+derivada
+d e
+dicha función
+respecto a
+×
+u s a n d o
+l a
+regla
+d e
+l a
+c a d e n a .
+¿lflyyixilt-gflx.HN/djt2jglxilxlldI
+= djlu,Y I
++ gthrilda
+.
+131
+D X
+Consideremos
+u n a
+E . D
+e x a c t a
+e n
+R
+MNiyldxtNIX.us/dy--0
+.
+P o r
+e l
+c r i t e r i o
+d e
+e x a c t i t u d
+e x i s t e
+u n a función
+f-i x .y):
+R
+→
+IR',
+t a l
+q u e ¥
+M y
+¥y=N.
+Te n i e n d o
+e n
+cuenta
+l o
+a n t e r i o r
+l o
+E. D
+s e
+puede
+escribir
+c o m o
+IINildxtajarildy:O,
+o
+a l t e r n a t i v a m e n t e
+f r u i t Égida
+=
+0 ,
+141
+S i
+comparamos
+l a s
+expresiones
+131 y 141
+s e
+concluye
+que
+¿If, x . y a ) ) )
+=
+O
+'
+
+--- PAGE 4 chars=656 ---
+y
+por
+l o
+t a n t o
+fix, Y I M I
+=
+C
+para alguna
+c o n s t a n t e
+C. E
+I R .
+D e
+l o
+anterior
+podemos
+c o n c l u i r
+que
+l a
+expresión
+fcxi
+☺
+,
+n o s
+proporciona
+l a
+solución implícita
+d e
+l a
+E . D
+e x a c t a .
+P o r
+l o
+t a n t o
+s i
+MIyyldxtNlyyldy.co
+e s
+exacta,
+p a ra
+r e s o l v e r
+d i c h a
+E . D
+será n e c e s a r i o
+e n c o n t r a r
+u n a
+función
+flyy) t.gg#--My
+Pfg
+=
+N .
+Ve a m o s
+m e d i a n t e
+u n
+ejemplo
+cómo
+podemos
+h a c e r
+e s t o .
+Ejemplo:
+Resuelva
+l a
+E. D
+(XZY' -
+☺
+×) dxtxsyzdy-O.SI
+Pa r a
+e s t e
+c a s o
+tenemos
+q u e :
+M I X , Y I
+=
+X ' y '
+-
+1
+-
+,
+NIX, y )
+=
+4322
+.
+11-9×2
+Así
+¥}
+I Y Y )
+=
+3×222
+,
+2¥ I r , y 1=3×222,
+
+--- PAGE 5 chars=600 ---
+c o n
+l o
+c u a l
+Yj
+= 2¥
+y
+por
+e l
+criterio
+d e
+e x a c t i t u d
+l a
+E .D
+1 5 )
+e s
+exacta.
+Buscamos
+u n a
+función
+fix, y )
+t a l
+q u e
+¥, IX.y)
+=
+X ' y ' - ¥ ,
+=
+M i r i d ) ,
+161
+Ig
+Ix, Y I
+=
+X ' y '
+=
+N I X , Y ) .
+( t ) .
+A n t i derivando
+A l
+respecto
+a
+2,
+tenemos
+q u e
+fcxiyl-ffjghyldye.fi' y? dy
+t
+K
+s o l o depende de ×
+f-( Y y ) : V I .
++
+k e y )
+( g , .
+y
+e s
+desconocida.
+3
+U s e m o s
+l a
+expresión
+1 8 1
+para
+encontrar
+k i l l .
+S i
+d e r i v a m o s
+181
+respecto
+a
+×
+o b t e n e m o s
+☹
+
+IX .y t
+=
+v . y ' t
+KINI
+v i . y }
+-
+
+=
+X 2 y } t
+K t h )
+Por
+16)
+11-9×2
+-
+1
+T
+t
+=
+K ' I x )
+
+--- PAGE 6 chars=751 ---
+y
+así
+Kirk)
+☺
+×
+d x
+=
+- ¿tan-'13×1.
+C o n
+l o
+a n t e r i o r
+c o n c l u i m o s
+q u e
+F i x , y )
+
+X}
+
+- }
+t a n -'13×1,
+y
+l a
+solución
+implítica d e
+l a
+E . D
+1 5 )
+s e r á
+X}
+
+-
+§
+tan-'13×1
+= C .
+C E R .
+A h o r a
+suponga
+que
+M I x i y l d x t N I X .g l d.y
+=
+O
+n o
+e s
+u n a
+E . D
+e x a c t a
+e n
+u n a
+región
+R E I R Z .
+B u s c a m o s
+u n a
+función
+U - u u l x i y l - o t . m y / E R
+y
+t a l
+q u e
+UIHYIMNildxtulyyINIX.hr/dy--0,
+-
+-
+N
+* ( y y )
+S e a
+u n a
+E .D
+e x a c t a .
+D e
+e x i s t i r
+t a l
+función
+U
+l a
+denominaremos
+factor integrante
+d e
+l a
+E . D
+M i k y ) d i r t NIXildy--0.
+V e a m o s
+bajo
+cuales
+hipótesis
+e s
+posible
+encontrar
+d i c h a
+función
+u .
+Por
+e l
+c r i t e r i o
+d e
+e x a c t i t u d
+debe
+o c u r r i r
+q ue
+
+--- PAGE 7 chars=453 ---
+Ypj
+i x . y )
+= 01¥ i x . y )
+•
+×
+Ugtt IgM
+=
+Ugtt☹N
+.
+191
+H a r e m o s
+l a
+suposición
+adicional
+que
+4
+sólo dependa
+d e
+l a
+v a r i a b l e
+× ,
+e s
+d e c i r
+4 = 4 1 × 1
+y
+e n
+c o n s e c u e n c i a
+guy =
+0 .
+A l
+reemplazar
+e n
+191
+"¥,
+= uff,
++ ¥,
+N
+"1¥, -4¥) -_¥,"
+l¥y
+
+de
+= ¿du. 1101
+Por l o
+t a n t o
+s i RAKHI-0¥)
+sólo
+depende d e
+
+l a
+v a r i a b l e
+× ,
+l a
+E . D
+1101
+e s separable y
+podemos
+e n c o n t r a r
+U
+r e s o l v i e n d o
+( i o )
+
+--- PAGE 8 chars=806 ---
+| R i n d a
+t
+c
+= f t
+d u
+,
+( E I R
+f.R N I D X
+t e
+=
+I n t u l
+141
+= ¿tradi
++ c )
+A l
+escoger
+1 = 0
+y
+por
+l a s
+propiedades
+d e l a
+función
+exponencial
+s e
+puede
+c o n c l u i r que
+U N )
+= E l R H I N
+e s
+u n
+factor
+integrante
+de
+l a
+E D ,
+U n
+razonamiento
+s i m i l a r
+s e
+puede
+r e a l i z a r
+cuando
+s e
+supone
+que
+U
+s ó l o
+depende
+d e
+l a
+v a r i a b l e y ,
+pudiendo
+c o n c l u i r
+q u e :
+i t
+s i
+p i x )
+= I I - É
+,
+depende
+unicamente
+d e
+l a
+T
+V
+v a r i a b l e
+× ,
+e n to n c e s
+UNI-_El"""
+e s
+u
+n
+f a c t o r
+integrante
+de
+l a
+E. D
+MdxtNdy-0.iilsip.ly/=Y-YT-,
+depende
+unicamente
+d e
+l a
+-
+M
+v a r i a b l e
+y ,
+e n t o n c e s
+U l g ,
+= Estando
+e s
+u n
+f a c t o r
+integrante
+de
+l a
+E . D
+M a r t Ndy
+= 0 .
+Por
+ejemplo,
+c o n s i d e re m o s
+l a
+E . D
+X y D X t
+12×21-342-201dg
+=
+0 .
+1111
+
+--- PAGE 9 chars=654 ---
+T e n e m o s
+q u e
+M i l l y )
+=
+X y
+,
+N i x i e 1=2×2+382-20,
+y
+☺
+=
+×
+,
+2 1
+=
+4 X
+.
+• y
+2 X
+D e
+l o
+a n t e r i o r
+¥g + ¥,
+y
+por
+e l
+c r i t e r i o d e
+e x a c t i t u d
+l a
+E . D
+I I I )
+n o
+e s
+e x a c t a .
+Busquemos
+u
+n
+fa c t o r integrante
+p a r a
+411.
+Te n i e n d o
+e n
+c u e n t a
+que
+3¥ = 3 ,
+☺
+= 6 9 ,
+o b t e n e m o s
+H í ¥
+
+= x
+±
+=
+
+j u n t a
+:☹der
+N
+2×2+382--20
+2×2-1322-20
+(É-Ix)
+=
+x - A x
+→
+
+
+I
+I
+I."miiii!",
+p o r
+l o
+t a n t o
+Stds
+= ¿ " Y "
+=
+y}
+,
+(para y >o )
+K y i
+=
+E
+e s
+u n
+factor
+integrante
+d e
+l a
+E .D
+( I I ) .
+V a m o s
+a
+v e r i f i c a r l o .
+S i
+multiplicamos
+por u y )
+a m b o s
+l a d o s
+d e
+l a
+E . D
+I I I )
+
+--- PAGE 10 chars=345 ---
+Y} X y d ×
+t
+y 312×2+382-201dg
+=
+O
+1121
+xytdxtlzxzyst3ys-zoysldy-o.int
+µ #
+Finalmente,
+c o m o
+gfj-4xys.gl#--4xY'
+,
+%
+
+=
+☺
+
+y
+l a
+E . D
+112)
+e s
+exacta.
+l a
+E . D
+1121
+S e
+puede
+r e s o l v e r
+u s a n d o
+l o s métodos
+d e s c r i t o s
+e n
+l a s
+páginas
+3 - 6
+de
+estas notas,
+y
+e l
+l e c t o r
+puede
+verificar
+que
+l a
+solución
+d e
+l a
+E . D

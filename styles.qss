@@ -1,0 +1,114 @@
+﻿/* Base */
+QWidget {
+    background-color: #FFFFFF;
+    color: #000000;
+    font-family: "Segoe UI";
+    font-size: 14px;
+}
+
+/* Titulo de pantalla */
+QLabel#tituloPantalla {
+    font-size: 28px;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* Etiqueta de campo */
+QLabel#etiquetaCampo { font-size: 16px; color: #000000; }
+QLabel#valorCampo    { font-size: 14px; color: #5F5F5F; }
+
+/* Boton estandar - pastilla redondeada. */
+QPushButton {
+    background-color: #D9D9D9;
+    color: #000000;
+    border: 1px solid #9E9E9E;
+    border-radius: 30px;
+    padding: 12px 28px;
+    font-size: 14px;
+    font-weight: 600;
+}
+QPushButton:hover   { background-color: #C9C9C9; border-radius: 30px; }
+QPushButton:pressed { background-color: #B3B3B3; border-radius: 30px; }
+QPushButton:focus {
+    border: 2px solid #2F6FED;
+    border-radius: 30px;
+}
+QPushButton:disabled {
+    background-color: #EFEFEF;
+    color: #9E9E9E;
+    border-color: #DCDCDC;
+    border-radius: 30px;
+}
+
+/* Boton de navegacion (48 de alto -> radio 24) */
+QPushButton#navegacion {
+    border-radius: 24px;
+    padding: 10px 24px;
+}
+QPushButton#navegacion:hover   { border-radius: 24px; background-color: #C9C9C9; }
+QPushButton#navegacion:pressed { border-radius: 24px; background-color: #B3B3B3; }
+QPushButton#navegacion:focus   { border-radius: 24px; border: 2px solid #2F6FED; }
+QPushButton#navegacion:disabled{
+    border-radius: 24px;
+    background-color: #EFEFEF;
+    color: #9E9E9E;
+    border-color: #DCDCDC;
+}
+
+/* Boton de acento (accion principal de la pantalla) */
+QPushButton#primario {
+    background-color: #2F6FED;
+    color: #FFFFFF;
+    border: 1px solid #2F6FED;
+    border-radius: 30px;
+}
+QPushButton#primario:hover   { background-color: #1E5AC8; border-radius: 30px; }
+QPushButton#primario:pressed { background-color: #17489E; border-radius: 30px; }
+QPushButton#primario:focus   { border: 2px solid #000000; border-radius: 30px; }
+QPushButton#primario:disabled {
+    background-color: #EFEFEF;
+    color: #9E9E9E;
+    border-color: #DCDCDC;
+    border-radius: 30px;
+}
+
+/* Zona de imagen (previsualizacion) */
+QLabel#zonaImagen {
+    background-color: #D9D9D9;
+    border: 1px dashed #9E9E9E;
+    border-radius: 12px;
+}
+
+/* Contenedor de imagen / lienzo de canal */
+QLabel#lienzoImagen {
+    background-color: #D9D9D9;
+    border: 1px solid #9E9E9E;
+    border-radius: 12px;
+}
+
+/* Campos de entrada redondeados - RESERVADOS. */
+QLineEdit, QSpinBox {
+    background-color: #FFFFFF;
+    border: 1px solid #9E9E9E;
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+QLineEdit:focus, QSpinBox:focus { border-color: #2F6FED; }
+
+/* Deslizadores del histograma */
+QSlider::groove:horizontal {
+    height: 4px; background: #D9D9D9; border-radius: 2px;
+}
+QSlider::handle:horizontal {
+    width: 14px; margin: -6px 0; border-radius: 7px; background: #2F6FED;
+}
+
+/* Zoom del recorte (modo B, §6.5). */
+QSlider#zoomRecorte::groove:horizontal {
+    height: 4px; background: #D9D9D9; border-radius: 2px;
+}
+QSlider#zoomRecorte::handle:horizontal {
+    width: 14px; margin: -6px 0; border-radius: 7px; background: #2F6FED;
+}
+QSlider#zoomRecorte:disabled::groove:horizontal { background: #EDEDED; }
+QSlider#zoomRecorte:disabled::handle:horizontal { background: #B8B8B8; }

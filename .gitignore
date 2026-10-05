@@ -1,0 +1,31 @@
+# Entorno y dependencias
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Empaquetado (§10): el .exe y sus intermedios no se versionan
+build/
+dist/
+*.spec
+
+# Secretos: el token de Figma vive en las variables de entorno
+# FIGMA_TOKEN / FIGMA_URL (ver README). Este patrón es la red de seguridad
+# por si alguien vuelve a dejar el archivo en disco.
+.env
+*.token
+secrets*
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Datos de prueba, no codigo: el PSD de la mascara de strawberry pesa 255 MB
+# y no aporta nada a un clone. Quitalo de aqui si el dataset es parte del
+# entregable.
+*.psd

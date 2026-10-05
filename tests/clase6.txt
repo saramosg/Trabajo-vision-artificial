@@ -1,0 +1,1169 @@
+--- PAGE 1 --- 
+E c u a c i o n e s d i fe re n c i a l e s . N o t a s d e c l a s e f
+Reducción
+d e
+o r d e n
+E n T o c a s i o n . e s
+u n a
+ecuación diferencial
+d e
+segundo
+o r d e n
+s e
+puede
+s o l u c i o n a r
+m e d i a n t e
+u n a
+sustitución
+que
+l a
+t r a n s fo r m a
+e n
+u n a
+n u e v a
+E . D
+d e
+primer
+o r d e n ,
+Exploremos diferentes
+c a s o s .
+C a s
+l a
+E . D
+d e
+segundo
+orden
+t i e n e
+l a f o r m a
+y"
+=
+f i x , y') y}
+y
+n o aparece
+c o m o
+(Ó ¥1
+= f i y y y
+argumento d e f .
+S i
+hacemos
+l a
+sustitución
+U
+=
+y '
+= d y
+( 2 1
+-
+,
+D X
+a l
+reemplazar
+e n
+l a
+E . D
+111
+y
+c o m o
+¥ = # (ft)
+= dix.
+= y",
+t e n e m o s
+q u e
+¥
+☺
+,W
+131
+N o t e m o s
+que
+l a
+E . D
+131
+e s
+d e primer orden, y
+podemos
+r e s o l v e r l a
+u s a n d o
+l o s
+métodos
+estudiados
+e n
+l a s
+n o t a s
+a n t e r i o r e s
+para
+e n c o n t r a r
+l a
+función
+U .
+
+
+--- PAGE 2 --- 
+Finalmente,
+U n a
+v e z
+
+podemos
+encontrar
+l a
+solución
+de
+l a
+E . D
+original
+111,
+a l
+r e s o l v e r
+day
+=
+U
+D X
+Ejemplo
+Resolver
+l a
+E . D
+XI'' t o r y '
+=
+1
+e n
+( O t t o ) .
+Solución:
+☺
+que
+y
+n o
+aparece
+e n
+dicha
+E . D .
+S i
+u s a m o s
+l a
+sustitución
+i n d i c a d a
+y' --U,
+s e
+t i e n e
+q u e
+y " = L
+y
+l a
+E .D
+s e
+transforma
+D X
+e n
+XZ d l
++
+2 X U
+=
+l
+.
+D X
+d- 1×2 U )
+=
+1
+D X
+X 2
+U
+=
+ft DX
+t
+C l
+,
+C I E R
+y
+=
+X t c ,
+#
+.
+( 4 ) .
+Ahora,
+t e n i e n d o
+e n
+c u e n t a
+que
+v d d
+y por 141,
+D X
+dj
+= Xt
+G E I R
+ay
+= (x,
+ld x
+G E I R
+
+
+--- PAGE 3 --- 
+Y
+=
+1 ( X t )
+D X
+t e z ,
+C i r c e E I R ,
+y
+= f t
+dxtciffzdxtczy-lnh-
+GX-ttczci.GE#,
+siendo
+e s t a
+ú l t i m a
+l a
+solución
+de
+l a
+E . D
+X 2 y "
+t 2 × 8 = 0 .
+
+:
+l a
+E . D
+d e
+segundo
+orden tiene
+l a fo r m a
+151
+y"
+= f l y, y ' t
+(ó
+☺
+=
+f l y,y, , }
+×
+n o aparece
+c o m o
+argumento explícito
+e n
+f .
+N u e v a m e n t e
+empleamos
+l a
+sustitución
+u - - y ' = L ,
+D X
+y
+c o m o
+¥,
+= dj,
+= y ",
+l a
+E . D
+( e l
+s e transforma
+e n
+¥×=fly
+,
+161
+o b s e r v e
+que
+e n
+e s t a
+ecuación
+aparecen
+× , y . i e ,
+l o
+c u a l
+e n
+c o m i e nzo
+n o
+e s
+adecuado
+para n u e s t r o
+propósito
+d e
+r e s o l v e r
+1 5 ) .
+S i n
+embargo,
+s i
+
+
+--- PAGE 4 --- 
+u s a m o s
+l a
+regla
+d e
+l a
+cadena
+¥,> tuff-aja,
+así
+que
+podemos
+r e e s c r i b i r
+161
+c o m o
+sigue:
+U d c
+=
+flu, y ) ,
+1 7 )
+a y
+y
+e s t a
+e s
+u n a
+E . D
+de primer o r d e n
+e n
+l a s
+v a r i a b l e s
+U , y
+,
+e n
+donde
+l a
+incógnita
+e s
+l a
+función
+u - - U l g ) .
+Podemos
+s o l u c i o n a r
+1 7 1
+para
+e n c o n t r a r
+U
+y
+después
+e n c o n t r a r
+l a
+solución
+y
+d e
+l a
+E-D
+1 5 ) .
+Ejemplo
+E n c u e n t re
+l a
+solución
+d e
+l a
+E - D
+y y" t
+( g ) 2 = 0
+,
+para y>0, y'>0 .
+Solución:
+T e n t a m o s
+notando
+que
+e s t a m o s
+e n
+e l
+c a s o d e
+u n a
+E . D
+d e l tipo
+151
+d o n d e
+n o
+aparece
+×
+d e
+m a n e r a
+explícita.
+U s a m o s
+l a
+sustitución
+y--dg
+F x
+d
+por
+ende
+Udfy
+=
+Y"
+(no
+olvide
+que
+y "
+= d j ) ,
+c o n
+l o
+c u a l
+l a
+ecuación
+que
+deseamos
+r e s o l v e r
+s e
+transforma
+e n
+yudy
+t
+U '
+= 0 ,
+a y
+-
+-
+(yip
+Y"
+
+
+--- PAGE 5 --- 
+"Iddj tu)
+=
+o
+Y I U
+t
+u
+=
+0
+(para y'>0 ,
+te n e m o s
+d y
+que
+u s o
+1
+d- ( y u l
+=
+O
+a y
+y a
+=
+Jody t
+c ,
+G E R
+y
+U
+=
+C l .
+C o m o
+a = L
+t e n e m o s
+que
+D X
+'
+y d l
+=
+Ci,
+G E R
+D X
+y dy
+=
+C i d x
+| y dy
+= fc,
+D X
+t
+Cz,
+c i . c z E I R
+§
+=
+C I X t c 2 ,
+y
+e s t a
+ú l t i m a
+expresión
+define
+u n a
+solución
+implícita
+de
+l a
+E . D
+yytttlyip.IO.
+
+
+--- PAGE 6 --- 
+EDreduciblesaseparablesyahomogéneaf
+Considere
+u n a
+ecuación
+d i f e r e n c i a l
+d e
+l a
+f o r m a
+d}
+=
+f l a x t by tc ) ,
+181
+e n
+d o n d e
+a . b, c
+s o n números
+r e a l e s y
+bleo.
+l a
+E . D l a ) S e
+puede
+t r a n s fo r m a r
+e n
+u n a
+E . D
+separable
+s i
+u s a m o s
+l a
+sustitución
+UIaxtbytc.
+E n
+d i c h o
+c a s o
+¥,
+=
+a
+t b y
+D X '
+O
+e n
+f o r m a
+equivalente
+Ix
+= f- Itf-a)
+,
+Ibto)
+A l
+reemplazar
+lo
+anterior
+e n
+l a
+E . D
+18)
+b- (¥-a)
+=
+f i u )
+l l
+-
+a
+=
+b f. l u )
+D X
+del
+=
+b f l u l t a ,
+( a )
+D X
+y
+e s t a
+ú l t i m a
+e s
+u n a
+E .D
+separable
+cuya
+incognita
+e s
+u .
+Podemos
+a s í
+r e s o l v e r
+191 por
+l o s
+métodos
+conocidos y
+luego
+devolvernos
+e n
+l a
+sustitución
+para
+e n c o n t r a r
+l a
+solución
+de
+181.
+
+
+--- PAGE 7 --- 
+Por
+ejemplo,
+r e s o l v a m o s
+l a
+E . D
+dif
+=
+s e n 1 × 1 Costy I t Coscisency)
+1101.
+U s a n d o
+l a
+identidad
+trigonométricas
+Senixty)
+=
+S e n a ) Costy) tcoscisency)
+,
+l a
+E . D
+s e
+puede
+escribir
+c o m o
+D I
+=
+S e n i l i t y )
+.
+1111
+D X
+U s e m o s
+l a
+sustitución
+a = # y ,
+c o n
+l a
+c u a l
+d a
+
+=
+l t d a
+d x
+-
+D e
+aquí
+s e
+tiene
+q u e dj
+= ¥-I
+y
+a l
+r e e m
+-
+e n
+1111
+tenemos
+que
+E . D Separable {
+del-l
+=
+S e n t a )
+D X
+t e
+=
+S e n ( U l t i
+D X
+1
+-
+d a
+=
+dxsenlultl-
+fseny.dk/dXtC
+,
+( E I R
+jll-sen.lu
+=
+X t c
+(Costa) 12
+
+
+--- PAGE 8 --- 
+ftp.eclulll-seccuitanlul/
+du=xtctanlul-SecluI--XtC,
+C E R ,
+Teniendo
+e n
+c u e n t a
+que
+U--xty,
+a l
+d e vo l ve r n o s
+e n
+l a
+sustitución
+o b t e n e m o s
+que
++a n i x t y )
+- S e c l i t y )
+=
+X t c ,
+C f k
+e s
+l a
+solución
+implícita
+d e
+l a
+E .D
+1101.
+Por
+ú l t i m o
+estudiemos
+E . D
+d e
+l a
+f o r m a
+d y
+=
+a x t b y t c
+112)
+-
+D X
+d x t p y t r
+e n
+donde
+a . b, c , a , p,y
+s o n
+números
+r e a l e s .
+Hay
+dos
+c a s o s
+que
+s e
+d e b e n
+c o n s i d e r a r para
+E . D
+d e l
+tipo
+1121
+C a s i j :
+s i
+e x i s t e
+K E
+I R
+t a l
+q u e ftp.fkfg),
+e s
+d e c i r
+q u e
+{Idp),(g)Y e s
+l i n e a l m e n t e
+dependiente.
+Para
+e s t e
+c a s o ,
+c o m o
+D = k a
+y
+P--Kb,
+l a
+E . D
+1121
+s e
+puede
+e s c r i b i r
+c o m o
+d y
+=
+l a x t b y l t c
+1131
+-
+D X
+K l a x t b y ) t r
+
+
+--- PAGE 9 --- 
+y
+por
+l o
+t a n t o
+s i
+h a c e m o s
+l a
+sustitución
+UIaxtby,
+l a
+E . D
+s e
+t r a n s f o r m a
+e n
+u n a
+E . D
+separable,
+que
+y a
+s a b e m o s
+c o m o
+re s o l ve r.
+C a s
+S i
+los
+v e c t o r e s
+(G), (g)
+s o n
+linealmente
+independiente.
+E n
+e s t e
+c a s o
+l a s
+r e c t a s
+axtbytc-o-
+dxtpytre.at,
+n o
+s o n
+paralelas
+y
+s e
+c o r t a n
+e n
+u n
+punto
+( 4 K )
+del
+plano
+a y
+
+(axtb-
+dxtpytr.cl
+ytc--o
+Realizamos
+e l
+cambio
+d e
+v a r i a b l e
+¡ =
+× - h
+×
+I t
+h
+(141
+¡ =
+y - K
+{ y - - I t t
+c o m o
+I h i k l
+e s
+e l
+punto de interseccion
+d e
+l a s
+r e c t a s
+t e n e m o s
+que
+a h t b k t c
+= O
+115)
+a h t p k . t t
+=
+O
+Te n i e n d o
+e n
+c u e n t a
+1141
+y
+1 1 5 1,
+obtenemos
+l o
+siguiente:
+
+
+--- PAGE 10 --- 
+axtbytc-alx.tn/tblytkltc--
+axtbytlahtbkt#0
+P o r
+1151
+(161
+=
+aitbjdxtpytr-dlx.tn/
+tplytkltr
+=
+a Itpjtlahtpktift
+Por 115)
+(171
+Usando
+l a
+regla
+d e
+l a
+cadena
+s e
+v e
+fácilmente
+q u e
+d¥
+= to
+y
+a s í
+por
+1161,117),
+l a
+ecuación
+DI
+= a x t b y
+,
+s e
+transforma
+D X
+a r t p y t r
+e n
+í¥=☹
+.
+E s t a
+ú l t i m a
+E . D
+e s
+homogénea.
+Podemos
+solucionarla
+u s a n d o
+los
+métodos desarrollados
+e n
+l a s
+notas
+d e
+c l a s e
+4
+y
+encontrar
+l a solución
+§
+d e
+e s t a
+E . D .
+Para
+finalizar
+n o s
+d e vo l ve m o s
+e n
+e l
+c a m b i o
+d e
+v a r i a b l e
+(14)
+y
+a s í
+s e
+obtiene
+l a
+solución
+d e
+l a
+E . D
+1121
+que originalmente
+teníamos.
+E j e m p l o
+Resolver
+l a
+E . D
+D I
+= X t
+D X
+6 - X
+
+
+--- PAGE 11 --- 
+Notemos
+q u e
+e n
+e s t e
+c a s o
+tenemos
+u n a
+E . D d e
+l a
+forma
+1121
+d g
+=
+X t y - 5
+-
+-
+118)
+D X
+- X t c
+'
+e n
+donde
+9=1,6--1, C I - 5 ,
+D=-I, f - 0 ,
+F - 6 .
+c o m o
+l o s
+vectores
+(I), ( j )
+s u n
+L I ,
+estamos
+e n
+e l
+c a s o
+2 ,
+c o m e n z a m o s
+por
+encontrar
+e l
+punto d e intersección
+( 4 K )
+d e
+l a s
+r e c t a s
+x t y - 5 = 0
+-
+×
+1-6=0;
+e l
+c u a l
+e s
+16,-1 1 .
+P o r
+l o
+t a n t o
+u s a m o s
+e l
+cambio
+de
+variable
+I I
+X - 6
+¡=
+y
++ ,
+{ *
+I t o
+y--j-i-
+S a b e m o s
+que
+☹
+= ¥
+y
+además
+X t y - 5
+=
+I I I . 6) t l j - i )
+- 5
+= I t f
+,
+-
+u t b
+=
+-
+( E t b )
+t
+6
+= - I .
+C o n
+l o
+a n t e r i o r
+l a
+E .D
+1181
+s e
+transforma
+e n
+dj=Ít
+☺
+E .D
+homogénea
+1181
+
+
+--- PAGE 12 --- 
+desarrollado
+e n
+l a s
+n o t a s
+d e
+c l a s e
+4 .
+U s a m o s
+l a
+sustitución
+a - YÉ
+(j-ax),
+c o n
+l a
+c u a l
+dat
+= Id
+☺
+tu,
+I t =-I, -☹=-t-n.
+P o r
+l o
+t a n t o
+a l
+sustituir
+e n
+l a
+E .D
+1181 t e n e m o s
+I d u
+t
+u
+=
+- I - U
+⇒
+I d u
+=
+- I - 2 k
+*
+E . D
+Separable
+¥udu=-¥
+Statu=-f☹di T C ,
+( E I R
+{In
+111-24
+=
+- I n t e l
+t
+C
+I n
+1 1 1 - 2 4 1 = - 2 I n t e l
+t
+c
+,
+y
+u s a n d o
+l a
+función
+exponencial
+119)
+( I t 2411512 =
+C .
+C E R .
+P o r
+último
+n o s
+devolvemos
+e n
+l a s
+sustituciones
+u s a d a s
+para llegar
+a
+l a
+expresión
+119),
+
+
+--- PAGE 13 --- 
+teniendo
+e n
+c u e n t a
+q u e uted,
+E - ×-6, 5=41
+( I t 21g)☹12 =
+C
+,
+C E I R
+( I t 2
+
+☺
+)
+1 × - 6 1 2
+=
+C
+I t
+2 ( J H )
+
+,
+=
+( 1 × - 6 1 - 2
+2 1 8 f t )
+=
+c . (×-61-Z-I
+
+2 1 2 t i )
+=
+(IX-G)" -
+( × - 6 )
+J H
+=
+{Iccr-61"-1×-61),
+y
+c o n c l u i m o s
+que
+y-elztclx-l.lt/-lX-6l#,CtlR
+e s
+l a
+solución
+d e
+l a
+E .D
+118),
