@@ -9,10 +9,11 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 
-# Empaquetado (§10): el .exe y sus intermedios no se versionan
+# Empaquetado (§10): el .exe y sus intermedios no se versionan.
+# main.spec SI se versiona: es artesanal, sin rutas absolutas, y es lo que
+# permite compilar con un solo comando.
 build/
 dist/
-*.spec
 
 # Secretos: el token de Figma vive en las variables de entorno
 # FIGMA_TOKEN / FIGMA_URL (ver README). Este patrón es la red de seguridad
