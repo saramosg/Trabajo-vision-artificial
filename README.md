@@ -74,8 +74,8 @@ trabajo_grupal/
    estilo modulo 2; los sliders acotan el rango `[inf, sup]` y alimentan el
    contorno binario. Botones: selector de canal, "Limpiar mascara" (rellena
    huecos y quita islas), "Quitar fondo" (preview local), "Guardar imagen" (RGBA)
-   y "Guardar mascara".
-5. **Recortar imagen** — marco fijo al 70 % del lienzo; el slider escala la
+   y "Guardar mascara" (PSD con la imagen + mascara de capa).
+5. **Recortar imagen** — marco fijo al 70 % del visor; el slider escala la
    imagen y el arrastre la mueve (el marco puede salirse y lo faltante sale
    blanco). La salida es siempre **512x512**.
 
@@ -84,12 +84,12 @@ Navegacion: `REGRESAR` en las cuatro pantallas secundarias, atajos
 
 ## Dataset de frutas (Reto 2)
 
-- **150 imagenes**: 10 especies x 15 (8 `sana/` + 7 `alterada/`).
+- Diseno: 10 especies x 15 (8 `sana/` + 7 `alterada/`), tope 300.
+- **Estado actual: 50 imagenes en disco** (se borraron 100; `limon/` quedo
+  vacio). `manifest.csv` aun lista las 150 originales.
 - Fuente: Wikimedia Commons (licencias libres, atribucion en el manifest).
-- `imagenes/manifest.csv`: archivo, tema, estado, consulta, titulo, url, autor
-  y licencia de cada imagen.
-- `imagenes/_excedente_sana/`: 80 imagenes sanas sobrantes de la primera
-  corrida. Se pueden borrar.
+- `imagenes/manifest.csv`: archivo, tema, estado, consulta, titulo, url,
+  autor y licencia de cada imagen.
 
 Estructura:
 
@@ -100,7 +100,7 @@ imagenes/
 └── manifest.csv
 ```
 
-Regenerar o completar (el script es reanudable y respeta el tope de 300):
+Completar hasta la cuota (el script es reanudable, solo baja lo faltante):
 
 ```powershell
 python descargar_imagenes.py --total 150 --max 300
@@ -119,6 +119,33 @@ titulo y descripcion, asi que puede colarse una foto de una tarta de manzana en
 & ".\.venv\Scripts\python.exe" tests\suite.py            # las 4 suites
 & ".\.venv\Scripts\python.exe" tests\suite.py --rapido   # sin Qt
 ```
+
+## Compilado (`.exe`)
+
+`main.spec` esta versionado (es artesanal, sin rutas absolutas) con
+`collect_all` de `psd-tools` y `matplotlib` + `backend_agg` forzado; sin eso
+el histograma falla en el `.exe`. `assets/icon.ico` se genera con
+`generar_icono.py` si no existe.
+
+Compilacion limpia en **PowerShell**:
+
+```powershell
+Remove-Item -Recurse -Force build, dist -ErrorAction SilentlyContinue
+.\.venv\Scripts\python.exe -m PyInstaller main.spec --noconfirm --clean
+```
+
+En **Git Bash**:
+
+```bash
+rm -rf build dist
+./.venv/Scripts/python.exe -m PyInstaller main.spec --noconfirm --clean
+```
+
+El resultado es `dist/Analizador/Analizador.exe` (~300 MB, modo `--onedir`):
+hay que distribuir la carpeta **completa** (`Analizador.exe` + `_internal/`;
+sin `_internal` no arranca). Para el release de GitHub se sube comprimida con
+`gh release upload` (la web rechaza archivos de mas de 25 MB). Para achicarla,
+excluir `IPython`, `jedi` y `tkinter` en el `Analysis` del spec ahorra 50-100 MB.
 
 ## Variables de entorno
 
