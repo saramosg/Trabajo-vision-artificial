@@ -316,6 +316,17 @@ class VentanaRecorte(QWidget):
         # Pan, zoom o resize mueven la seleccion: caduca el preview.
         self.al_recibir_recorte(self.vista.seleccion())
 
+    def _fuente_recorte(self):
+        # Solo en este marco el fondo quitado es BLANCO (vista + guardado).
+        # Se construye local desde original + mascara (una sola op. numpy,
+        # sin remuestreo): estado.preprocesada sigue negra en las demas
+        # pantallas y el histograma no se entera.
+        if self.estado.mascara is not None:
+            img = self.estado.original.copy()
+            img[self.estado.mascara == 0] = 255
+            return img
+        return self.estado.original
+
     # --- estado -------------------------------------------------------
     def al_entrar(self):
         if self.estado.original is None:
@@ -327,7 +338,7 @@ class VentanaRecorte(QWidget):
         # El slider se mueve siempre: ya no hay rango degenerado porque la
         # escala es relativa al encaje, sin tope de memoria.
         self.zoom.setEnabled(True)
-        self.vista.set_imagen(a_pixmap(self.estado.original))
+        self.vista.set_imagen(a_pixmap(self._fuente_recorte()))
         self.al_cambiar_zoom(self.zoom.value())
         self._al_cambiar_encuadre()
 
@@ -356,9 +367,9 @@ class VentanaRecorte(QWidget):
         if self.estado.original is None or self.estado.recorte is None:
             return
         x, y, ancho, alto = self.estado.recorte
-        # Exporta desde la ORIGINAL (sin pre-escalado): el zoom solo era
-        # vista. Lo fuera de la imagen sale blanco.
-        previa = recorte.recorte_libre(self.estado.original, x, y, ancho,
+        # Exporta desde la fuente (sin fondo si se quito): el zoom solo
+        # era vista. Lo fuera de la imagen sale blanco.
+        previa = recorte.recorte_libre(self._fuente_recorte(), x, y, ancho,
                                        alto, tokens.LADO_SALIDA)
         self.estado.vista_previa = previa
         self.previa.set_imagen(a_pixmap(previa))

@@ -32,7 +32,10 @@ def figura_histograma(componente: np.ndarray, inf: int = 0,
     gris = np.ascontiguousarray(componente).ravel()
     fig = plt.figure(figsize=(4.67, 3.33), dpi=100)
     try:
-        plt.hist(gris, 256)
+        # Solo para pintar: submuestreo (una 45 MP por tick congelaba la
+        # UI). Los bins y el ylim siguen exactos con todos los pixeles.
+        paso = max(1, gris.size // 2_000_000)
+        plt.hist(gris[::paso], 256)
         plt.axvline(x=int(inf), color="red")
         plt.axvline(x=int(sup), color="red")
         # Altura dinamica: 5 % por encima del bin maximo de la imagen

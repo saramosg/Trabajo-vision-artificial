@@ -1,0 +1,7 @@
+{
+  "name": "Sync UNAL tokens",
+  "id": "unal-tokens-sync",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"]
+}

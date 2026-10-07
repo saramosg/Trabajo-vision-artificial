@@ -88,20 +88,24 @@ def segmentar(imagen: np.ndarray, modelo: str = "grabcut") -> np.ndarray:
     return binaria
 
 
-def limpiar_mascara(mascara: np.ndarray) -> np.ndarray:
+def limpiar_mascara(mascara: np.ndarray,
+                    area_minima: float = 0.01) -> np.ndarray:
     """Rellena huecos internos y elimina islas flotantes (uint8 0/255).
 
-    1. Huecos: floodFill desde (0,0) marca el fondo exterior (region
-       growing del fondo, Tarea 6/7); lo no alcanzado dentro del objeto
-       son huecos y se encienden. Equivale al cierre morfológico
-       (dilatar x3 + erosionar x3) de la Tarea 6, pero exacto.
-    2. Islas: connectedComponents y se conserva solo el componente mayor,
-       igual que la limpieza de `segmentar()`.
+    1. Huecos: floodFill desde el fondo exterior (region growing del
+       fondo, Tarea 6/7); lo no alcanzado dentro del objeto son huecos y
+       se encienden. Equivale al cierre morfologico (dilatar x3 +
+       erosionar x3) de la Tarea 6, pero exacto.
+    2. Islas: se conservan los componentes con area >= `area_minima`
+       (fraccion del total, 1 % por defecto) en vez del ganador unico:
+       con fondos en rango todo conectaba en un ~100 % blanco.
+    Vacia o llena entra igual y sale igual (la pantalla decide avisar).
     """
     binaria = (mascara > 0).astype(np.uint8) * 255
     if not np.any(binaria):
         return binaria
     alto, ancho = binaria.shape[:2]
+    total = alto * ancho
     # Semilla en un pixel de FONDO del borde: si (0,0) cae sobre el objeto
     # (p. ej. isla en la esquina) el floodFill marcaria el objeto como
     # exterior y el relleno fallaria.
@@ -127,10 +131,12 @@ def limpiar_mascara(mascara: np.ndarray) -> np.ndarray:
             rellena = cv2.bitwise_or(binaria, cv2.bitwise_not(exterior))
     numero, marcada = cv2.connectedComponents(
         (rellena > 0).astype(np.uint8))
-    if numero > 2:  # fondo + 2 o mas objetos: solo el mayor
-        tamanos = np.bincount(marcada.ravel())[1:]
-        mayor = int(np.argmax(tamanos) + 1)
-        rellena = np.where(marcada == mayor, 255, 0).astype(np.uint8)
+    if numero > 2:  # fondo + 2 o mas regiones: solo las de area suficiente
+        tamanos = np.bincount(marcada.ravel())
+        validas = [e for e in range(1, numero)
+                   if tamanos[e] >= area_minima * total]
+        if validas:
+            rellena = np.where(np.isin(marcada, validas), 255, 0).astype(np.uint8)
     return rellena
 
 

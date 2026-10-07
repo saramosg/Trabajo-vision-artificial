@@ -30,7 +30,7 @@ class VentanaHistograma(QWidget):
         self.ventana = ventana
         self.estado = ventana.estado
         self._bins = [0] * 256
-        self._preview_mask = None  # solo preview local: no toca estado
+        self._fondo_activo = False  # preview local: no escribe estado
 
         raiz = QVBoxLayout(self)
         raiz.setContentsMargins(tokens.MARGEN, tokens.ESPACIO_ITEM,
@@ -115,6 +115,18 @@ class VentanaHistograma(QWidget):
         fila_fondo.addStretch(1)
         derecha.addLayout(fila_fondo)
 
+        # Chip de fuente + aviso de mascara: nada falla en silencio.
+        fila_estado = QHBoxLayout()
+        fila_estado.setSpacing(tokens.ESPACIO_ITEM)
+        self.lbl_fuente = QLabel("Analizando: original")
+        self.lbl_fuente.setObjectName("valorCampo")
+        self.lbl_aviso = QLabel("")
+        self.lbl_aviso.setObjectName("valorCampo")
+        fila_estado.addWidget(self.lbl_fuente)
+        fila_estado.addWidget(self.lbl_aviso)
+        fila_estado.addStretch(1)
+        derecha.addLayout(fila_estado)
+
         # Sliders y contenedor del histograma
         self.slider_inf = QSlider(Qt.Horizontal)
         self.slider_inf.setRange(0, 255)
@@ -168,12 +180,15 @@ class VentanaHistograma(QWidget):
         self.slider_inf.setValue(self.estado.inf)
         self.slider_sup.setValue(self.estado.sup)
         # El preview siempre arranca apagado al entrar.
-        self._preview_mask = None
+        self._fondo_activo = False
         self.boton_fondo.setText("Quitar fondo")
         self.refrescar()
 
     def _base_histograma(self):
-        # El histograma NO lo toca el preview: siempre sobre la original.
+        # Preprocesada si existe (quitar fondo de la principal), si no la
+        # original. El histograma, el canal y el contorno van sobre esta.
+        if self.estado.preprocesada is not None:
+            return self.estado.preprocesada
         return self.estado.original
 
     def _letra(self):
@@ -186,57 +201,48 @@ class VentanaHistograma(QWidget):
                 f"border: 2px solid {tokens.ACENTO}; border-radius: 30px;")
         else:
             self.boton_limpiar.setStyleSheet("")
-        # Si el preview esta encendido se reconstruye con/sin limpieza.
-        if self._preview_mask is not None:
-            self._construir_preview()
-        self.refrescar()
+        self.refrescar()  # unico camino: preview y contorno al dia
 
-    def _construir_preview(self) -> None:
-        """Mascara del preview: canal B/N + rango y, si limpieza esta
-        activa, se aplica DESPUES (huecos rellenos, islas fuera)."""
-        comp = canales.componente(self.estado.original,
-                                  self.estado.espacio, self._letra())
-        mask = core_hist.mascara_por_rango(comp, self.estado.inf,
-                                           self.estado.sup)
-        if self.boton_limpiar.isChecked():
-            mask = segmentacion.limpiar_mascara(mask)
-        self._preview_mask = mask
+    def _reconstruir_mascara(self):
+        """UNICO camino de construccion de la mascara (contorno y preview).
 
-    def _mascara_limitada(self):
-        """Mascara acotada por el rango inf/sup sobre el CANAL ACTIVO.
-
-        Antes comparaba sobre el gris (luminancia): rotar R/G/B no
-        cambiaba el contorno. Ahora usa el componente B/N del canal
-        seleccionado, igual que el histograma.
+        Base = preprocesada si existe, si no original. Rango sobre el
+        componente B/N del canal activo, interseccion con estado.mascara
+        si existe, limpieza si el toggle esta ON salvo cobertura <2 % o
+        >98 % (ahi no hay nada que limpiar y se avisa en vez de fallar
+        en silencio). Devuelve (mascara o None, cobertura 0-1, aviso).
         """
         base = self._base_histograma()
         if base is None:
-            return None
+            return None, 0.0, ""
         comp = canales.componente(base, self.estado.espacio, self._letra())
-        lo, hi = (self.estado.inf, self.estado.sup) \
-            if self.estado.inf <= self.estado.sup \
-            else (self.estado.sup, self.estado.inf)
-        dentro = (comp >= int(lo)) & (comp <= int(hi))
+        masc = core_hist.mascara_por_rango(comp, self.estado.inf,
+                                           self.estado.sup)
         if self.estado.mascara is not None:
-            return np.where(dentro, self.estado.mascara, 0).astype(np.uint8)
-        return np.where(dentro, 255, 0).astype(np.uint8)
+            masc = np.where(masc > 0, self.estado.mascara, 0).astype(np.uint8)
+        total = masc.size
+        cobertura = float(np.count_nonzero(masc)) / total if total else 0.0
+        aviso = ""
+        if cobertura <= 0.0:
+            return None, cobertura, "rango vacio: sin objeto"
+        if cobertura >= 1.0:
+            aviso = "rango total: la mascara cubre todo"
+        if self.boton_limpiar.isChecked() and 0.02 <= cobertura <= 0.98:
+            masc = segmentacion.limpiar_mascara(masc)
+            if not np.any(masc):
+                return None, 0.0, "limpieza dejo vacio: ajusta el rango"
+            aviso = (aviso + " + " if aviso else "") + "limpieza activa"
+            cobertura = float(np.count_nonzero(masc)) / total
+        return masc, cobertura, aviso
 
-    def _refrescar_contorno(self) -> None:
+    def _refrescar_contorno(self, mascara) -> None:
         # Objeto RELLENO (silueta blanca sobre negro) + borde de 1 px
-        # encima para definir el perimetro. Con "Limpiar máscara" activo
-        # se rellenan huecos y se quitan islas antes de mostrar.
-        limitada = self._mascara_limitada()
-        if limitada is None or not np.any(limitada):
+        # encima para definir el perimetro.
+        if mascara is None or not np.any(mascara):
             self.mini_contorno.set_imagen(QPixmap())
             return
-        if getattr(self, "boton_limpiar", None) is not None \
-                and self.boton_limpiar.isChecked():
-            limitada = segmentacion.limpiar_mascara(limitada)
-            if not np.any(limitada):
-                self.mini_contorno.set_imagen(QPixmap())
-                return
-        borde = segmentacion.contorno(limitada)
-        relleno = limitada.copy()
+        borde = segmentacion.contorno(mascara)
+        relleno = mascara.copy()
         relleno[borde > 0] = 255
         self.mini_contorno.set_imagen(a_pixmap(relleno))
 
@@ -251,23 +257,31 @@ class VentanaHistograma(QWidget):
             f"color: {tokens.COLOR_CANAL[letra]};")
 
         self.mini_original.set_imagen(a_pixmap(self.estado.original))
-        canal_arr = canales.aplicar_modo(self.estado.original, self.estado.espacio,
+        base = self._base_histograma()
+        self.lbl_fuente.setText(
+            "Analizando: sin fondo" if self.estado.preprocesada is not None
+            else "Analizando: original")
+        canal_arr = canales.aplicar_modo(base, self.estado.espacio,
                                          letra, self.estado.modo)
         self.mini_canal.set_imagen(a_pixmap(canal_arr))
-        # Preview con mascara: original x mascara y canal x mascara.
-        # Solo visualizacion local: no escribe estado, no toca el
-        # histograma ni el contorno.
-        if self._preview_mask is not None:
-            vista_orig = self.estado.original.copy()
-            vista_orig[self._preview_mask == 0] = 0
+        # Mascara viva del unico camino: contorno y preview nunca se
+        # quedan obsoletos porque se reconstruyen aqui en cada refresco.
+        mascara, _cobertura, aviso = self._reconstruir_mascara()
+        self.lbl_aviso.setText(aviso)
+        # Preview con mascara: base x mascara en original y canal.
+        # Solo visualizacion local: no escribe estado.
+        if self._fondo_activo and mascara is not None:
+            vista_orig = base.copy()
+            vista_orig[mascara == 0] = 0
             self.mini_original.set_imagen(a_pixmap(vista_orig))
-            vista_canal = canal_arr.copy()
-            vista_canal[self._preview_mask == 0] = 0
-            self.mini_canal.set_imagen(a_pixmap(vista_canal))
+            vista_base = base.copy()
+            vista_base[mascara == 0] = 0
+            self.mini_canal.set_imagen(a_pixmap(
+                canales.aplicar_modo(vista_base, self.estado.espacio,
+                                     letra, self.estado.modo)))
 
-        self._refrescar_contorno()
+        self._refrescar_contorno(mascara)
 
-        base = self._base_histograma()
         componente = canales.componente(base, self.estado.espacio, letra)
         self._bins = core_hist.histograma_canal(componente)
         self._comp = componente
@@ -292,19 +306,14 @@ class VentanaHistograma(QWidget):
     def al_cambiar_rango(self):
         self.estado.inf = self.slider_inf.value()
         self.estado.sup = self.slider_sup.value()
-        self._pintar_histograma()
-        self._refrescar_contorno()
+        self.refrescar()  # unico camino: todo se reconstruye en fresco
 
     def alternar_fondo(self):
-        # Preview local: la mascara sale del canal en blanco y negro
-        # seleccionado + el rango inf/sup. No escribe `estado`: el
-        # histograma y el contorno quedan intactos.
-        if self._preview_mask is None:
-            self._construir_preview()
-            self.boton_fondo.setText("Restaurar original")
-        else:
-            self._preview_mask = None
-            self.boton_fondo.setText("Quitar fondo")
+        # Preview local: usa la mascara viva del unico camino. No escribe
+        # `estado`: histograma y contorno quedan intactos.
+        self._fondo_activo = not self._fondo_activo
+        self.boton_fondo.setText("Restaurar original" if self._fondo_activo
+                                 else "Quitar fondo")
         self.refrescar()
 
     # --- guardado -----------------------------------------------------
@@ -323,19 +332,22 @@ class VentanaHistograma(QWidget):
         QMessageBox.information(self, "Guardar imagen", "Imagen guardada.")
 
     def guardar_mascara(self):
+        # PSD de Photoshop: capa con la imagen original + la mascara como
+        # mascara de capa (asi se recuperan pixeles al pintar sobre ella).
         ruta, _ = QFileDialog.getSaveFileName(self, "Guardar máscara", "",
-                                              "PNG (*.png)")
+                                              "Photoshop (*.psd)")
         if not ruta:
             return
         if not os.path.splitext(ruta)[1]:
-            ruta += ".png"
-        if self.boton_limpiar.isChecked():
-            mascara = self._mascara_limitada()
-            if mascara is not None:
-                mascara = segmentacion.limpiar_mascara(mascara)
-        else:
-            mascara = self.estado.mascara
+            ruta += ".psd"
+        rgb = self._base_histograma()[:, :, :3]
+        mascara, _cobertura, _aviso = self._reconstruir_mascara()
         if mascara is None or not np.any(mascara):
             mascara = np.zeros(self.estado.original.shape[:2], np.uint8)
-        core_imagen.guardar_mascara(ruta, mascara)
+        try:
+            core_imagen.guardar_psd(ruta, rgb, mascara)
+        except ImportError:
+            QMessageBox.warning(self, "Guardar máscara",
+                                "psd-tools no esta instalado.")
+            return
         QMessageBox.information(self, "Guardar máscara", "Máscara guardada.")
