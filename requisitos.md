@@ -2168,3 +2168,36 @@ qss = BASE / "styles.qss"
 - Si una imagen es muy grande (varios miles de píxeles), reducir para previsualizar y para segmentar; el recorte/guardado usa el tamaño completo.
 - La ventana **nunca** se fija: `setFixedSize()` solo se aplica a botones, lienzos y campos, nunca a la ventana principal.
 - El preprocesado es **siempre no destructivo** salvo acción explícita de "Sobreescribir" en la pantalla de recorte.
+
+---
+
+## 12. Dataset del Reto 2 (mango)
+
+El dataset de trabajo para el Reto 2 (fitopatógenos poscosecha) es **solo mango**,
+en `imagenes/mango/`, con **5 clases de enfermedad específica** (no el binario
+sana/alterada):
+
+```
+imagenes/mango/
+├── sana/                  205  (Healthy_Mango)
+├── moho_negro/            182  (Black Mould Rot, Aspergillus)
+├── pudricion_peduncular/  157  (Stem and Rot, Lasiodiplodia)
+├── alternaria/            115  (Alternaria)
+└── antracnosis/            79  (Anthracnose)
+```
+
+Total: **738 imágenes**. Fuente: Kaggle
+`amdats/fruits-diseases-classification-dataset` (licencia MIT), carpeta `MANGO`.
+El dataset anterior multirruta (10 especies desde Wikimedia Commons con
+`manifest.csv`) se retiró: tenía etiquetas por consulta de búsqueda sin
+validación humana y quedó incompleto en disco.
+
+Reglas:
+
+1. **La app no depende del dataset.** `core/` y `ui/` trabajan sobre cualquier
+   imagen que cargue el usuario; el dataset solo alimenta el entrenamiento.
+2. **Entrada al modelo: 224x224.** La app sigue exportando a 512
+   (ver §6.5); el resize a 224 + normalización ImageNet vive en el pipeline
+   de entrenamiento, no en `core/` ni en `ui/`.
+3. **`imagenes/` no se versiona** (ver `.gitignore`): se reproduce descargando
+   de Kaggle con el mapeo de carpetas de arriba.

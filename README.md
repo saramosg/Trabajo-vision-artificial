@@ -35,8 +35,7 @@ trabajo_grupal/
 ├── requirements.txt
 ├── styles.qss               hoja de estilos global
 ├── requisitos.md            especificacion funcional de referencia
-├── descargar_imagenes.py    script del dataset de frutas
-├── assets/
+├── assets/                  icono del ejecutable
 ├── core/                    logica de imagen (SIN Qt, testeable sin ventanas)
 │   ├── imagen.py            carga/guardado + EstadoImagen compartido
 │   ├── segmentacion.py      GrabCut / OTSU, limpieza, contorno
@@ -52,11 +51,10 @@ trabajo_grupal/
 │   ├── ventana_rgb.py       /  ventana_ycm.py
 │   ├── ventana_histograma.py pantalla de histograma
 │   └── ventana_recorte.py   pantalla de recorte (VistaRecorte)
-├── imagenes/                dataset del Reto 2 (ver abajo)
+├── imagenes/mango/          dataset del Reto 2: sana + 4 enfermedades
 ├── frutas/                  fotos de referencia
 ├── tests/                   suite de verificacion
-├── legacy/                  codigo previo, no se usa en runtime
-└── docs/
+└── legacy/                  codigo previo, no se usa en runtime
 ```
 
 **Regla de dependencias:** `ui/` importa de `core/`; `core/` nunca importa de
@@ -82,36 +80,26 @@ trabajo_grupal/
 Navegacion: `REGRESAR` en las cuatro pantallas secundarias, atajos
 `->` (RGB→YCM), `<-` (YCM→RGB) y `Esc` (a Principal).
 
-## Dataset de frutas (Reto 2)
+## Dataset de mango (Reto 2)
 
-- Diseno: 10 especies x 15 (8 `sana/` + 7 `alterada/`), tope 300.
-- **Estado actual: 50 imagenes en disco** (se borraron 100; `limon/` quedo
-  vacio). `manifest.csv` aun lista las 150 originales.
-- Fuente: Wikimedia Commons (licencias libres, atribucion en el manifest).
-- `imagenes/manifest.csv`: archivo, tema, estado, consulta, titulo, url,
-  autor y licencia de cada imagen.
-
-Estructura:
+- Fuente: Kaggle `amdats/fruits-diseases-classification-dataset` (licencia MIT),
+  carpeta `MANGO`.
+- **738 imagenes en 5 clases** (clases de enfermedad especifica, como exige el reto):
 
 ```
-imagenes/
-├── manzana/{sana,alterada}/001.jpg ...
-├── banano/ cereza/ uva/ limon/ mango/ naranja/ pina/ fresa/ sandia/
-└── manifest.csv
+imagenes/mango/
+├── sana/                  205  (Healthy_Mango)
+├── moho_negro/            182  (Black Mould Rot, Aspergillus)
+├── pudricion_peduncular/  157  (Stem and Rot, Lasiodiplodia)
+├── alternaria/            115  (Alternaria)
+└── antracnosis/            79  (Anthracnose)
 ```
 
-Completar hasta la cuota (el script es reanudable, solo baja lo faltante):
-
-```powershell
-python descargar_imagenes.py --total 150 --max 300
-python descargar_imagenes.py --verificar   # solo comprueba las cuotas
-```
-
-**Nota sobre las etiquetas:** la carpeta `sana/` o `alterada/` se asigna por la
-consulta de busqueda con la que se bajo la imagen, no por inspeccion humana. Es
-una **pre-clasificacion** que hay que revisar antes de entrenar: la API busca por
-titulo y descripcion, asi que puede colarse una foto de una tarta de manzana en
-`alterada/`. Para el dataset final, valida visualmente o anota aparte.
+- El dataset anterior multirruta (10 especies desde Wikimedia Commons con
+  `manifest.csv`) se retiro: tenia etiquetas por consulta de busqueda sin
+  validacion humana y quedo incompleto en disco.
+- Entrada al modelo: resize a **224x224** + normalizacion ImageNet en el pipeline
+  de entrenamiento (la app sigue exportando a 512; ver `tokens.LADO_SALIDA`).
 
 ## Tests
 
@@ -124,8 +112,7 @@ titulo y descripcion, asi que puede colarse una foto de una tarta de manzana en
 
 `main.spec` esta versionado (es artesanal, sin rutas absolutas) con
 `collect_all` de `psd-tools` y `matplotlib` + `backend_agg` forzado; sin eso
-el histograma falla en el `.exe`. `assets/icon.ico` se genera con
-`generar_icono.py` si no existe.
+el histograma falla en el `.exe`. `assets/icon.ico` esta versionado.
 
 Compilacion limpia en **PowerShell**:
 
@@ -163,5 +150,6 @@ incluye `.env`, `*.token` y `secrets*` como red de seguridad.
   cambiarlo desde la interfaz.
 - La salida guardada es siempre PNG; "Sobreescribir" pide confirmacion y es la
   unica accion que modifica el archivo original.
-- `legacy/` y `tests/scratch/` no participan en runtime.
-- `*.psd` esta en `.gitignore` (el de strawberry pesa 255 MB).
+- `legacy/` no participa en runtime.
+- `*.psd` esta en `.gitignore`.
+- `imagenes/` (738 fotos) no se versiona completo: ver `.gitignore`.
