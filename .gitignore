@@ -15,9 +15,8 @@ secrets*
 # Artefactos pesados
 *.psd
 
-# Dataset local (se descarga de Kaggle, no se versiona)
-imagenes/
-!imagenes/.gitkeep
+# El dataset de imagenes SI se versiona (imagenes/ ~140 MB: las clases de
+# mango, "mango grupo" y "mango grupo recortado").
 
 # Grafo de conocimiento generado por la herramienta de analisis
 .ua/
