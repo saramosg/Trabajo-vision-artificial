@@ -89,6 +89,33 @@ def _bolsillo_cerca(
     return None, None
 
 
+def _contorno_sale_del_cuadro(
+    mapa_bordes: np.ndarray, etq_paredes: np.ndarray, muro: int
+) -> bool:
+    """True si el contorno de este muro SALE del cuadro.
+
+    El MARCO DE LA IMAGEN solo puede cerrar un contorno que llega al
+    borde: sus extremos estan en el borde de la imagen (el objeto esta
+    cortado). Un contorno cerrado (o roto por el medio) NO sale del
+    cuadro: rellenar con el marco se llevaria el fondo entero.
+    """
+    crudo = (mapa_bordes > 0) & (etq_paredes == muro)
+    if not np.any(crudo):
+        return False
+    alto, ancho = crudo.shape[:2]
+    kernel = np.ones((3, 3), np.uint8)
+    kernel[1, 1] = 0
+    vecinos = cv2.filter2D(
+        crudo.astype(np.uint8), -1, kernel, borderType=cv2.BORDER_CONSTANT
+    )
+    extremos = crudo & (vecinos == 1)  # pixeles con un solo vecino
+    ys, xs = np.where(extremos)
+    if len(xs) == 0:
+        return False  # contorno cerrado: no sale del cuadro
+    en_borde = (ys == 0) | (ys == alto - 1) | (xs == 0) | (xs == ancho - 1)
+    return bool(en_borde.any())
+
+
 def _region_con_muro(
     etq_paredes: np.ndarray,
     muro: int,
@@ -169,6 +196,14 @@ def _objeto_con_marco(
         # en dos partes. Un borde interno suelto no separa nada.
         separadores = []
         for muro in muros:
+            # El MARCO DE LA IMAGEN solo puede cerrar un contorno que SALE
+            # del cuadro (el objeto esta cortado por el borde de la
+            # imagen). Un contorno cerrado lo cierra el propio borde
+            # dibujado; uno roto por el medio no se puede cerrar de
+            # ninguna forma: rellenar con el marco se llevaria el fondo
+            # entero (o dejaria el objeto partido).
+            if not _contorno_sale_del_cuadro(mapa_bordes, etq_paredes, muro):
+                continue
             etq, etiqueta, region = _region_con_muro(
                 etq_paredes, muro, sx, sy, True, paso
             )
@@ -176,7 +211,8 @@ def _objeto_con_marco(
                 continue
             if len(set(np.unique(etq).tolist()) - {0}) < 2:
                 continue
-            separadores.append((int(np.count_nonzero(region)), muro))
+            area = int(np.count_nonzero(region))
+            separadores.append((area, muro))
         if separadores:
             elegido = max(separadores)[1]
             break

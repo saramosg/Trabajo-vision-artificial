@@ -7,6 +7,7 @@
 - `mascara_por_rango`: binaria 0/255 del componente B/N dentro de
   [inf, sup]; es lo que usan el contorno y el preview del histograma.
 """
+
 import io
 
 import matplotlib
@@ -21,8 +22,7 @@ def histograma_canal(canal: np.ndarray) -> np.ndarray:
     return np.bincount(canal.ravel(), minlength=256).astype(np.int64)
 
 
-def figura_histograma(componente: np.ndarray, inf: int = 0,
-                      sup: int = 255) -> bytes:
+def figura_histograma(componente: np.ndarray, inf: int = 0, sup: int = 255) -> bytes:
     """PNG del histograma estilo modulo 2 (Tarea 1):
 
     plt.hist(img_gray.ravel(), 256) + titulo 'Histograma' +
@@ -33,9 +33,14 @@ def figura_histograma(componente: np.ndarray, inf: int = 0,
     fig = plt.figure(figsize=(4.67, 3.33), dpi=100)
     try:
         # Solo para pintar: submuestreo (una 45 MP por tick congelaba la
-        # UI). Los bins y el ylim siguen exactos con todos los pixeles.
+        # UI). Los conteos se estiman con la muestra y se multiplican por
+        # `paso` (la cuenta real de pixeles): asi las barras y el eje
+        # cuentan lo mismo. Con el eje de la imagen completa y las barras
+        # submuestreadas, las barras quedaban al 16 % de su altura.
         paso = max(1, gris.size // 2_000_000)
-        plt.hist(gris[::paso], 256)
+        muestra = gris[::paso]
+        conteos = np.bincount(muestra.astype(np.uint8), minlength=256) * paso
+        plt.bar(np.arange(256), conteos, width=1.0)
         plt.axvline(x=int(inf), color="red")
         plt.axvline(x=int(sup), color="red")
         # Altura dinamica: 5 % por encima del bin maximo de la imagen
@@ -45,7 +50,6 @@ def figura_histograma(componente: np.ndarray, inf: int = 0,
         # ese dominante (fondo liso de tono medio). Si no queda nada, se
         # usa el maximo global. Recortar picos es lo mismo que el zoom
         # `ylim(0, 5000)` de la Tarea 1 para ver el detalle.
-        conteos = np.bincount(gris.astype(np.uint8), minlength=256)
         interior = conteos[6:250].astype(np.int64)
         if int(interior.max()) > 0:
             ordenados = np.sort(interior)
@@ -73,7 +77,6 @@ def mascara_por_rango(componente: np.ndarray, inf: int, sup: int) -> np.ndarray:
     255 donde `inf <= valor <= sup`, 0 fuera. Si el rango viene invertido
     se ordena: un rango vacio daria una mascara vacia sin avisar.
     """
-    lo, hi = (int(inf), int(sup)) if int(inf) <= int(sup) \
-        else (int(sup), int(inf))
+    lo, hi = (int(inf), int(sup)) if int(inf) <= int(sup) else (int(sup), int(inf))
     comp = np.ascontiguousarray(componente)
     return np.where((comp >= lo) & (comp <= hi), 255, 0).astype(np.uint8)

@@ -253,6 +253,22 @@ check(
     hubo_f2 is False and not np.any(_mf2),
 )
 
+# 4) contorno roto por el medio que NO sale del cuadro: el relleno no
+#    puede llevarse el fondo (seria la imagen entera). Con el hueco
+#    abierto, el interior se une con el fondo: no hay region cerrable.
+_roto = np.zeros((60, 60), np.uint8)
+_roto[10, 10:50] = 255
+_roto[49, 10:50] = 255
+_roto[10:50, 10] = 255
+_roto[10:50, 49] = 255
+_roto[10, 27:33] = 0  # hueco de 6 px: la dilatacion no lo sella
+_mr, hubo_r = rellenar_bordes(_roto, None, (30, 30))
+check(
+    "contorno roto sin salir del cuadro: no rellena el fondo",
+    hubo_r is False and not np.any(_mr),
+    f"pixeles={int(np.count_nonzero(_mr))}",
+)
+
 print("\n" + "=" * 60)
 print(
     f"RESULTADO: {len(fallos)} fallo(s)"

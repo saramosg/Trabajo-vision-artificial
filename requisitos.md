@@ -111,7 +111,7 @@ pip install -r requirements.txt
 
 > **Decisión: `PySide6-Essentials`, no `PySide6`.** La aplicación solo usa `QtCore`, `QtGui` y `QtWidgets`. El metapaquete `PySide6` arrastra además QtWebEngine, Qt3D, QtCharts, QtDataVisualization, QtMultimedia y decenas de módulos más que no se usan: pasa de ~120 MB a cerca de 1 GB instalado y de ~40 MB a ~300 MB el `.exe` de PyInstaller. `PySide6-Essentials` es el subconjunto que contiene exactamente lo necesario. `shiboken6` llega como dependencia automática. Si algún día hiciera falta un módulo fuera del Essentials, se sube a `PySide6` en ese momento y con una nota que lo justifique.
 
-> **Decisión: NO se usa `matplotlib`.** El histograma se dibuja con `QPainter` en el widget `GraficoHistograma` (`ui/widgets.py`, §7.6), igual que el resto de la interfaz. Motivos: un canvas de matplotlib no se puede estilizar con el QSS (contradice §8 regla 1), rompe el look de la app y obliga a empaquetar un backend extra en el `.exe`. Por eso `matplotlib` **no está** en `requirements.txt` ni en §11.
+> **Excepción: sí se usa `matplotlib` (solo para el histograma).** El histograma se dibuja con `plt.hist` en `core/histograma.py` (el "estilo módulo 2" de la Tarea 1), se exporta a PNG y se pinta en la pantalla. Motivos: es el estilo que pide la Tarea 1 y `matplotlib` no toca el QSS (el PNG se pinta como una imagen más). Se usa el backend `Agg` (sin ventana) y PyInstaller lo empaqueta con `collect_all('matplotlib')` (§10.3). **El resto de la interfaz NO usa matplotlib**: todo lo demás es QPainter/QSS. `matplotlib` sí está en `requirements.txt`.
 
 ### 3.4 Verificación del entorno
 ```bash
@@ -164,29 +164,32 @@ analizador/
 ├── ui/
 │   ├── __init__.py
 │   ├── tokens.py            # colores, tamaños uniformes, tipografías, espaciados
+│   ├── helpers.py           # boton() con tamaño fijo y envolver_en_scroll() (§5.3)
 │   ├── ventana_principal.py # pantalla de preprocesado
+│   ├── ventana_canales.py   # base común de las pantallas de canales (RGB/YCM)
 │   ├── ventana_rgb.py       # pantalla de canales RGB
 │   ├── ventana_ycm.py       # pantalla de canales YCM
 │   ├── ventana_histograma.py
 │   ├── ventana_recorte.py
 │   ├── widgets.py           # widgets reutilizables: ProporcionImagen (escala y centra
-│                            #   la imagen), SelectorCuadrado (área cuadrada §6.5),
-│                            #   Histograma (contenedor), GraficoHistograma (barras),
-│                            #   OverlayMarcadores (líneas y flechas §6.4),
-│                            #   dibujar_marcadores (§6.4)
+│   │                        #   la imagen), a_pixmap. Los widgets SelectorCuadrado,
+│   │                        #   Histograma, GraficoHistograma y OverlayMarcadores que
+│   │                        #   declara §0 están PENDIENTES: el código actual
+│   │                        #   dibuja el histograma con matplotlib (§3.3) y la
+│   │                        #   pantalla de recorte usa QGraphicsView (§6.5)
 ├── core/
 │   ├── __init__.py
 │   ├── imagen.py            # carga/guardado, RGBA, previsualización
 │   ├── segmentacion.py      # grabcut, otsu, limpieza de máscara
 │   ├── canales.py           # extracción RGB / YCM y modos color | blanco y negro
 │   ├── histograma.py        # cálculo del histograma y percentiles
-<<<<<<< Updated upstream
-=======
 │   ├── bordes.py            # detección de bordes (canny/sobel/laplaciano) y
-│                            #   relleno por objeto y clics (acumula en la máscara)
->>>>>>> Stashed changes
+│   │                        #   relleno por objeto y clics (acumula en la máscara)
 │   └── recorte.py           # recorte y redimensionado
-└── assets/
+├── tests/                   # suites ejecutables (scripts, no pytest)
+│   ├── suite.py             # corre todas las suites y resume
+│   └── test_*.py            # una suite por archivo
+├── assets/
     └── icon.ico
 ```
 
@@ -859,6 +862,9 @@ Elementos:
 |----------|--------|---------|
 | Título "Histograma de color" | centrado | Nombre de la pantalla |
 | Botón "REGRESAR" | **160×48** | Regresa a la pantalla principal (esquina superior derecha) |
+| Botón "Detección de umbral" / "Detección de bordes" | **160×48** | Alterna el modo de análisis de la pantalla. El texto muestra el modo ACTIVO; al entrar siempre arranca en "Detección de umbral" |
+| Selector "Método" + botón (solo modo bordes) | **200×60** | Cicla canny → sobel → laplaciano sobre el canal activo; el mapa de bordes y las miniaturas se recalculan al instante |
+| Botón "Vaciar relleno" (solo modo bordes) | **200×60** | Pone la máscara compartida en None para empezar el relleno de cero |
 | Imagen original | **250×250** | Muestra la imagen tal como fue cargada (con fondo) |
 | 2 miniaturas de canal | **250×250** c/u | Canal activo + el siguiente en el orden del espacio (RGB: R→G→B; YCM: Y→C→M) |
 | Selector de canal | **200×60** | Botón que rota el canal activo: `R/G/B` en RGB, `Y/C/M` en YCM. Al entrar queda activo el **primero del espacio** (`R` en RGB, `Y` en YCM). Es el único control que cambia el campo "Canal actual" |
@@ -1113,10 +1119,8 @@ Comportamiento:
 - El histograma se calcula sobre la imagen **preprocesada** si existe, si no sobre la original.
 - Los **sliders** acotan el rango de intensidades (0–255) que se consideran "objeto". Valores iniciales: `inf = 0`, `sup = 255`. Son **solo de visualización**: no modifican la máscara ni los archivos guardados. El resaltado del tramo válido y el atenuado del resto los hace el overlay (regla 7), **no** el pintado de las barras.
 - **Guardar imagen:** `QFileDialog.getSaveFileName` con `*.png`; escribe **siempre RGBA con el fondo transparente** (`np.dstack([rgb, mascara])`, §7.5). El fondo negro de `preprocesada` es solo para mostrar en pantalla.
-- **Guardar máscara:** guarda la máscara binaria en escala de grises (blanco = objeto).
+- **Guardar máscara:** guarda la máscara binaria en un **PSD de Photoshop** (la imagen original como capa y la máscara como máscara de capa, para poder recuperar píxeles pintando encima). Requiere `psd-tools`; si no está, avisa y no guarda.
 
-<<<<<<< Updated upstream
-=======
 #### Modos umbral / bordes y relleno por clics (agregado)
 
 La pantalla tiene DOS modos de análisis, alternados por el botón de la cabecera (el texto muestra el modo ACTIVO; `al_entrar()` siempre restaura el modo umbral, sin tocar la máscara acumulada):
@@ -1130,7 +1134,6 @@ En modo bordes las tres miniaturas se afectan por el método: la original muestr
 
 **"Quitar fondo" en modo bordes.** El botón (el mismo que en umbral, movido debajo del cuadro "Canal activo") alterna el **preview local** con la máscara acumulada: "Quitar fondo" deja en la miniatura original y en el canal activo **solo el objeto relleno, con el fondo en negro** (los bordes que quedan fuera del objeto tampoco se dibujan); "Restaurar original" vuelve a la vista normal, donde la imagen original muestra el relleno marcado en el color de acento. Como en umbral, es **solo preview**: no escribe `estado`. Si todavía no hay nada relleno el botón **no hace nada y avisa** ("no hay relleno: haz clic en el contorno para llenar el objeto"): sin máscara no hay fondo que quitar y la imagen no debe quedar en negro. Al cambiar de modo el preview se reinicia (el relleno acumulado no se pierde).
 
->>>>>>> Stashed changes
 #### Campo "Canal actual" (obligatorio)
 
 El campo de texto de la pantalla de histograma **no** muestra el modo `color` / `blanco y negro`: muestra **qué espacio de color y qué canal se está analizando**, en el formato:
@@ -2105,7 +2108,7 @@ cambio. Ese es el signo de que ese código ya no hacía falta.
 - [ ] Ese campo cambia al cambiar de canal, y sus miniaturas se actualizan junto con él.
 - [ ] El campo "Canal actual" **no** muestra el modo `color` / `blanco y negro` (ese lo controla el botón "Modo").
 - [ ] El histograma dibuja 256 bins por canal y responde a los dos sliders.
-- [ ] `Guardar imagen` produce un **PNG RGBA válido** (abre, tiene canal alfa y el fondo es transparente) y `Guardar máscara` un PNG de 8 bits en escala de grises con 255 = objeto.
+- [ ] `Guardar imagen` produce un **PNG RGBA válido** (abre, tiene canal alfa y el fondo es transparente) con la **misma máscara que exporta "Guardar máscara"** (en umbral la del rango, en bordes el relleno acumulado), y `Guardar máscara` un **PSD de Photoshop** con la imagen original como capa y la máscara como máscara de capa (255 = objeto).
 - [ ] La fórmula de los canales YCM es la de §6.3: `Y=(R+G)/2`, `C=(G+B)/2`, `M=(R+B)/2`, calculado en `float32` y convertido a `uint8` (sin desbordamiento).
 - [ ] GrabCut usa `rect` = 10 % de cada borde y segmenta a máximo 500 px de lado mayor.
 - [ ] El cuadro "Canal de contorno binario" muestra el **contorno** del objeto, no la silueta rellena.
@@ -2153,7 +2156,7 @@ a = Analysis(['main.py'],
              binaries=psd_bin,
              datas=[('styles.qss', '.'), ('assets', 'assets')] + psd_data,
              hiddenimports=['core.imagen', 'core.segmentacion', 'core.canales',
-                            'core.histograma', 'core.recorte',
+                            'core.histograma', 'core.recorte', 'core.bordes',
                             'ui.tokens', 'ui.widgets', 'ui.ventana_principal',
                             'ui.ventana_rgb', 'ui.ventana_ycm',
                             'ui.ventana_histograma', 'ui.ventana_recorte'] + psd_hidden,
@@ -2184,7 +2187,7 @@ qss = BASE / "styles.qss"
 ## 11. Restricciones y notas
 
 - El **Figma es referencia funcional, no de medidas**: si un tamaño del Figma difiere de la tabla §5.2, **gana la tabla**.
-- No usar `matplotlib` en ningún momento (§3.3): el histograma se dibuja con `QPainter`. Las paletas de color son las de `tokens.py` y el QSS.
+- `matplotlib` se usa **solo para el histograma** (§3.3, con su excepción): se exporta a PNG con el backend `Agg` y se pinta como imagen. Ninguna otra parte de la interfaz lo usa: las paletas de color son las de `tokens.py` y el QSS.
 - Las imágenes se cargan siempre en **RGB**; para PNG con transparencia se convierte a RGBA al guardar.
 - Si una imagen es muy grande (varios miles de píxeles), reducir para previsualizar y para segmentar; el recorte/guardado usa el tamaño completo.
 - La ventana **nunca** se fija: `setFixedSize()` solo se aplica a botones, lienzos y campos, nunca a la ventana principal.
@@ -2217,8 +2220,9 @@ Reglas:
 
 1. **La app no depende del dataset.** `core/` y `ui/` trabajan sobre cualquier
    imagen que cargue el usuario; el dataset solo alimenta el entrenamiento.
-2. **Entrada al modelo: 224x224.** La app sigue exportando a 512
-   (ver §6.5); el resize a 224 + normalización ImageNet vive en el pipeline
-   de entrenamiento, no en `core/` ni en `ui/`.
+2. **Entrada al modelo propio: 224x224.** La app sigue exportando a 512
+   (ver §6.5); el resize a 224 vive en el pipeline de entrenamiento, no en
+   `core/` ni en `ui/`. Los clasificadores existentes solo son referencia:
+   el proyecto **entrena su propio modelo**, no usa uno ya entrenado.
 3. **`imagenes/` no se versiona** (ver `.gitignore`): se reproduce descargando
    de Kaggle con el mapeo de carpetas de arriba.

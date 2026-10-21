@@ -18,3 +18,6 @@ secrets*
 # Dataset local (se descarga de Kaggle, no se versiona)
 imagenes/
 !imagenes/.gitkeep
+
+# Grafo de conocimiento generado por la herramienta de analisis
+.ua/

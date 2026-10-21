@@ -4,14 +4,32 @@ Marco FIJO en pantalla (`VistaRecorte`); la imagen se escala (slider) y se
 panea (arrastre) debajo. "Redimensionar" exporta con `recorte_libre()` a
 512 con blanco fuera, y solo entonces se habilitan los botones de guardado.
 """
+
 import os
 
 from PySide6.QtCore import QRect, QRectF, Qt, Signal
-from PySide6.QtGui import QColor, QKeySequence, QPainter, QPen, QPixmap, QShortcut, QTransform
-from PySide6.QtWidgets import (QFileDialog, QFrame, QGraphicsScene,
-                               QGraphicsView, QHBoxLayout, QLabel, QMessageBox,
-                               QPushButton, QSlider, QVBoxLayout,
-                               QWidget)
+from PySide6.QtGui import (
+    QColor,
+    QKeySequence,
+    QPainter,
+    QPen,
+    QPixmap,
+    QShortcut,
+    QTransform,
+)
+from PySide6.QtWidgets import (
+    QFileDialog,
+    QFrame,
+    QGraphicsScene,
+    QGraphicsView,
+    QHBoxLayout,
+    QLabel,
+    QMessageBox,
+    QPushButton,
+    QSlider,
+    QVBoxLayout,
+    QWidget,
+)
 
 from core import imagen as core_imagen
 from core import recorte
@@ -64,8 +82,7 @@ class VistaRecorte(QGraphicsView):
         margen = max(marco.width(), marco.height())
         # Escena acolchada: el paneo es (casi) libre y el marco puede
         # salir total o parcialmente de la imagen.
-        self.scene().setSceneRect(marco.adjusted(-margen, -margen,
-                                                 margen, margen))
+        self.scene().setSceneRect(marco.adjusted(-margen, -margen, margen, margen))
         self.centerOn(marco.center())
 
     def _encaje(self) -> float:
@@ -100,19 +117,28 @@ class VistaRecorte(QGraphicsView):
     def marco_vista(self) -> QRect:
         """Cuadrado FIJO al 70 % del viewport, centrado. Solo depende del
         tamano del widget, nunca del zoom."""
-        lado = max(64, int(round(min(self.viewport().width(),
-                                    self.viewport().height()) * 0.70)))
-        return QRect((self.viewport().width() - lado) // 2,
-                     (self.viewport().height() - lado) // 2, lado, lado)
+        lado = max(
+            64,
+            int(round(min(self.viewport().width(), self.viewport().height()) * 0.70)),
+        )
+        return QRect(
+            (self.viewport().width() - lado) // 2,
+            (self.viewport().height() - lado) // 2,
+            lado,
+            lado,
+        )
 
     def seleccion(self) -> QRect:
         """Marco en coordenadas de la imagen original (puede salirse)."""
         if not self.scene().items():
             return QRect()
         marco = self.mapToScene(self.marco_vista()).boundingRect()
-        return QRect(int(round(marco.x())), int(round(marco.y())),
-                     max(1, int(round(marco.width()))),
-                     max(1, int(round(marco.height()))))
+        return QRect(
+            int(round(marco.x())),
+            int(round(marco.y())),
+            max(1, int(round(marco.width()))),
+            max(1, int(round(marco.height()))),
+        )
 
     # --- eventos --------------------------------------------------
     def drawForeground(self, pintor: QPainter, _rect: QRectF) -> None:
@@ -121,22 +147,33 @@ class VistaRecorte(QGraphicsView):
         pintor.save()
         pintor.resetTransform()  # overlay en coords de pantalla, no escena
         velo = QColor(0, 0, 0, 128)
-        arriba = QRect(vista.left(), vista.top(), vista.width(),
-                       max(0, marco.top() - vista.top()))
+        arriba = QRect(
+            vista.left(), vista.top(), vista.width(), max(0, marco.top() - vista.top())
+        )
         if arriba.height() > 0:
             pintor.fillRect(arriba, velo)
-        abajo = QRect(vista.left(), marco.bottom() + 1, vista.width(),
-                      max(0, vista.bottom() - marco.bottom()))
+        abajo = QRect(
+            vista.left(),
+            marco.bottom() + 1,
+            vista.width(),
+            max(0, vista.bottom() - marco.bottom()),
+        )
         if abajo.height() > 0:
             pintor.fillRect(abajo, velo)
-        izquierda = QRect(vista.left(), marco.top(),
-                          max(0, marco.left() - vista.left()),
-                          marco.height())
+        izquierda = QRect(
+            vista.left(),
+            marco.top(),
+            max(0, marco.left() - vista.left()),
+            marco.height(),
+        )
         if izquierda.width() > 0:
             pintor.fillRect(izquierda, velo)
-        derecha = QRect(marco.right() + 1, marco.top(),
-                        max(0, vista.right() - marco.right()),
-                        marco.height())
+        derecha = QRect(
+            marco.right() + 1,
+            marco.top(),
+            max(0, vista.right() - marco.right()),
+            marco.height(),
+        )
         if derecha.width() > 0:
             pintor.fillRect(derecha, velo)
         pintor.setPen(QPen(QColor(tokens.ACENTO), 2))
@@ -164,9 +201,11 @@ class VistaRecorte(QGraphicsView):
             delta = ahora - self._ultimo
             self._ultimo = ahora
             self.horizontalScrollBar().setValue(
-                self.horizontalScrollBar().value() - delta.x())
+                self.horizontalScrollBar().value() - delta.x()
+            )
             self.verticalScrollBar().setValue(
-                self.verticalScrollBar().value() - delta.y())
+                self.verticalScrollBar().value() - delta.y()
+            )
             self.marcoCambiado.emit()
             self.viewport().update()
         super().mouseMoveEvent(evento)
@@ -188,8 +227,9 @@ class VentanaRecorte(QWidget):
         self.estado = ventana.estado
 
         raiz = QVBoxLayout(self)
-        raiz.setContentsMargins(tokens.MARGEN, tokens.ESPACIO_ITEM,
-                                tokens.MARGEN, tokens.ESPACIO_ITEM)
+        raiz.setContentsMargins(
+            tokens.MARGEN, tokens.ESPACIO_ITEM, tokens.MARGEN, tokens.ESPACIO_ITEM
+        )
 
         cabecera = QHBoxLayout()
         self.titulo = QLabel("Recortar imagen")
@@ -213,8 +253,7 @@ class VentanaRecorte(QWidget):
         izquierda = QVBoxLayout()
         izquierda.setSpacing(tokens.ESPACIO_ITEM)
         self.vista = VistaRecorte(self)
-        self.vista.setMinimumSize(tokens.LADO_ZONA_RECORTE,
-                                  tokens.LADO_ZONA_RECORTE)
+        self.vista.setMinimumSize(tokens.LADO_ZONA_RECORTE, tokens.LADO_ZONA_RECORTE)
         self.vista.marcoCambiado.connect(self._al_cambiar_encuadre)
         izquierda.addWidget(self.vista, stretch=1)
         self.zoom = QSlider(Qt.Horizontal)
@@ -248,7 +287,8 @@ class VentanaRecorte(QWidget):
         etiqueta_previa.setAlignment(Qt.AlignCenter)
         derecha.addWidget(etiqueta_previa)
         self.previa = ProporcionImagen(
-            tokens.RAZON_ZONA, (tokens.CANAL_LADO, tokens.CANAL_LADO), self)
+            tokens.RAZON_ZONA, (tokens.CANAL_LADO, tokens.CANAL_LADO), self
+        )
         self.previa.setObjectName("lienzoImagen")
         derecha.addWidget(self.previa, stretch=1)
 
@@ -269,39 +309,34 @@ class VentanaRecorte(QWidget):
         raiz.addLayout(cuerpo, stretch=1)
         raiz.addSpacing(tokens.ESPACIO_GRUPO)
         self.zoom.setEnabled(False)
-        # Teclado: + / - zoom, flechas paneo (barras ocultas).
+        # Teclado: + / - zoom. Las flechas NO: §6.0 dice que las pantallas
+        # de histograma y recorte no tienen flechas de teclado, y ademas
+        # colisionaban con las de la ventana principal (Qt las dejaba
+        # ambiguas y ninguna funcionaba). El paneo es con el raton.
         self._atajos_zoom = []
         for tecla, paso in ((Qt.Key_Plus, 5), (Qt.Key_Minus, -5)):
             atajo = QShortcut(QKeySequence(tecla), self)
             atajo.setContext(Qt.WindowShortcut)
             atajo.activated.connect(
-                lambda p=paso: self.zoom.setValue(self.zoom.value() + p))
-            self._atajos_zoom.append(atajo)
-        for tecla, barra, paso in (
-                (Qt.Key_Left, "h", -40), (Qt.Key_Right, "h", 40),
-                (Qt.Key_Up, "v", -40), (Qt.Key_Down, "v", 40)):
-            atajo = QShortcut(QKeySequence(tecla), self)
-            atajo.setContext(Qt.WindowShortcut)
-            atajo.activated.connect(
-                lambda b=barra, p=paso: self._mover_vista(b, p))
+                lambda p=paso: self.zoom.setValue(self.zoom.value() + p)
+            )
             self._atajos_zoom.append(atajo)
 
-    def _mover_vista(self, barra: str, paso: int) -> None:
-        vista = self.vista
-        sb = vista.horizontalScrollBar() if barra == "h" \
-            else vista.verticalScrollBar()
-        sb.setValue(sb.value() + paso)
-        vista.marcoCambiado.emit()
-        self._habilitar_guardar(False)
-        self.boton_redimensionar.setEnabled(False)
+        # Scroll: la pantalla de recorte es la mas alta (la zona de la
+        # vista son 613 px) y sin esto la ventana minima se va de la
+        # pantalla en Portatiles de 768 px.
         envolver_en_scroll(self, raiz)
 
     # --- zoom (relativo al encaje; 50 = 100 %) -------------------------
     def _rel_de_valor(self, valor: int) -> float:
         mitad = self.ZOOM_PASOS // 2
         if int(valor) <= mitad:
-            return VistaRecorte.REL_MIN + (VistaRecorte.REL_MID - VistaRecorte.REL_MIN) * (int(valor) / mitad)
-        return VistaRecorte.REL_MID + (VistaRecorte.REL_MAX - VistaRecorte.REL_MID) * ((int(valor) - mitad) / (self.ZOOM_PASOS - mitad))
+            return VistaRecorte.REL_MIN + (
+                VistaRecorte.REL_MID - VistaRecorte.REL_MIN
+            ) * (int(valor) / mitad)
+        return VistaRecorte.REL_MID + (VistaRecorte.REL_MAX - VistaRecorte.REL_MID) * (
+            (int(valor) - mitad) / (self.ZOOM_PASOS - mitad)
+        )
 
     def _habilitar_guardar(self, activo):
         self.boton_copia.setEnabled(activo)
@@ -358,8 +393,7 @@ class VentanaRecorte(QWidget):
             self.boton_redimensionar.setEnabled(False)
             self._invalidar()
             return
-        self.estado.recorte = (rect.x(), rect.y(), rect.width(),
-                               rect.height())
+        self.estado.recorte = (rect.x(), rect.y(), rect.width(), rect.height())
         self.boton_redimensionar.setEnabled(True)
         self._invalidar()
 
@@ -369,8 +403,9 @@ class VentanaRecorte(QWidget):
         x, y, ancho, alto = self.estado.recorte
         # Exporta desde la fuente (sin fondo si se quito): el zoom solo
         # era vista. Lo fuera de la imagen sale blanco.
-        previa = recorte.recorte_libre(self._fuente_recorte(), x, y, ancho,
-                                       alto, tokens.LADO_SALIDA)
+        previa = recorte.recorte_libre(
+            self._fuente_recorte(), x, y, ancho, alto, tokens.LADO_SALIDA
+        )
         self.estado.vista_previa = previa
         self.previa.set_imagen(a_pixmap(previa))
         self._habilitar_guardar(True)
@@ -382,8 +417,9 @@ class VentanaRecorte(QWidget):
         base = os.path.splitext(os.path.basename(self.estado.ruta or "imagen"))[0]
         carpeta = os.path.dirname(self.estado.ruta or "")
         sugerido = os.path.join(carpeta, f"{base}_recortada.png")
-        ruta, _ = QFileDialog.getSaveFileName(self, "Guardar copia", sugerido,
-                                              "PNG (*.png)")
+        ruta, _ = QFileDialog.getSaveFileName(
+            self, "Guardar copia", sugerido, "PNG (*.png)"
+        )
         if not ruta:
             return
         if not os.path.splitext(ruta)[1]:
@@ -395,11 +431,15 @@ class VentanaRecorte(QWidget):
         if self.estado.vista_previa is None or not self.estado.ruta:
             return
         respuesta = QMessageBox.question(
-            self, "Sobreescribir imagen",
+            self,
+            "Sobreescribir imagen",
             "¿Sobrescribir el archivo original?\nEsta acción no se puede deshacer.",
-            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No,
+        )
         if respuesta != QMessageBox.Yes:
             return
         core_imagen.guardar_rgb(self.estado.ruta, self.estado.vista_previa)
-        QMessageBox.information(self, "Sobreescribir imagen",
-                                "Imagen original sobrescrita.")
+        QMessageBox.information(
+            self, "Sobreescribir imagen", "Imagen original sobrescrita."
+        )
