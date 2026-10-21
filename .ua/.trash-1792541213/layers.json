@@ -1,0 +1,92 @@
+[
+  {
+    "id": "layer:core",
+    "name": "Nucleo de Procesamiento de Imagen",
+    "description": "Logica de imagen pura sin Qt: calculo de canales RGB/YCM, segmentacion GrabCut/OTSU, deteccion de bordes con flood fill acumulable, histograma de intensidades, recorte libre a 512 px y la entrada/salida de archivos con el dataclass EstadoImagen compartido.",
+    "nodeIds": [
+      "file:core/__init__.py",
+      "file:core/bordes.py",
+      "file:core/canales.py",
+      "file:core/histograma.py",
+      "file:core/imagen.py",
+      "file:core/recorte.py",
+      "file:core/segmentacion.py"
+    ]
+  },
+  {
+    "id": "layer:ui",
+    "name": "Capa de Presentacion PySide6",
+    "description": "Presentacion en Qt: las cinco pantallas (principal, RGB, YCM, histograma y recorte) con sus widgets, helpers y tokens de diseño, mas la hoja de estilos QSS global que fija el tema visual de la aplicacion.",
+    "nodeIds": [
+      "file:styles.qss",
+      "file:ui/__init__.py",
+      "file:ui/helpers.py",
+      "file:ui/tokens.py",
+      "file:ui/ventana_canales.py",
+      "file:ui/ventana_histograma.py",
+      "file:ui/ventana_principal.py",
+      "file:ui/ventana_recorte.py",
+      "file:ui/ventana_rgb.py",
+      "file:ui/ventana_ycm.py",
+      "file:ui/widgets.py"
+    ]
+  },
+  {
+    "id": "layer:entry",
+    "name": "Punto de Entrada y Empaquetado",
+    "description": "Arranque y build de la aplicacion de escritorio: main.py crea el QApplication, resuelve la ruta de styles.qss y muestra la ventana principal, mientras main.spec define el ejecutable Analizador en modo onedir de PyInstaller.",
+    "nodeIds": [
+      "file:main.py",
+      "file:main.spec"
+    ]
+  },
+  {
+    "id": "layer:test",
+    "name": "Suite de Pruebas y Verificacion",
+    "description": "Verificacion del proyecto: siete scripts de prueba que cubren recorte, deteccion de bordes, relleno por flood fill, widgets, overlay, boton de modo y renderizado en Qt offscreen, orquestados por suite.py junto al verificador estatico de requisitos.md.",
+    "nodeIds": [
+      "file:tests/suite.py",
+      "file:tests/test_bordes.py",
+      "file:tests/test_boton_modo.py",
+      "file:tests/test_overlay.py",
+      "file:tests/test_recorte.py",
+      "file:tests/test_relleno.py",
+      "file:tests/test_widgets.py",
+      "file:tests/verificar.py"
+    ]
+  },
+  {
+    "id": "layer:legacy",
+    "name": "Codigo Heredado en Tkinter",
+    "description": "Codigo obsoleto conservado como referencia historica: visor de imagenes con canales RGB/YCM, eliminacion de fondo con GrabCut y mascaras globales, mas la ventana de preprocesado que exporta PNG y PSD; no participa en la app PySide6 actual.",
+    "nodeIds": [
+      "file:legacy/analizador_imagenes.py",
+      "file:legacy/preprocesamiento.py"
+    ]
+  },
+  {
+    "id": "layer:config",
+    "name": "Configuracion del Entorno",
+    "description": "Manifiesto de dependencias del proyecto: requirements.txt fija las versiones minimas de PySide6-Essentials, opencv-python, numpy, pillow, psd-tools, PyInstaller y matplotlib, y es la base tanto del venv como del compilado.",
+    "nodeIds": [
+      "document:requirements.txt"
+    ]
+  },
+  {
+    "id": "layer:documentation",
+    "name": "Documentacion del Proyecto",
+    "description": "Documentacion funcional y de uso: README.md describe instalacion, ejecucion, estructura con la regla de dependencias ui/ -> core/, navegacion entre pantallas y dataset del Reto 2, y requisitos.md actua como especificacion ejecutable de 12 secciones con sus criterios de aceptacion.",
+    "nodeIds": [
+      "document:README.md",
+      "document:requisitos.md"
+    ]
+  },
+  {
+    "id": "layer:assets",
+    "name": "Recursos y Dataset de Muestra",
+    "description": "Recursos binarios de imagen del proyecto: la muestra WebP de mango entero sobre mesa de piedra que sirve de referencia visual del dataset del Reto 2 y que la aplicacion no carga en runtime.",
+    "nodeIds": [
+      "resource:frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp"
+    ]
+  }
+]

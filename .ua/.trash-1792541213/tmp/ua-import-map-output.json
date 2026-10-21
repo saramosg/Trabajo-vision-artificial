@@ -1,0 +1,96 @@
+{
+  "scriptCompleted": true,
+  "stats": {
+    "filesScanned": 34,
+    "filesWithImports": 11,
+    "totalEdges": 40
+  },
+  "failures": [],
+  "importMap": {
+    "README.md": [],
+    "core/__init__.py": [],
+    "core/bordes.py": [],
+    "core/canales.py": [],
+    "core/histograma.py": [],
+    "core/imagen.py": [],
+    "core/recorte.py": [],
+    "core/segmentacion.py": [],
+    "frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp": [],
+    "legacy/analizador_imagenes.py": [],
+    "legacy/preprocesamiento.py": [
+      "legacy/analizador_imagenes.py"
+    ],
+    "main.py": [
+      "ui/__init__.py",
+      "ui/tokens.py",
+      "ui/ventana_principal.py"
+    ],
+    "main.spec": [],
+    "requirements.txt": [],
+    "requisitos.md": [],
+    "styles.qss": [],
+    "tests/suite.py": [],
+    "tests/test_bordes.py": [
+      "core/bordes.py"
+    ],
+    "tests/test_boton_modo.py": [
+      "core/imagen.py",
+      "ui/ventana_histograma.py"
+    ],
+    "tests/test_overlay.py": [],
+    "tests/test_recorte.py": [],
+    "tests/test_relleno.py": [
+      "core/imagen.py",
+      "ui/ventana_histograma.py"
+    ],
+    "tests/test_widgets.py": [],
+    "tests/verificar.py": [],
+    "ui/__init__.py": [],
+    "ui/helpers.py": [],
+    "ui/tokens.py": [],
+    "ui/ventana_canales.py": [
+      "core/__init__.py",
+      "core/canales.py",
+      "ui/__init__.py",
+      "ui/helpers.py",
+      "ui/tokens.py",
+      "ui/widgets.py"
+    ],
+    "ui/ventana_histograma.py": [
+      "core/__init__.py",
+      "core/canales.py",
+      "core/segmentacion.py",
+      "ui/__init__.py",
+      "ui/helpers.py",
+      "ui/tokens.py",
+      "ui/widgets.py"
+    ],
+    "ui/ventana_principal.py": [
+      "core/__init__.py",
+      "core/segmentacion.py",
+      "ui/__init__.py",
+      "ui/helpers.py",
+      "ui/tokens.py",
+      "ui/ventana_histograma.py",
+      "ui/ventana_recorte.py",
+      "ui/ventana_rgb.py",
+      "ui/ventana_ycm.py",
+      "ui/widgets.py"
+    ],
+    "ui/ventana_recorte.py": [
+      "core/__init__.py",
+      "core/recorte.py",
+      "ui/__init__.py",
+      "ui/helpers.py",
+      "ui/tokens.py",
+      "ui/widgets.py"
+    ],
+    "ui/ventana_rgb.py": [
+      "ui/ventana_canales.py"
+    ],
+    "ui/ventana_ycm.py": [
+      "ui/ventana_canales.py"
+    ],
+    "ui/widgets.py": []
+  }
+}

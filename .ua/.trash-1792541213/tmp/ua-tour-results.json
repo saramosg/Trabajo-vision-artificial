@@ -1,0 +1,668 @@
+{
+  "scriptCompleted": true,
+  "entryPointCandidates": [
+    {
+      "id": "document:README.md",
+      "score": 5,
+      "name": "README.md",
+      "type": "document",
+      "summary": "README del proyecto: presenta la aplicacion de escritorio en PySide6 para analisis de imagenes (preprocesado con GrabCut/OTSU, canales RGB/YCM, histograma de color y recorte con marco fijo de 512x512) y documenta requisitos, instalacion con venv, ejecucion de main.py, el arbol de la estructura con la regla de dependencias `ui/` -> `core/`, las cinco pantallas y su navegacion, el dataset de mango del Reto 2 (738 imagenes en 5 clases), los comandos de la suite de tests y el empaquetado a .exe con PyInstaller en modo --onedir.",
+      "filePath": "README.md"
+    },
+    {
+      "id": "file:main.py",
+      "score": 5,
+      "name": "main.py",
+      "type": "file",
+      "summary": "Punto de entrada de la aplicacion de escritorio: crea el QApplication, carga la hoja de estilos global `styles.qss` resolviendo la ruta del ejecutable y muestra la ventana principal.",
+      "filePath": "main.py"
+    },
+    {
+      "id": "file:ui/ventana_principal.py",
+      "score": 3,
+      "name": "ventana_principal.py",
+      "type": "file",
+      "summary": "Define la pantalla de preprocesado (cargar imagen, elegir modelo grabcut/otsu, quitar o restaurar el fondo) y la ventana principal que centraliza las cinco pantallas en un QStackedWidget con atajos de teclado.",
+      "filePath": "ui/ventana_principal.py"
+    },
+    {
+      "id": "document:requisitos.md",
+      "score": 2,
+      "name": "requisitos.md",
+      "type": "document",
+      "summary": "Especificacion funcional ejecutable del Analizador de imagenes en 12 secciones: stack (PySide6 + QSS + OpenCV + numpy), preparacion del entorno, estructura por modulos con la regla `ui/` importa de `core/` y `core/` nunca importa de Qt, sistema de diseño con tokens en ui/tokens.py (botones 200x60, navegacion 160x48, radios pastilla, proporciones 1:1 y 467:333), las cinco pantallas (principal, RGB, YCM, histograma y recorte) con su mapa de navegacion y atajos, los modos `color`/`blanco y negro` y umbral/bordes con relleno por flood fill, la logica de `core/` (EstadoImagen compartido, segmentacion GrabCut/OTSU, canales YCM en float32, recorte a 512), el formato de guardado (PNG RGBA con mascara, PNG en escala de grises y PSD con mascara de capa) y mas de 70 criterios de aceptacion verificables. Notifica divergencia con la implementacion real: sus secciones §3.3 y §11 prohiben matplotlib y describen el histograma con QPainter, pero requirements.txt y README si lo incluyen con `plt.hist`.",
+      "filePath": "requisitos.md"
+    },
+    {
+      "id": "file:core/__init__.py",
+      "score": 2,
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Paquete `core` que agrupa la logica de imagen sin Qt; su docstring fija la regla de dependencia: `ui/` importa desde aqui, nunca al reves.",
+      "filePath": "core/__init__.py"
+    }
+  ],
+  "fanInRanking": [
+    {
+      "id": "file:core/imagen.py",
+      "fanIn": 8,
+      "name": "imagen.py"
+    },
+    {
+      "id": "file:ui/tokens.py",
+      "fanIn": 7,
+      "name": "tokens.py"
+    },
+    {
+      "id": "file:ui/ventana_histograma.py",
+      "fanIn": 6,
+      "name": "ventana_histograma.py"
+    },
+    {
+      "id": "file:ui/widgets.py",
+      "fanIn": 6,
+      "name": "widgets.py"
+    },
+    {
+      "id": "document:requisitos.md",
+      "fanIn": 5,
+      "name": "requisitos.md"
+    },
+    {
+      "id": "file:core/canales.py",
+      "fanIn": 5,
+      "name": "canales.py"
+    },
+    {
+      "id": "file:core/histograma.py",
+      "fanIn": 5,
+      "name": "histograma.py"
+    },
+    {
+      "id": "file:core/segmentacion.py",
+      "fanIn": 5,
+      "name": "segmentacion.py"
+    },
+    {
+      "id": "file:main.py",
+      "fanIn": 5,
+      "name": "main.py"
+    },
+    {
+      "id": "file:styles.qss",
+      "fanIn": 5,
+      "name": "styles.qss"
+    },
+    {
+      "id": "file:ui/__init__.py",
+      "fanIn": 5,
+      "name": "__init__.py"
+    },
+    {
+      "id": "file:ui/helpers.py",
+      "fanIn": 5,
+      "name": "helpers.py"
+    },
+    {
+      "id": "file:core/__init__.py",
+      "fanIn": 4,
+      "name": "__init__.py"
+    },
+    {
+      "id": "file:core/bordes.py",
+      "fanIn": 4,
+      "name": "bordes.py"
+    },
+    {
+      "id": "file:core/recorte.py",
+      "fanIn": 4,
+      "name": "recorte.py"
+    },
+    {
+      "id": "file:tests/test_relleno.py",
+      "fanIn": 4,
+      "name": "test_relleno.py"
+    },
+    {
+      "id": "file:main.spec",
+      "fanIn": 3,
+      "name": "main.spec"
+    },
+    {
+      "id": "file:tests/test_boton_modo.py",
+      "fanIn": 3,
+      "name": "test_boton_modo.py"
+    },
+    {
+      "id": "file:ui/ventana_canales.py",
+      "fanIn": 3,
+      "name": "ventana_canales.py"
+    },
+    {
+      "id": "file:ui/ventana_principal.py",
+      "fanIn": 3,
+      "name": "ventana_principal.py"
+    }
+  ],
+  "fanOutRanking": [
+    {
+      "id": "document:README.md",
+      "fanOut": 20,
+      "name": "README.md"
+    },
+    {
+      "id": "document:requisitos.md",
+      "fanOut": 17,
+      "name": "requisitos.md"
+    },
+    {
+      "id": "file:ui/ventana_histograma.py",
+      "fanOut": 13,
+      "name": "ventana_histograma.py"
+    },
+    {
+      "id": "file:ui/ventana_principal.py",
+      "fanOut": 11,
+      "name": "ventana_principal.py"
+    },
+    {
+      "id": "document:requirements.txt",
+      "fanOut": 9,
+      "name": "requirements.txt"
+    },
+    {
+      "id": "file:tests/suite.py",
+      "fanOut": 7,
+      "name": "suite.py"
+    },
+    {
+      "id": "file:ui/ventana_recorte.py",
+      "fanOut": 7,
+      "name": "ventana_recorte.py"
+    },
+    {
+      "id": "file:ui/ventana_canales.py",
+      "fanOut": 6,
+      "name": "ventana_canales.py"
+    },
+    {
+      "id": "file:main.py",
+      "fanOut": 4,
+      "name": "main.py"
+    },
+    {
+      "id": "file:main.spec",
+      "fanOut": 3,
+      "name": "main.spec"
+    },
+    {
+      "id": "file:core/bordes.py",
+      "fanOut": 2,
+      "name": "bordes.py"
+    },
+    {
+      "id": "file:core/imagen.py",
+      "fanOut": 2,
+      "name": "imagen.py"
+    },
+    {
+      "id": "file:tests/test_boton_modo.py",
+      "fanOut": 2,
+      "name": "test_boton_modo.py"
+    },
+    {
+      "id": "file:tests/test_relleno.py",
+      "fanOut": 2,
+      "name": "test_relleno.py"
+    },
+    {
+      "id": "file:core/recorte.py",
+      "fanOut": 1,
+      "name": "recorte.py"
+    },
+    {
+      "id": "file:legacy/preprocesamiento.py",
+      "fanOut": 1,
+      "name": "preprocesamiento.py"
+    },
+    {
+      "id": "file:styles.qss",
+      "fanOut": 1,
+      "name": "styles.qss"
+    },
+    {
+      "id": "file:tests/test_bordes.py",
+      "fanOut": 1,
+      "name": "test_bordes.py"
+    },
+    {
+      "id": "file:tests/test_overlay.py",
+      "fanOut": 1,
+      "name": "test_overlay.py"
+    },
+    {
+      "id": "file:tests/test_recorte.py",
+      "fanOut": 1,
+      "name": "test_recorte.py"
+    }
+  ],
+  "bfsTraversal": {
+    "startNode": "file:main.py",
+    "order": [
+      "file:main.py",
+      "file:ui/__init__.py",
+      "file:ui/tokens.py",
+      "file:ui/ventana_principal.py",
+      "file:core/__init__.py",
+      "file:core/segmentacion.py",
+      "file:ui/helpers.py",
+      "file:ui/ventana_histograma.py",
+      "file:ui/ventana_recorte.py",
+      "file:ui/ventana_rgb.py",
+      "file:ui/ventana_ycm.py",
+      "file:ui/widgets.py",
+      "file:core/imagen.py",
+      "file:core/canales.py",
+      "file:core/histograma.py",
+      "file:core/bordes.py",
+      "file:core/recorte.py",
+      "file:ui/ventana_canales.py"
+    ],
+    "depthMap": {
+      "file:main.py": 0,
+      "file:ui/__init__.py": 1,
+      "file:ui/tokens.py": 1,
+      "file:ui/ventana_principal.py": 1,
+      "file:core/__init__.py": 2,
+      "file:core/segmentacion.py": 2,
+      "file:ui/helpers.py": 2,
+      "file:ui/ventana_histograma.py": 2,
+      "file:ui/ventana_recorte.py": 2,
+      "file:ui/ventana_rgb.py": 2,
+      "file:ui/ventana_ycm.py": 2,
+      "file:ui/widgets.py": 2,
+      "file:core/imagen.py": 2,
+      "file:core/canales.py": 3,
+      "file:core/histograma.py": 3,
+      "file:core/bordes.py": 3,
+      "file:core/recorte.py": 3,
+      "file:ui/ventana_canales.py": 3
+    },
+    "byDepth": {
+      "0": [
+        "file:main.py"
+      ],
+      "1": [
+        "file:ui/__init__.py",
+        "file:ui/tokens.py",
+        "file:ui/ventana_principal.py"
+      ],
+      "2": [
+        "file:core/__init__.py",
+        "file:core/segmentacion.py",
+        "file:ui/helpers.py",
+        "file:ui/ventana_histograma.py",
+        "file:ui/ventana_recorte.py",
+        "file:ui/ventana_rgb.py",
+        "file:ui/ventana_ycm.py",
+        "file:ui/widgets.py",
+        "file:core/imagen.py"
+      ],
+      "3": [
+        "file:core/canales.py",
+        "file:core/histograma.py",
+        "file:core/bordes.py",
+        "file:core/recorte.py",
+        "file:ui/ventana_canales.py"
+      ]
+    }
+  },
+  "nonCodeFiles": {
+    "documentation": [
+      {
+        "id": "document:README.md",
+        "name": "README.md",
+        "type": "document",
+        "summary": "README del proyecto: presenta la aplicacion de escritorio en PySide6 para analisis de imagenes (preprocesado con GrabCut/OTSU, canales RGB/YCM, histograma de color y recorte con marco fijo de 512x512) y documenta requisitos, instalacion con venv, ejecucion de main.py, el arbol de la estructura con la regla de dependencias `ui/` -> `core/`, las cinco pantallas y su navegacion, el dataset de mango del Reto 2 (738 imagenes en 5 clases), los comandos de la suite de tests y el empaquetado a .exe con PyInstaller en modo --onedir.",
+        "filePath": "README.md"
+      },
+      {
+        "id": "document:requirements.txt",
+        "name": "requirements.txt",
+        "type": "document",
+        "summary": "Lista de dependencias Python del proyecto con versiones minimas fijadas: PySide6-Essentials (interfaz Qt 6), opencv-python (GrabCut, OTSU, morfologia y contornos), numpy (arrays de pixeles), pillow (E/S de imagen), psd-tools (PSD con mascara de capa), PyInstaller (empaquetado a .exe) y matplotlib (histograma con plt). Se instala con `pip install -r requirements.txt` y es la base tanto del entorno virtual como del compilado.",
+        "filePath": "requirements.txt"
+      },
+      {
+        "id": "document:requisitos.md",
+        "name": "requisitos.md",
+        "type": "document",
+        "summary": "Especificacion funcional ejecutable del Analizador de imagenes en 12 secciones: stack (PySide6 + QSS + OpenCV + numpy), preparacion del entorno, estructura por modulos con la regla `ui/` importa de `core/` y `core/` nunca importa de Qt, sistema de diseño con tokens en ui/tokens.py (botones 200x60, navegacion 160x48, radios pastilla, proporciones 1:1 y 467:333), las cinco pantallas (principal, RGB, YCM, histograma y recorte) con su mapa de navegacion y atajos, los modos `color`/`blanco y negro` y umbral/bordes con relleno por flood fill, la logica de `core/` (EstadoImagen compartido, segmentacion GrabCut/OTSU, canales YCM en float32, recorte a 512), el formato de guardado (PNG RGBA con mascara, PNG en escala de grises y PSD con mascara de capa) y mas de 70 criterios de aceptacion verificables. Notifica divergencia con la implementacion real: sus secciones §3.3 y §11 prohiben matplotlib y describen el histograma con QPainter, pero requirements.txt y README si lo incluyen con `plt.hist`.",
+        "filePath": "requisitos.md"
+      }
+    ],
+    "infrastructure": [
+      {
+        "id": "resource:frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp",
+        "name": "174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp",
+        "type": "resource",
+        "summary": "Imagen WebP binaria (32 KB, contenedor RIFF con formato extendido VP8X) de mangos enteros sobre una mesa de piedra oscura; es una foto de referencia del dataset del Reto 2, no codigo ni un recurso que la aplicacion cargue en runtime.",
+        "filePath": "frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp"
+      }
+    ],
+    "data": [],
+    "config": []
+  },
+  "clusters": [
+    {
+      "nodes": [
+        "document:README.md",
+        "document:requisitos.md",
+        "file:main.py",
+        "file:styles.qss",
+        "file:ui/tokens.py"
+      ],
+      "edgeCount": 11
+    },
+    {
+      "nodes": [
+        "file:core/bordes.py",
+        "file:core/imagen.py",
+        "file:tests/test_boton_modo.py",
+        "file:tests/test_relleno.py",
+        "file:ui/ventana_histograma.py"
+      ],
+      "edgeCount": 11
+    },
+    {
+      "nodes": [
+        "file:core/bordes.py",
+        "file:core/imagen.py",
+        "file:tests/test_boton_modo.py",
+        "file:tests/test_relleno.py",
+        "file:ui/ventana_histograma.py"
+      ],
+      "edgeCount": 11
+    },
+    {
+      "nodes": [
+        "file:core/imagen.py",
+        "file:tests/suite.py",
+        "file:tests/test_boton_modo.py",
+        "file:tests/test_relleno.py",
+        "file:ui/ventana_histograma.py"
+      ],
+      "edgeCount": 11
+    },
+    {
+      "nodes": [
+        "file:core/imagen.py",
+        "file:tests/suite.py",
+        "file:tests/test_boton_modo.py",
+        "file:tests/test_relleno.py",
+        "file:ui/ventana_histograma.py"
+      ],
+      "edgeCount": 11
+    },
+    {
+      "nodes": [
+        "file:core/bordes.py",
+        "file:tests/test_bordes.py"
+      ],
+      "edgeCount": 2
+    }
+  ],
+  "layers": {
+    "count": 8,
+    "list": [
+      {
+        "id": "layer:core",
+        "name": "Nucleo de Procesamiento de Imagen",
+        "description": "Logica de imagen pura sin Qt: calculo de canales RGB/YCM, segmentacion GrabCut/OTSU, deteccion de bordes con flood fill acumulable, histograma de intensidades, recorte libre a 512 px y la entrada/salida de archivos con el dataclass EstadoImagen compartido."
+      },
+      {
+        "id": "layer:ui",
+        "name": "Capa de Presentacion PySide6",
+        "description": "Presentacion en Qt: las cinco pantallas (principal, RGB, YCM, histograma y recorte) con sus widgets, helpers y tokens de diseño, mas la hoja de estilos QSS global que fija el tema visual de la aplicacion."
+      },
+      {
+        "id": "layer:entry",
+        "name": "Punto de Entrada y Empaquetado",
+        "description": "Arranque y build de la aplicacion de escritorio: main.py crea el QApplication, resuelve la ruta de styles.qss y muestra la ventana principal, mientras main.spec define el ejecutable Analizador en modo onedir de PyInstaller."
+      },
+      {
+        "id": "layer:test",
+        "name": "Suite de Pruebas y Verificacion",
+        "description": "Verificacion del proyecto: siete scripts de prueba que cubren recorte, deteccion de bordes, relleno por flood fill, widgets, overlay, boton de modo y renderizado en Qt offscreen, orquestados por suite.py junto al verificador estatico de requisitos.md."
+      },
+      {
+        "id": "layer:legacy",
+        "name": "Codigo Heredado en Tkinter",
+        "description": "Codigo obsoleto conservado como referencia historica: visor de imagenes con canales RGB/YCM, eliminacion de fondo con GrabCut y mascaras globales, mas la ventana de preprocesado que exporta PNG y PSD; no participa en la app PySide6 actual."
+      },
+      {
+        "id": "layer:config",
+        "name": "Configuracion del Entorno",
+        "description": "Manifiesto de dependencias del proyecto: requirements.txt fija las versiones minimas de PySide6-Essentials, opencv-python, numpy, pillow, psd-tools, PyInstaller y matplotlib, y es la base tanto del venv como del compilado."
+      },
+      {
+        "id": "layer:documentation",
+        "name": "Documentacion del Proyecto",
+        "description": "Documentacion funcional y de uso: README.md describe instalacion, ejecucion, estructura con la regla de dependencias ui/ -> core/, navegacion entre pantallas y dataset del Reto 2, y requisitos.md actua como especificacion ejecutable de 12 secciones con sus criterios de aceptacion."
+      },
+      {
+        "id": "layer:assets",
+        "name": "Recursos y Dataset de Muestra",
+        "description": "Recursos binarios de imagen del proyecto: la muestra WebP de mango entero sobre mesa de piedra que sirve de referencia visual del dataset del Reto 2 y que la aplicacion no carga en runtime."
+      }
+    ]
+  },
+  "nodeSummaryIndex": {
+    "file:core/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Paquete `core` que agrupa la logica de imagen sin Qt; su docstring fija la regla de dependencia: `ui/` importa desde aqui, nunca al reves.",
+      "filePath": "core/__init__.py"
+    },
+    "file:core/recorte.py": {
+      "name": "recorte.py",
+      "type": "file",
+      "summary": "Implementa el recorte libre: remuestrea una ventana arbitraria de la imagen a un lienzo cuadrado de lado fijo, rellenando en blanco la parte que queda fuera.",
+      "filePath": "core/recorte.py"
+    },
+    "file:main.py": {
+      "name": "main.py",
+      "type": "file",
+      "summary": "Punto de entrada de la aplicacion de escritorio: crea el QApplication, carga la hoja de estilos global `styles.qss` resolviendo la ruta del ejecutable y muestra la ventana principal.",
+      "filePath": "main.py"
+    },
+    "file:ui/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Paquete `ui` que agrupa pantallas, widgets y decisiones de diseno, dejando toda la logica de imagen en `core/`.",
+      "filePath": "ui/__init__.py"
+    },
+    "file:ui/tokens.py": {
+      "name": "tokens.py",
+      "type": "file",
+      "summary": "Fuente unica de verdad de los tokens de diseno (colores, medidas, tipografias, radios y proporciones) que alimentan el layout de todas las pantallas.",
+      "filePath": "ui/tokens.py"
+    },
+    "file:ui/ventana_principal.py": {
+      "name": "ventana_principal.py",
+      "type": "file",
+      "summary": "Define la pantalla de preprocesado (cargar imagen, elegir modelo grabcut/otsu, quitar o restaurar el fondo) y la ventana principal que centraliza las cinco pantallas en un QStackedWidget con atajos de teclado.",
+      "filePath": "ui/ventana_principal.py"
+    },
+    "file:ui/ventana_recorte.py": {
+      "name": "ventana_recorte.py",
+      "type": "file",
+      "summary": "Pantalla de recorte con marco fijo en pantalla: la imagen se escala con un slider y se panea por arrastre, y `recorte_libre` exporta el encuadre a 512 px con relleno blanco habilitando despues el guardado.",
+      "filePath": "ui/ventana_recorte.py"
+    },
+    "file:ui/widgets.py": {
+      "name": "widgets.py",
+      "type": "file",
+      "summary": "Widgets reutilizables de imagen: conversion de arrays numpy a QPixmap y una etiqueta que encaja la foto en su cuadro sin deformarla.",
+      "filePath": "ui/widgets.py"
+    },
+    "file:core/canales.py": {
+      "name": "canales.py",
+      "type": "file",
+      "summary": "Modulo de calculo puro (sin UI) que extrae los componentes 2D de los canales RGB e YCM de una imagen y los convierte a los modos de visualizacion 'color' y 'blanco y negro', ademas de etiquetar el canal activo en espanol.",
+      "filePath": "core/canales.py"
+    },
+    "file:ui/helpers.py": {
+      "name": "helpers.py",
+      "type": "file",
+      "summary": "Ayudas compartidas por las pantallas de la aplicacion: un constructor de QPushButton con tamano fijo de tokens y un envoltorio que traslada el contenido de un layout raiz a un QScrollArea.",
+      "filePath": "ui/helpers.py"
+    },
+    "file:ui/ventana_canales.py": {
+      "name": "ventana_canales.py",
+      "type": "file",
+      "summary": "Implementa la pantalla base de canales: tres lienzos clicables (uno por componente del espacio), selector de modo color/blanco y negro, acceso al histograma y boton REGRESAR, alimentandose siempre de la imagen original.",
+      "filePath": "ui/ventana_canales.py"
+    },
+    "file:ui/ventana_rgb.py": {
+      "name": "ventana_rgb.py",
+      "type": "file",
+      "summary": "Pantalla concreta de canales RGB: subclase de VentanaCanales que fija el espacio 'RGB' con las letras R, G y B.",
+      "filePath": "ui/ventana_rgb.py"
+    },
+    "file:ui/ventana_ycm.py": {
+      "name": "ventana_ycm.py",
+      "type": "file",
+      "summary": "Pantalla concreta de canales YCM: subclase de VentanaCanales que fija el espacio 'YCM' con las letras Y, C y M.",
+      "filePath": "ui/ventana_ycm.py"
+    },
+    "file:core/imagen.py": {
+      "name": "imagen.py",
+      "type": "file",
+      "summary": "Modulo de entrada/salida de imagenes: carga RGB de 8 bits, guardado en PNG/RGB/PSD y definicion del dataclass EstadoImagen que las cinco pantallas comparten por referencia.",
+      "filePath": "core/imagen.py"
+    },
+    "file:core/segmentacion.py": {
+      "name": "segmentacion.py",
+      "type": "file",
+      "summary": "Motor de segmentacion del objeto: implementa los modelos grabcut (recorte al 10 % de los bordes sobre copia reducida) y otsu (umbral por canal unido con OR e invertido), mas la limpieza de mascara por flood fill y el contorno de 1 px.",
+      "filePath": "core/segmentacion.py"
+    },
+    "file:tests/test_boton_modo.py": {
+      "name": "test_boton_modo.py",
+      "type": "file",
+      "summary": "Suite de pruebas del boton de modo de la pantalla de histograma, ejecutada en Qt offscreen contra la VentanaHistograma real: verifica la disposicion del boton junto a REGRESAR, la alternancia entre los modos umbral y bordes y la restauracion del modo al entrar.",
+      "filePath": "tests/test_boton_modo.py"
+    },
+    "file:tests/test_relleno.py": {
+      "name": "test_relleno.py",
+      "type": "file",
+      "summary": "Suite de pruebas del relleno por clics sobre el mapa de bordes en modo bordes, en Qt offscreen: valida el aviso de fondo abierto, la acumulacion con OR de la mascara, el vaciado del relleno y el mapeo de coordenadas widget-imagen con barras de letterbox.",
+      "filePath": "tests/test_relleno.py"
+    },
+    "file:ui/ventana_histograma.py": {
+      "name": "ventana_histograma.py",
+      "type": "file",
+      "summary": "Pantalla de histograma de color con dos modos de analisis: umbral (rango del canal activo, limpiar/quitar fondo y guardado) y bordes (deteccion con canny, sobel o laplaciano y relleno por clics que acumula en la mascara compartida).",
+      "filePath": "ui/ventana_histograma.py"
+    },
+    "document:README.md": {
+      "name": "README.md",
+      "type": "document",
+      "summary": "README del proyecto: presenta la aplicacion de escritorio en PySide6 para analisis de imagenes (preprocesado con GrabCut/OTSU, canales RGB/YCM, histograma de color y recorte con marco fijo de 512x512) y documenta requisitos, instalacion con venv, ejecucion de main.py, el arbol de la estructura con la regla de dependencias `ui/` -> `core/`, las cinco pantallas y su navegacion, el dataset de mango del Reto 2 (738 imagenes en 5 clases), los comandos de la suite de tests y el empaquetado a .exe con PyInstaller en modo --onedir.",
+      "filePath": "README.md"
+    },
+    "document:requirements.txt": {
+      "name": "requirements.txt",
+      "type": "document",
+      "summary": "Lista de dependencias Python del proyecto con versiones minimas fijadas: PySide6-Essentials (interfaz Qt 6), opencv-python (GrabCut, OTSU, morfologia y contornos), numpy (arrays de pixeles), pillow (E/S de imagen), psd-tools (PSD con mascara de capa), PyInstaller (empaquetado a .exe) y matplotlib (histograma con plt). Se instala con `pip install -r requirements.txt` y es la base tanto del entorno virtual como del compilado.",
+      "filePath": "requirements.txt"
+    },
+    "document:requisitos.md": {
+      "name": "requisitos.md",
+      "type": "document",
+      "summary": "Especificacion funcional ejecutable del Analizador de imagenes en 12 secciones: stack (PySide6 + QSS + OpenCV + numpy), preparacion del entorno, estructura por modulos con la regla `ui/` importa de `core/` y `core/` nunca importa de Qt, sistema de diseño con tokens en ui/tokens.py (botones 200x60, navegacion 160x48, radios pastilla, proporciones 1:1 y 467:333), las cinco pantallas (principal, RGB, YCM, histograma y recorte) con su mapa de navegacion y atajos, los modos `color`/`blanco y negro` y umbral/bordes con relleno por flood fill, la logica de `core/` (EstadoImagen compartido, segmentacion GrabCut/OTSU, canales YCM en float32, recorte a 512), el formato de guardado (PNG RGBA con mascara, PNG en escala de grises y PSD con mascara de capa) y mas de 70 criterios de aceptacion verificables. Notifica divergencia con la implementacion real: sus secciones §3.3 y §11 prohiben matplotlib y describen el histograma con QPainter, pero requirements.txt y README si lo incluyen con `plt.hist`.",
+      "filePath": "requisitos.md"
+    },
+    "file:core/bordes.py": {
+      "name": "bordes.py",
+      "type": "file",
+      "summary": "Modulo de NumPy/OpenCV con la deteccion de bordes del canal activo (Canny, Sobel y Laplaciano) y el relleno por flood fill cuyas paredes son los bordes detectados, acumulable con OR sobre la mascara.",
+      "filePath": "core/bordes.py"
+    },
+    "file:core/histograma.py": {
+      "name": "histograma.py",
+      "type": "file",
+      "summary": "Utilidades de histograma de intensidades: conteo de 256 bins por canal, generacion del PNG del histograma con matplotlib (backend Agg) y construccion de mascaras binarias por rango de valores.",
+      "filePath": "core/histograma.py"
+    },
+    "resource:frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp": {
+      "name": "174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp",
+      "type": "resource",
+      "summary": "Imagen WebP binaria (32 KB, contenedor RIFF con formato extendido VP8X) de mangos enteros sobre una mesa de piedra oscura; es una foto de referencia del dataset del Reto 2, no codigo ni un recurso que la aplicacion cargue en runtime.",
+      "filePath": "frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp"
+    },
+    "file:legacy/analizador_imagenes.py": {
+      "name": "analizador_imagenes.py",
+      "type": "file",
+      "summary": "Codigo heredado en tkinter, ya no usado por la app actual en PySide6: ventana con visor de imagenes, canales RGB/YCM, eliminacion de fondo con GrabCut y mascaras globales.",
+      "filePath": "legacy/analizador_imagenes.py"
+    },
+    "file:legacy/preprocesamiento.py": {
+      "name": "preprocesamiento.py",
+      "type": "file",
+      "summary": "Codigo heredado en tkinter, no usado por la app actual: ventana secundaria de preprocesado que quita el fondo con GrabCut o metodo global y exporta el resultado en PNG o en PSD con la mascara como capa.",
+      "filePath": "legacy/preprocesamiento.py"
+    },
+    "file:main.spec": {
+      "name": "main.spec",
+      "type": "file",
+      "summary": "Archivo de PyInstaller que empaqueta la aplicacion de escritorio en un ejecutable `Analizador` (onedir), incluyendo `styles.qss`, los assets, los hidden imports de `core/` y `ui/` y los datos de psd-tools y matplotlib.",
+      "filePath": "main.spec"
+    },
+    "file:styles.qss": {
+      "name": "styles.qss",
+      "type": "file",
+      "summary": "Hoja de estilos global de Qt (QSS) que define la tipografia Segoe UI, los botones redondeados en pastilla (normal, de navegacion y primario en azul de acento), las zonas de imagen y los deslizadores del histograma y del zoom.",
+      "filePath": "styles.qss"
+    },
+    "file:tests/suite.py": {
+      "name": "suite.py",
+      "type": "file",
+      "summary": "Orquestador de la suite de verificacion: ejecuta en subproceso los 7 scripts de prueba (coherencia del documento, recorte, widgets, overlay, boton de modo, bordes y relleno) y devuelve codigo de salida 1 si alguna falla.",
+      "filePath": "tests/suite.py"
+    },
+    "file:tests/test_bordes.py": {
+      "name": "test_bordes.py",
+      "type": "file",
+      "summary": "Suite de `core/bordes.py` sin Qt (solo NumPy + OpenCV): valida los tres metodos de deteccion sobre un cuadrado ideal y los siete casos del relleno por barrera (interior, hueco sellado, acumulacion con OR, clic repetido, semilla sobre pared, mascara previa y fondo abierto).",
+      "filePath": "tests/test_bordes.py"
+    },
+    "file:tests/test_overlay.py": {
+      "name": "test_overlay.py",
+      "type": "file",
+      "summary": "Suite offscreen que extrae del documento los helpers `x_de_marcador` y `dibujar_marcadores`, los ejecuta en PySide6 real y compara el overlay con la posicion que Qt calcula para el handle del slider.",
+      "filePath": "tests/test_overlay.py"
+    },
+    "file:tests/test_recorte.py": {
+      "name": "test_recorte.py",
+      "type": "file",
+      "summary": "Suite de `core/recorte.py` ejecutada sin PySide6 ni ventana: extrae el bloque real del documento y comprueba que `recortar`, `escalar` y `aplicar_recorte` respetan el contrato (lado de salida 512, recorte contiguo, proporcion conservada).",
+      "filePath": "tests/test_recorte.py"
+    },
+    "file:tests/test_widgets.py": {
+      "name": "test_widgets.py",
+      "type": "file",
+      "summary": "Suite offscreen que extrae del documento los widgets de recorte y de marcadores y los ejecuta de verdad en PySide6: verifica la ubicacion de las clases de Qt, el minimumSize del selector, el velo del recorte, el marco vacio y el overlay.",
+      "filePath": "tests/test_widgets.py"
+    },
+    "file:tests/verificar.py": {
+      "name": "verificar.py",
+      "type": "file",
+      "summary": "Verificador estatico de `requisitos.md`: comprueba que los tokens existan y no esten huerfanos, que todos los bloques de Python parseen, que las firmas y el QSS del documento sean coherentes y que los helpers requeridos esten definidos.",
+      "filePath": "tests/verificar.py"
+    }
+  },
+  "totalNodes": 34,
+  "totalEdges": 285
+}

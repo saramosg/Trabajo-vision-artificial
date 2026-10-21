@@ -1,0 +1,733 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "louvain",
+  "totalFiles": 34,
+  "totalBatches": 5,
+  "exportsByPath": {
+    "core/__init__.py": [],
+    "core/bordes.py": [
+      "detectar_bordes",
+      "rellenar_bordes"
+    ],
+    "core/canales.py": [
+      "canal_rgb",
+      "componente_ycm",
+      "componente",
+      "modo_color",
+      "modo_blanco_y_negro",
+      "aplicar_modo",
+      "etiqueta_canal"
+    ],
+    "core/histograma.py": [
+      "histograma_canal",
+      "figura_histograma",
+      "mascara_por_rango"
+    ],
+    "core/imagen.py": [
+      "EstadoImagen",
+      "cargar_imagen",
+      "guardar_imagen",
+      "guardar_rgb",
+      "guardar_mascara",
+      "guardar_psd"
+    ],
+    "core/recorte.py": [
+      "recorte_libre"
+    ],
+    "core/segmentacion.py": [
+      "_a_escala",
+      "_devolver_a_escala",
+      "_grabcut",
+      "_otsu",
+      "segmentar",
+      "limpiar_mascara",
+      "contorno"
+    ],
+    "frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp": [],
+    "legacy/analizador_imagenes.py": [
+      "AnalizadorApp"
+    ],
+    "legacy/preprocesamiento.py": [
+      "PreprocesamientoApp"
+    ],
+    "main.py": [
+      "main"
+    ],
+    "main.spec": [],
+    "styles.qss": [],
+    "tests/suite.py": [],
+    "tests/test_bordes.py": [
+      "check",
+      "_cuadro",
+      "_anillo"
+    ],
+    "tests/test_boton_modo.py": [
+      "check",
+      "_VentanaFalsa"
+    ],
+    "tests/test_overlay.py": [
+      "check",
+      "Overlay",
+      "cuenta"
+    ],
+    "tests/test_recorte.py": [
+      "check"
+    ],
+    "tests/test_relleno.py": [
+      "check",
+      "_VentanaFalsa"
+    ],
+    "tests/test_widgets.py": [
+      "check"
+    ],
+    "tests/verificar.py": [
+      "check",
+      "_norm",
+      "en_arbol"
+    ],
+    "ui/__init__.py": [],
+    "ui/helpers.py": [
+      "boton",
+      "envolver_en_scroll"
+    ],
+    "ui/tokens.py": [],
+    "ui/ventana_canales.py": [
+      "LienzoCanal",
+      "VentanaCanales"
+    ],
+    "ui/ventana_histograma.py": [
+      "ZonaBordes",
+      "VentanaHistograma"
+    ],
+    "ui/ventana_principal.py": [
+      "ZonaImagen",
+      "PantallaPreprocesado",
+      "VentanaPrincipal"
+    ],
+    "ui/ventana_recorte.py": [
+      "VistaRecorte",
+      "VentanaRecorte"
+    ],
+    "ui/ventana_rgb.py": [
+      "VentanaRGB"
+    ],
+    "ui/ventana_ycm.py": [
+      "VentanaYCM"
+    ],
+    "ui/widgets.py": [
+      "a_pixmap",
+      "ProporcionImagen"
+    ]
+  },
+  "batches": [
+    {
+      "batchIndex": 1,
+      "files": [
+        {
+          "path": "core/__init__.py",
+          "language": "python",
+          "sizeLines": 4,
+          "fileCategory": "code"
+        },
+        {
+          "path": "core/recorte.py",
+          "language": "python",
+          "sizeLines": 35,
+          "fileCategory": "code"
+        },
+        {
+          "path": "main.py",
+          "language": "python",
+          "sizeLines": 35,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/__init__.py",
+          "language": "python",
+          "sizeLines": 4,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/tokens.py",
+          "language": "python",
+          "sizeLines": 71,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/ventana_principal.py",
+          "language": "python",
+          "sizeLines": 251,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/ventana_recorte.py",
+          "language": "python",
+          "sizeLines": 405,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/widgets.py",
+          "language": "python",
+          "sizeLines": 86,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "core/__init__.py": [],
+        "core/recorte.py": [],
+        "main.py": [
+          "ui/__init__.py",
+          "ui/tokens.py",
+          "ui/ventana_principal.py"
+        ],
+        "ui/__init__.py": [],
+        "ui/tokens.py": [],
+        "ui/ventana_principal.py": [
+          "core/__init__.py",
+          "core/segmentacion.py",
+          "ui/__init__.py",
+          "ui/helpers.py",
+          "ui/tokens.py",
+          "ui/ventana_histograma.py",
+          "ui/ventana_recorte.py",
+          "ui/ventana_rgb.py",
+          "ui/ventana_ycm.py",
+          "ui/widgets.py"
+        ],
+        "ui/ventana_recorte.py": [
+          "core/__init__.py",
+          "core/recorte.py",
+          "ui/__init__.py",
+          "ui/helpers.py",
+          "ui/tokens.py",
+          "ui/widgets.py"
+        ],
+        "ui/widgets.py": []
+      },
+      "neighborMap": {
+        "core/__init__.py": [
+          {
+            "path": "ui/ventana_canales.py",
+            "batchIndex": 2,
+            "symbols": [
+              "LienzoCanal",
+              "VentanaCanales"
+            ]
+          },
+          {
+            "path": "ui/ventana_histograma.py",
+            "batchIndex": 3,
+            "symbols": [
+              "ZonaBordes",
+              "VentanaHistograma"
+            ]
+          }
+        ],
+        "ui/__init__.py": [
+          {
+            "path": "ui/ventana_canales.py",
+            "batchIndex": 2,
+            "symbols": [
+              "LienzoCanal",
+              "VentanaCanales"
+            ]
+          },
+          {
+            "path": "ui/ventana_histograma.py",
+            "batchIndex": 3,
+            "symbols": [
+              "ZonaBordes",
+              "VentanaHistograma"
+            ]
+          }
+        ],
+        "ui/tokens.py": [
+          {
+            "path": "ui/ventana_canales.py",
+            "batchIndex": 2,
+            "symbols": [
+              "LienzoCanal",
+              "VentanaCanales"
+            ]
+          },
+          {
+            "path": "ui/ventana_histograma.py",
+            "batchIndex": 3,
+            "symbols": [
+              "ZonaBordes",
+              "VentanaHistograma"
+            ]
+          }
+        ],
+        "ui/ventana_principal.py": [
+          {
+            "path": "core/segmentacion.py",
+            "batchIndex": 3,
+            "symbols": [
+              "_a_escala",
+              "_devolver_a_escala",
+              "_grabcut",
+              "_otsu",
+              "segmentar",
+              "limpiar_mascara",
+              "contorno"
+            ]
+          },
+          {
+            "path": "ui/helpers.py",
+            "batchIndex": 2,
+            "symbols": [
+              "boton",
+              "envolver_en_scroll"
+            ]
+          },
+          {
+            "path": "ui/ventana_histograma.py",
+            "batchIndex": 3,
+            "symbols": [
+              "ZonaBordes",
+              "VentanaHistograma"
+            ]
+          },
+          {
+            "path": "ui/ventana_rgb.py",
+            "batchIndex": 2,
+            "symbols": [
+              "VentanaRGB"
+            ]
+          },
+          {
+            "path": "ui/ventana_ycm.py",
+            "batchIndex": 2,
+            "symbols": [
+              "VentanaYCM"
+            ]
+          }
+        ],
+        "ui/ventana_recorte.py": [
+          {
+            "path": "ui/helpers.py",
+            "batchIndex": 2,
+            "symbols": [
+              "boton",
+              "envolver_en_scroll"
+            ]
+          }
+        ],
+        "ui/widgets.py": [
+          {
+            "path": "ui/ventana_canales.py",
+            "batchIndex": 2,
+            "symbols": [
+              "LienzoCanal",
+              "VentanaCanales"
+            ]
+          },
+          {
+            "path": "ui/ventana_histograma.py",
+            "batchIndex": 3,
+            "symbols": [
+              "ZonaBordes",
+              "VentanaHistograma"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 2,
+      "files": [
+        {
+          "path": "core/canales.py",
+          "language": "python",
+          "sizeLines": 102,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/helpers.py",
+          "language": "python",
+          "sizeLines": 35,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/ventana_canales.py",
+          "language": "python",
+          "sizeLines": 143,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/ventana_rgb.py",
+          "language": "python",
+          "sizeLines": 7,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/ventana_ycm.py",
+          "language": "python",
+          "sizeLines": 7,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "core/canales.py": [],
+        "ui/helpers.py": [],
+        "ui/ventana_canales.py": [
+          "core/__init__.py",
+          "core/canales.py",
+          "ui/__init__.py",
+          "ui/helpers.py",
+          "ui/tokens.py",
+          "ui/widgets.py"
+        ],
+        "ui/ventana_rgb.py": [
+          "ui/ventana_canales.py"
+        ],
+        "ui/ventana_ycm.py": [
+          "ui/ventana_canales.py"
+        ]
+      },
+      "neighborMap": {
+        "core/canales.py": [
+          {
+            "path": "ui/ventana_histograma.py",
+            "batchIndex": 3,
+            "symbols": [
+              "ZonaBordes",
+              "VentanaHistograma"
+            ]
+          }
+        ],
+        "ui/helpers.py": [
+          {
+            "path": "ui/ventana_histograma.py",
+            "batchIndex": 3,
+            "symbols": [
+              "ZonaBordes",
+              "VentanaHistograma"
+            ]
+          },
+          {
+            "path": "ui/ventana_principal.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ZonaImagen",
+              "PantallaPreprocesado",
+              "VentanaPrincipal"
+            ]
+          },
+          {
+            "path": "ui/ventana_recorte.py",
+            "batchIndex": 1,
+            "symbols": [
+              "VistaRecorte",
+              "VentanaRecorte"
+            ]
+          }
+        ],
+        "ui/ventana_canales.py": [
+          {
+            "path": "core/__init__.py",
+            "batchIndex": 1,
+            "symbols": []
+          },
+          {
+            "path": "ui/__init__.py",
+            "batchIndex": 1,
+            "symbols": []
+          },
+          {
+            "path": "ui/tokens.py",
+            "batchIndex": 1,
+            "symbols": []
+          },
+          {
+            "path": "ui/widgets.py",
+            "batchIndex": 1,
+            "symbols": [
+              "a_pixmap",
+              "ProporcionImagen"
+            ]
+          }
+        ],
+        "ui/ventana_rgb.py": [
+          {
+            "path": "ui/ventana_principal.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ZonaImagen",
+              "PantallaPreprocesado",
+              "VentanaPrincipal"
+            ]
+          }
+        ],
+        "ui/ventana_ycm.py": [
+          {
+            "path": "ui/ventana_principal.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ZonaImagen",
+              "PantallaPreprocesado",
+              "VentanaPrincipal"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 3,
+      "files": [
+        {
+          "path": "core/imagen.py",
+          "language": "python",
+          "sizeLines": 77,
+          "fileCategory": "code"
+        },
+        {
+          "path": "core/segmentacion.py",
+          "language": "python",
+          "sizeLines": 156,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_boton_modo.py",
+          "language": "python",
+          "sizeLines": 212,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_relleno.py",
+          "language": "python",
+          "sizeLines": 159,
+          "fileCategory": "code"
+        },
+        {
+          "path": "ui/ventana_histograma.py",
+          "language": "python",
+          "sizeLines": 566,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "core/imagen.py": [],
+        "core/segmentacion.py": [],
+        "tests/test_boton_modo.py": [
+          "core/imagen.py",
+          "ui/ventana_histograma.py"
+        ],
+        "tests/test_relleno.py": [
+          "core/imagen.py",
+          "ui/ventana_histograma.py"
+        ],
+        "ui/ventana_histograma.py": [
+          "core/__init__.py",
+          "core/canales.py",
+          "core/segmentacion.py",
+          "ui/__init__.py",
+          "ui/helpers.py",
+          "ui/tokens.py",
+          "ui/widgets.py"
+        ]
+      },
+      "neighborMap": {
+        "core/segmentacion.py": [
+          {
+            "path": "ui/ventana_principal.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ZonaImagen",
+              "PantallaPreprocesado",
+              "VentanaPrincipal"
+            ]
+          }
+        ],
+        "ui/ventana_histograma.py": [
+          {
+            "path": "core/__init__.py",
+            "batchIndex": 1,
+            "symbols": []
+          },
+          {
+            "path": "core/canales.py",
+            "batchIndex": 2,
+            "symbols": [
+              "canal_rgb",
+              "componente_ycm",
+              "componente",
+              "modo_color",
+              "modo_blanco_y_negro",
+              "aplicar_modo",
+              "etiqueta_canal"
+            ]
+          },
+          {
+            "path": "ui/__init__.py",
+            "batchIndex": 1,
+            "symbols": []
+          },
+          {
+            "path": "ui/helpers.py",
+            "batchIndex": 2,
+            "symbols": [
+              "boton",
+              "envolver_en_scroll"
+            ]
+          },
+          {
+            "path": "ui/tokens.py",
+            "batchIndex": 1,
+            "symbols": []
+          },
+          {
+            "path": "ui/widgets.py",
+            "batchIndex": 1,
+            "symbols": [
+              "a_pixmap",
+              "ProporcionImagen"
+            ]
+          },
+          {
+            "path": "ui/ventana_principal.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ZonaImagen",
+              "PantallaPreprocesado",
+              "VentanaPrincipal"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 4,
+      "files": [
+        {
+          "path": "README.md",
+          "language": "markdown",
+          "sizeLines": 155,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "requirements.txt",
+          "language": "txt",
+          "sizeLines": 7,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "requisitos.md",
+          "language": "markdown",
+          "sizeLines": 2218,
+          "fileCategory": "docs"
+        }
+      ],
+      "batchImportData": {
+        "README.md": [],
+        "requirements.txt": [],
+        "requisitos.md": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 5,
+      "files": [
+        {
+          "path": "core/bordes.py",
+          "language": "python",
+          "sizeLines": 109,
+          "fileCategory": "code"
+        },
+        {
+          "path": "core/histograma.py",
+          "language": "python",
+          "sizeLines": 79,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp",
+          "language": "webp",
+          "sizeLines": 105,
+          "fileCategory": "code"
+        },
+        {
+          "path": "legacy/analizador_imagenes.py",
+          "language": "python",
+          "sizeLines": 381,
+          "fileCategory": "code"
+        },
+        {
+          "path": "legacy/preprocesamiento.py",
+          "language": "python",
+          "sizeLines": 224,
+          "fileCategory": "code"
+        },
+        {
+          "path": "main.spec",
+          "language": "spec",
+          "sizeLines": 28,
+          "fileCategory": "code"
+        },
+        {
+          "path": "styles.qss",
+          "language": "qss",
+          "sizeLines": 114,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/suite.py",
+          "language": "python",
+          "sizeLines": 80,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_bordes.py",
+          "language": "python",
+          "sizeLines": 143,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_overlay.py",
+          "language": "python",
+          "sizeLines": 100,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_recorte.py",
+          "language": "python",
+          "sizeLines": 250,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_widgets.py",
+          "language": "python",
+          "sizeLines": 507,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/verificar.py",
+          "language": "python",
+          "sizeLines": 549,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "core/bordes.py": [],
+        "core/histograma.py": [],
+        "frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp": [],
+        "legacy/analizador_imagenes.py": [],
+        "legacy/preprocesamiento.py": [
+          "legacy/analizador_imagenes.py"
+        ],
+        "main.spec": [],
+        "styles.qss": [],
+        "tests/suite.py": [],
+        "tests/test_bordes.py": [
+          "core/bordes.py"
+        ],
+        "tests/test_overlay.py": [],
+        "tests/test_recorte.py": [],
+        "tests/test_widgets.py": [],
+        "tests/verificar.py": []
+      },
+      "neighborMap": {}
+    }
+  ]
+}

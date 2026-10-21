@@ -1,0 +1,28 @@
+{
+  "projectRoot": "C:\\Users\\santiago\\Desktop\\unal\\vision artificial\\trabajo_grupal\\Trabajo-vision-artificial",
+  "batchFiles": [
+    {"path": "core/canales.py", "language": "python", "sizeLines": 102, "fileCategory": "code"},
+    {"path": "ui/helpers.py", "language": "python", "sizeLines": 35, "fileCategory": "code"},
+    {"path": "ui/ventana_canales.py", "language": "python", "sizeLines": 143, "fileCategory": "code"},
+    {"path": "ui/ventana_rgb.py", "language": "python", "sizeLines": 7, "fileCategory": "code"},
+    {"path": "ui/ventana_ycm.py", "language": "python", "sizeLines": 7, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "core/canales.py": [],
+    "ui/helpers.py": [],
+    "ui/ventana_canales.py": [
+      "core/__init__.py",
+      "core/canales.py",
+      "ui/__init__.py",
+      "ui/helpers.py",
+      "ui/tokens.py",
+      "ui/widgets.py"
+    ],
+    "ui/ventana_rgb.py": [
+      "ui/ventana_canales.py"
+    ],
+    "ui/ventana_ycm.py": [
+      "ui/ventana_canales.py"
+    ]
+  }
+}

@@ -1,0 +1,927 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 5,
+  "filesSkipped": [],
+  "filesUnreadable": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 5,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 5,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "core/canales.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 102,
+      "nonEmptyLines": 81,
+      "functions": [
+        {
+          "name": "canal_rgb",
+          "startLine": 26,
+          "endLine": 28,
+          "params": [
+            "imagen",
+            "letra"
+          ]
+        },
+        {
+          "name": "componente_ycm",
+          "startLine": 31,
+          "endLine": 47,
+          "params": [
+            "imagen",
+            "letra"
+          ]
+        },
+        {
+          "name": "componente",
+          "startLine": 50,
+          "endLine": 56,
+          "params": [
+            "imagen",
+            "espacio",
+            "letra"
+          ]
+        },
+        {
+          "name": "modo_color",
+          "startLine": 59,
+          "endLine": 81,
+          "params": [
+            "imagen",
+            "letra"
+          ]
+        },
+        {
+          "name": "modo_blanco_y_negro",
+          "startLine": 84,
+          "endLine": 86,
+          "params": [
+            "componente_canal"
+          ]
+        },
+        {
+          "name": "aplicar_modo",
+          "startLine": 89,
+          "endLine": 95,
+          "params": [
+            "imagen",
+            "espacio",
+            "letra",
+            "modo"
+          ]
+        },
+        {
+          "name": "etiqueta_canal",
+          "startLine": 98,
+          "endLine": 102,
+          "params": [
+            "espacio",
+            "letra"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "canal_rgb",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "componente_ycm",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "componente",
+          "line": 50,
+          "isDefault": false
+        },
+        {
+          "name": "modo_color",
+          "line": 59,
+          "isDefault": false
+        },
+        {
+          "name": "modo_blanco_y_negro",
+          "line": 84,
+          "isDefault": false
+        },
+        {
+          "name": "aplicar_modo",
+          "line": 89,
+          "isDefault": false
+        },
+        {
+          "name": "etiqueta_canal",
+          "line": 98,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "componente_ycm",
+          "callee": "imagen[:, :, 0].astype",
+          "lineNumber": 36
+        },
+        {
+          "caller": "componente_ycm",
+          "callee": "imagen[:, :, 1].astype",
+          "lineNumber": 37
+        },
+        {
+          "caller": "componente_ycm",
+          "callee": "imagen[:, :, 2].astype",
+          "lineNumber": 38
+        },
+        {
+          "caller": "componente_ycm",
+          "callee": "ValueError",
+          "lineNumber": 46
+        },
+        {
+          "caller": "componente_ycm",
+          "callee": "valor.astype",
+          "lineNumber": 47
+        },
+        {
+          "caller": "componente",
+          "callee": "ValueError",
+          "lineNumber": 53
+        },
+        {
+          "caller": "componente",
+          "callee": "canal_rgb",
+          "lineNumber": 55
+        },
+        {
+          "caller": "componente",
+          "callee": "componente_ycm",
+          "lineNumber": 56
+        },
+        {
+          "caller": "modo_color",
+          "callee": "np.zeros_like",
+          "lineNumber": 68
+        },
+        {
+          "caller": "modo_color",
+          "callee": "np.dstack",
+          "lineNumber": 70
+        },
+        {
+          "caller": "modo_color",
+          "callee": "np.dstack",
+          "lineNumber": 72
+        },
+        {
+          "caller": "modo_color",
+          "callee": "np.dstack",
+          "lineNumber": 74
+        },
+        {
+          "caller": "modo_color",
+          "callee": "np.dstack",
+          "lineNumber": 76
+        },
+        {
+          "caller": "modo_color",
+          "callee": "np.dstack",
+          "lineNumber": 78
+        },
+        {
+          "caller": "modo_color",
+          "callee": "np.dstack",
+          "lineNumber": 80
+        },
+        {
+          "caller": "modo_color",
+          "callee": "ValueError",
+          "lineNumber": 81
+        },
+        {
+          "caller": "aplicar_modo",
+          "callee": "modo_color",
+          "lineNumber": 92
+        },
+        {
+          "caller": "aplicar_modo",
+          "callee": "modo_blanco_y_negro",
+          "lineNumber": 94
+        },
+        {
+          "caller": "aplicar_modo",
+          "callee": "componente",
+          "lineNumber": 94
+        },
+        {
+          "caller": "aplicar_modo",
+          "callee": "ValueError",
+          "lineNumber": 95
+        },
+        {
+          "caller": "etiqueta_canal",
+          "callee": "ValueError",
+          "lineNumber": 101
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "ui/helpers.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 35,
+      "nonEmptyLines": 30,
+      "functions": [
+        {
+          "name": "boton",
+          "startLine": 10,
+          "endLine": 17,
+          "params": [
+            "texto",
+            "object_name",
+            "ancho",
+            "alto"
+          ]
+        },
+        {
+          "name": "envolver_en_scroll",
+          "startLine": 20,
+          "endLine": 35,
+          "params": [
+            "pantalla",
+            "raiz"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "boton",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "envolver_en_scroll",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "boton",
+          "callee": "QPushButton",
+          "lineNumber": 12
+        },
+        {
+          "caller": "boton",
+          "callee": "b.setObjectName",
+          "lineNumber": 14
+        },
+        {
+          "caller": "boton",
+          "callee": "b.setFixedSize",
+          "lineNumber": 16
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "QWidget",
+          "lineNumber": 22
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "QVBoxLayout",
+          "lineNumber": 23
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "raiz.count",
+          "lineNumber": 24
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "raiz.takeAt",
+          "lineNumber": 25
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "item.widget",
+          "lineNumber": 26
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "interior.addWidget",
+          "lineNumber": 27
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "item.widget",
+          "lineNumber": 27
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "item.layout",
+          "lineNumber": 28
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "interior.addLayout",
+          "lineNumber": 29
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "item.layout",
+          "lineNumber": 29
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "item.spacerItem",
+          "lineNumber": 30
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "interior.addSpacerItem",
+          "lineNumber": 31
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "item.spacerItem",
+          "lineNumber": 31
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "QScrollArea",
+          "lineNumber": 32
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "scroll.setWidgetResizable",
+          "lineNumber": 33
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "scroll.setWidget",
+          "lineNumber": 34
+        },
+        {
+          "caller": "envolver_en_scroll",
+          "callee": "raiz.addWidget",
+          "lineNumber": 35
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "ui/ventana_canales.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 143,
+      "nonEmptyLines": 121,
+      "classes": [
+        {
+          "name": "LienzoCanal",
+          "startLine": 20,
+          "endLine": 34,
+          "methods": [
+            "__init__",
+            "mousePressEvent"
+          ],
+          "properties": []
+        },
+        {
+          "name": "VentanaCanales",
+          "startLine": 37,
+          "endLine": 143,
+          "methods": [
+            "__init__",
+            "al_entrar",
+            "actualizar_info",
+            "alternar_modo",
+            "reaplicar",
+            "mostrar_canales",
+            "ir_a_histograma"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "LienzoCanal",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "VentanaCanales",
+          "line": 37,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "super().__init__",
+          "lineNumber": 26
+        },
+        {
+          "caller": "__init__",
+          "callee": "super",
+          "lineNumber": 26
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.setObjectName",
+          "lineNumber": 28
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.setCursor",
+          "lineNumber": 29
+        },
+        {
+          "caller": "mousePressEvent",
+          "callee": "evento.button",
+          "lineNumber": 32
+        },
+        {
+          "caller": "mousePressEvent",
+          "callee": "self.clicked.emit",
+          "lineNumber": 33
+        },
+        {
+          "caller": "mousePressEvent",
+          "callee": "super().mousePressEvent",
+          "lineNumber": 34
+        },
+        {
+          "caller": "mousePressEvent",
+          "callee": "super",
+          "lineNumber": 34
+        },
+        {
+          "caller": "__init__",
+          "callee": "super().__init__",
+          "lineNumber": 41
+        },
+        {
+          "caller": "__init__",
+          "callee": "super",
+          "lineNumber": 41
+        },
+        {
+          "caller": "__init__",
+          "callee": "QVBoxLayout",
+          "lineNumber": 47
+        },
+        {
+          "caller": "__init__",
+          "callee": "raiz.setContentsMargins",
+          "lineNumber": 48
+        },
+        {
+          "caller": "__init__",
+          "callee": "QGridLayout",
+          "lineNumber": 51
+        },
+        {
+          "caller": "__init__",
+          "callee": "QLabel",
+          "lineNumber": 52
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.lbl_imagen.setObjectName",
+          "lineNumber": 53
+        },
+        {
+          "caller": "__init__",
+          "callee": "QLabel",
+          "lineNumber": 54
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.lbl_directorio.setObjectName",
+          "lineNumber": 55
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.lbl_directorio.setWordWrap",
+          "lineNumber": 56
+        },
+        {
+          "caller": "__init__",
+          "callee": "QVBoxLayout",
+          "lineNumber": 57
+        },
+        {
+          "caller": "__init__",
+          "callee": "info.setSpacing",
+          "lineNumber": 58
+        },
+        {
+          "caller": "__init__",
+          "callee": "info.addWidget",
+          "lineNumber": 59
+        },
+        {
+          "caller": "__init__",
+          "callee": "info.addWidget",
+          "lineNumber": 60
+        },
+        {
+          "caller": "__init__",
+          "callee": "cabecera.addLayout",
+          "lineNumber": 61
+        },
+        {
+          "caller": "__init__",
+          "callee": "QLabel",
+          "lineNumber": 63
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.titulo.setObjectName",
+          "lineNumber": 64
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.titulo.setAlignment",
+          "lineNumber": 65
+        },
+        {
+          "caller": "__init__",
+          "callee": "cabecera.addWidget",
+          "lineNumber": 66
+        },
+        {
+          "caller": "__init__",
+          "callee": "QHBoxLayout",
+          "lineNumber": 68
+        },
+        {
+          "caller": "__init__",
+          "callee": "botones.setSpacing",
+          "lineNumber": 69
+        },
+        {
+          "caller": "__init__",
+          "callee": "QPushButton",
+          "lineNumber": 70
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.boton_modo.setFixedSize",
+          "lineNumber": 71
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.boton_modo.clicked.connect",
+          "lineNumber": 72
+        },
+        {
+          "caller": "__init__",
+          "callee": "QPushButton",
+          "lineNumber": 73
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.boton_hist.setFixedSize",
+          "lineNumber": 74
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.boton_hist.clicked.connect",
+          "lineNumber": 75
+        },
+        {
+          "caller": "__init__",
+          "callee": "QPushButton",
+          "lineNumber": 76
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.boton_regresar.setObjectName",
+          "lineNumber": 77
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.boton_regresar.setFixedSize",
+          "lineNumber": 78
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.boton_regresar.clicked.connect",
+          "lineNumber": 79
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.ventana.mostrar",
+          "lineNumber": 79
+        },
+        {
+          "caller": "__init__",
+          "callee": "botones.addWidget",
+          "lineNumber": 80
+        },
+        {
+          "caller": "__init__",
+          "callee": "botones.addWidget",
+          "lineNumber": 81
+        },
+        {
+          "caller": "__init__",
+          "callee": "botones.addWidget",
+          "lineNumber": 82
+        },
+        {
+          "caller": "__init__",
+          "callee": "cabecera.addLayout",
+          "lineNumber": 83
+        },
+        {
+          "caller": "__init__",
+          "callee": "cabecera.setColumnStretch",
+          "lineNumber": 84
+        },
+        {
+          "caller": "__init__",
+          "callee": "raiz.addLayout",
+          "lineNumber": 85
+        },
+        {
+          "caller": "__init__",
+          "callee": "raiz.addSpacing",
+          "lineNumber": 86
+        },
+        {
+          "caller": "__init__",
+          "callee": "QHBoxLayout",
+          "lineNumber": 88
+        },
+        {
+          "caller": "__init__",
+          "callee": "fila.setSpacing",
+          "lineNumber": 89
+        },
+        {
+          "caller": "__init__",
+          "callee": "QVBoxLayout",
+          "lineNumber": 92
+        },
+        {
+          "caller": "__init__",
+          "callee": "QLabel",
+          "lineNumber": 93
+        },
+        {
+          "caller": "__init__",
+          "callee": "etiqueta.setObjectName",
+          "lineNumber": 94
+        },
+        {
+          "caller": "__init__",
+          "callee": "etiqueta.setAlignment",
+          "lineNumber": 95
+        },
+        {
+          "caller": "__init__",
+          "callee": "LienzoCanal",
+          "lineNumber": 96
+        },
+        {
+          "caller": "__init__",
+          "callee": "lienzo.clicked.connect",
+          "lineNumber": 97
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.reaplicar",
+          "lineNumber": 97
+        },
+        {
+          "caller": "__init__",
+          "callee": "columna.addWidget",
+          "lineNumber": 98
+        },
+        {
+          "caller": "__init__",
+          "callee": "columna.addWidget",
+          "lineNumber": 99
+        },
+        {
+          "caller": "__init__",
+          "callee": "fila.addLayout",
+          "lineNumber": 100
+        },
+        {
+          "caller": "__init__",
+          "callee": "raiz.addLayout",
+          "lineNumber": 102
+        },
+        {
+          "caller": "__init__",
+          "callee": "raiz.addStretch",
+          "lineNumber": 103
+        },
+        {
+          "caller": "__init__",
+          "callee": "envolver_en_scroll",
+          "lineNumber": 104
+        },
+        {
+          "caller": "al_entrar",
+          "callee": "self.boton_modo.setText",
+          "lineNumber": 111
+        },
+        {
+          "caller": "al_entrar",
+          "callee": "self.actualizar_info",
+          "lineNumber": 112
+        },
+        {
+          "caller": "al_entrar",
+          "callee": "self.mostrar_canales",
+          "lineNumber": 113
+        },
+        {
+          "caller": "actualizar_info",
+          "callee": "self.lbl_imagen.setText",
+          "lineNumber": 117
+        },
+        {
+          "caller": "actualizar_info",
+          "callee": "os.path.basename",
+          "lineNumber": 117
+        },
+        {
+          "caller": "actualizar_info",
+          "callee": "os.path.basename",
+          "lineNumber": 118
+        },
+        {
+          "caller": "actualizar_info",
+          "callee": "os.path.dirname",
+          "lineNumber": 118
+        },
+        {
+          "caller": "actualizar_info",
+          "callee": "self.lbl_directorio.setText",
+          "lineNumber": 119
+        },
+        {
+          "caller": "alternar_modo",
+          "callee": "self.boton_modo.setText",
+          "lineNumber": 124
+        },
+        {
+          "caller": "alternar_modo",
+          "callee": "self.mostrar_canales",
+          "lineNumber": 125
+        },
+        {
+          "caller": "alternar_modo",
+          "callee": "self.ventana.modoCambiado.emit",
+          "lineNumber": 126
+        },
+        {
+          "caller": "reaplicar",
+          "callee": "self.mostrar_canales",
+          "lineNumber": 130
+        },
+        {
+          "caller": "mostrar_canales",
+          "callee": "self.lienzos.items",
+          "lineNumber": 135
+        },
+        {
+          "caller": "mostrar_canales",
+          "callee": "canales.aplicar_modo",
+          "lineNumber": 136
+        },
+        {
+          "caller": "mostrar_canales",
+          "callee": "lienzo.set_imagen",
+          "lineNumber": 138
+        },
+        {
+          "caller": "mostrar_canales",
+          "callee": "a_pixmap",
+          "lineNumber": 138
+        },
+        {
+          "caller": "ir_a_histograma",
+          "callee": "self.ventana.mostrar",
+          "lineNumber": 143
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "ui/ventana_rgb.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 5,
+      "classes": [
+        {
+          "name": "VentanaRGB",
+          "startLine": 5,
+          "endLine": 7,
+          "methods": [
+            "__init__"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "VentanaRGB",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "super().__init__",
+          "lineNumber": 7
+        },
+        {
+          "caller": "__init__",
+          "callee": "super",
+          "lineNumber": 7
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "ui/ventana_ycm.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 5,
+      "classes": [
+        {
+          "name": "VentanaYCM",
+          "startLine": 5,
+          "endLine": 7,
+          "methods": [
+            "__init__"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "VentanaYCM",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "super().__init__",
+          "lineNumber": 7
+        },
+        {
+          "caller": "__init__",
+          "callee": "super",
+          "lineNumber": 7
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    }
+  ]
+}

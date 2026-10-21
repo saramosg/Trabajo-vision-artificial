@@ -1,0 +1,2286 @@
+{
+  "nodes": [
+    {
+      "id": "file:core/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "core/__init__.py",
+      "summary": "Paquete `core` que agrupa la logica de imagen sin Qt; su docstring fija la regla de dependencia: `ui/` importa desde aqui, nunca al reves."
+    },
+    {
+      "id": "file:core/recorte.py",
+      "type": "file",
+      "name": "recorte.py",
+      "filePath": "core/recorte.py",
+      "summary": "Implementa el recorte libre: remuestrea una ventana arbitraria de la imagen a un lienzo cuadrado de lado fijo, rellenando en blanco la parte que queda fuera."
+    },
+    {
+      "id": "file:main.py",
+      "type": "file",
+      "name": "main.py",
+      "filePath": "main.py",
+      "summary": "Punto de entrada de la aplicacion de escritorio: crea el QApplication, carga la hoja de estilos global `styles.qss` resolviendo la ruta del ejecutable y muestra la ventana principal."
+    },
+    {
+      "id": "file:ui/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "ui/__init__.py",
+      "summary": "Paquete `ui` que agrupa pantallas, widgets y decisiones de diseno, dejando toda la logica de imagen en `core/`."
+    },
+    {
+      "id": "file:ui/tokens.py",
+      "type": "file",
+      "name": "tokens.py",
+      "filePath": "ui/tokens.py",
+      "summary": "Fuente unica de verdad de los tokens de diseno (colores, medidas, tipografias, radios y proporciones) que alimentan el layout de todas las pantallas."
+    },
+    {
+      "id": "file:ui/ventana_principal.py",
+      "type": "file",
+      "name": "ventana_principal.py",
+      "filePath": "ui/ventana_principal.py",
+      "summary": "Define la pantalla de preprocesado (cargar imagen, elegir modelo grabcut/otsu, quitar o restaurar el fondo) y la ventana principal que centraliza las cinco pantallas en un QStackedWidget con atajos de teclado."
+    },
+    {
+      "id": "file:ui/ventana_recorte.py",
+      "type": "file",
+      "name": "ventana_recorte.py",
+      "filePath": "ui/ventana_recorte.py",
+      "summary": "Pantalla de recorte con marco fijo en pantalla: la imagen se escala con un slider y se panea por arrastre, y `recorte_libre` exporta el encuadre a 512 px con relleno blanco habilitando despues el guardado."
+    },
+    {
+      "id": "file:ui/widgets.py",
+      "type": "file",
+      "name": "widgets.py",
+      "filePath": "ui/widgets.py",
+      "summary": "Widgets reutilizables de imagen: conversion de arrays numpy a QPixmap y una etiqueta que encaja la foto en su cuadro sin deformarla."
+    },
+    {
+      "id": "file:core/canales.py",
+      "type": "file",
+      "name": "canales.py",
+      "filePath": "core/canales.py",
+      "summary": "Modulo de calculo puro (sin UI) que extrae los componentes 2D de los canales RGB e YCM de una imagen y los convierte a los modos de visualizacion 'color' y 'blanco y negro', ademas de etiquetar el canal activo en espanol."
+    },
+    {
+      "id": "file:ui/helpers.py",
+      "type": "file",
+      "name": "helpers.py",
+      "filePath": "ui/helpers.py",
+      "summary": "Ayudas compartidas por las pantallas de la aplicacion: un constructor de QPushButton con tamano fijo de tokens y un envoltorio que traslada el contenido de un layout raiz a un QScrollArea."
+    },
+    {
+      "id": "file:ui/ventana_canales.py",
+      "type": "file",
+      "name": "ventana_canales.py",
+      "filePath": "ui/ventana_canales.py",
+      "summary": "Implementa la pantalla base de canales: tres lienzos clicables (uno por componente del espacio), selector de modo color/blanco y negro, acceso al histograma y boton REGRESAR, alimentandose siempre de la imagen original."
+    },
+    {
+      "id": "file:ui/ventana_rgb.py",
+      "type": "file",
+      "name": "ventana_rgb.py",
+      "filePath": "ui/ventana_rgb.py",
+      "summary": "Pantalla concreta de canales RGB: subclase de VentanaCanales que fija el espacio 'RGB' con las letras R, G y B."
+    },
+    {
+      "id": "file:ui/ventana_ycm.py",
+      "type": "file",
+      "name": "ventana_ycm.py",
+      "filePath": "ui/ventana_ycm.py",
+      "summary": "Pantalla concreta de canales YCM: subclase de VentanaCanales que fija el espacio 'YCM' con las letras Y, C y M."
+    },
+    {
+      "id": "file:core/imagen.py",
+      "type": "file",
+      "name": "imagen.py",
+      "filePath": "core/imagen.py",
+      "summary": "Modulo de entrada/salida de imagenes: carga RGB de 8 bits, guardado en PNG/RGB/PSD y definicion del dataclass EstadoImagen que las cinco pantallas comparten por referencia."
+    },
+    {
+      "id": "file:core/segmentacion.py",
+      "type": "file",
+      "name": "segmentacion.py",
+      "filePath": "core/segmentacion.py",
+      "summary": "Motor de segmentacion del objeto: implementa los modelos grabcut (recorte al 10 % de los bordes sobre copia reducida) y otsu (umbral por canal unido con OR e invertido), mas la limpieza de mascara por flood fill y el contorno de 1 px."
+    },
+    {
+      "id": "file:tests/test_boton_modo.py",
+      "type": "file",
+      "name": "test_boton_modo.py",
+      "filePath": "tests/test_boton_modo.py",
+      "summary": "Suite de pruebas del boton de modo de la pantalla de histograma, ejecutada en Qt offscreen contra la VentanaHistograma real: verifica la disposicion del boton junto a REGRESAR, la alternancia entre los modos umbral y bordes y la restauracion del modo al entrar."
+    },
+    {
+      "id": "file:tests/test_relleno.py",
+      "type": "file",
+      "name": "test_relleno.py",
+      "filePath": "tests/test_relleno.py",
+      "summary": "Suite de pruebas del relleno por clics sobre el mapa de bordes en modo bordes, en Qt offscreen: valida el aviso de fondo abierto, la acumulacion con OR de la mascara, el vaciado del relleno y el mapeo de coordenadas widget-imagen con barras de letterbox."
+    },
+    {
+      "id": "file:ui/ventana_histograma.py",
+      "type": "file",
+      "name": "ventana_histograma.py",
+      "filePath": "ui/ventana_histograma.py",
+      "summary": "Pantalla de histograma de color con dos modos de analisis: umbral (rango del canal activo, limpiar/quitar fondo y guardado) y bordes (deteccion con canny, sobel o laplaciano y relleno por clics que acumula en la mascara compartida)."
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "README del proyecto: presenta la aplicacion de escritorio en PySide6 para analisis de imagenes (preprocesado con GrabCut/OTSU, canales RGB/YCM, histograma de color y recorte con marco fijo de 512x512) y documenta requisitos, instalacion con venv, ejecucion de main.py, el arbol de la estructura con la regla de dependencias `ui/` -> `core/`, las cinco pantallas y su navegacion, el dataset de mango del Reto 2 (738 imagenes en 5 clases), los comandos de la suite de tests y el empaquetado a .exe con PyInstaller en modo --onedir."
+    },
+    {
+      "id": "document:requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "requirements.txt",
+      "summary": "Lista de dependencias Python del proyecto con versiones minimas fijadas: PySide6-Essentials (interfaz Qt 6), opencv-python (GrabCut, OTSU, morfologia y contornos), numpy (arrays de pixeles), pillow (E/S de imagen), psd-tools (PSD con mascara de capa), PyInstaller (empaquetado a .exe) y matplotlib (histograma con plt). Se instala con `pip install -r requirements.txt` y es la base tanto del entorno virtual como del compilado."
+    },
+    {
+      "id": "document:requisitos.md",
+      "type": "document",
+      "name": "requisitos.md",
+      "filePath": "requisitos.md",
+      "summary": "Especificacion funcional ejecutable del Analizador de imagenes en 12 secciones: stack (PySide6 + QSS + OpenCV + numpy), preparacion del entorno, estructura por modulos con la regla `ui/` importa de `core/` y `core/` nunca importa de Qt, sistema de diseño con tokens en ui/tokens.py (botones 200x60, navegacion 160x48, radios pastilla, proporciones 1:1 y 467:333), las cinco pantallas (principal, RGB, YCM, histograma y recorte) con su mapa de navegacion y atajos, los modos `color`/`blanco y negro` y umbral/bordes con relleno por flood fill, la logica de `core/` (EstadoImagen compartido, segmentacion GrabCut/OTSU, canales YCM en float32, recorte a 512), el formato de guardado (PNG RGBA con mascara, PNG en escala de grises y PSD con mascara de capa) y mas de 70 criterios de aceptacion verificables. Notifica divergencia con la implementacion real: sus secciones §3.3 y §11 prohiben matplotlib y describen el histograma con QPainter, pero requirements.txt y README si lo incluyen con `plt.hist`."
+    },
+    {
+      "id": "file:core/bordes.py",
+      "type": "file",
+      "name": "bordes.py",
+      "filePath": "core/bordes.py",
+      "summary": "Modulo de NumPy/OpenCV con la deteccion de bordes del canal activo (Canny, Sobel y Laplaciano) y el relleno por flood fill cuyas paredes son los bordes detectados, acumulable con OR sobre la mascara."
+    },
+    {
+      "id": "file:core/histograma.py",
+      "type": "file",
+      "name": "histograma.py",
+      "filePath": "core/histograma.py",
+      "summary": "Utilidades de histograma de intensidades: conteo de 256 bins por canal, generacion del PNG del histograma con matplotlib (backend Agg) y construccion de mascaras binarias por rango de valores."
+    },
+    {
+      "id": "resource:frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp",
+      "type": "resource",
+      "name": "174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp",
+      "filePath": "frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp",
+      "summary": "Imagen WebP binaria (32 KB, contenedor RIFF con formato extendido VP8X) de mangos enteros sobre una mesa de piedra oscura; es una foto de referencia del dataset del Reto 2, no codigo ni un recurso que la aplicacion cargue en runtime."
+    },
+    {
+      "id": "file:legacy/analizador_imagenes.py",
+      "type": "file",
+      "name": "analizador_imagenes.py",
+      "filePath": "legacy/analizador_imagenes.py",
+      "summary": "Codigo heredado en tkinter, ya no usado por la app actual en PySide6: ventana con visor de imagenes, canales RGB/YCM, eliminacion de fondo con GrabCut y mascaras globales."
+    },
+    {
+      "id": "file:legacy/preprocesamiento.py",
+      "type": "file",
+      "name": "preprocesamiento.py",
+      "filePath": "legacy/preprocesamiento.py",
+      "summary": "Codigo heredado en tkinter, no usado por la app actual: ventana secundaria de preprocesado que quita el fondo con GrabCut o metodo global y exporta el resultado en PNG o en PSD con la mascara como capa."
+    },
+    {
+      "id": "file:main.spec",
+      "type": "file",
+      "name": "main.spec",
+      "filePath": "main.spec",
+      "summary": "Archivo de PyInstaller que empaqueta la aplicacion de escritorio en un ejecutable `Analizador` (onedir), incluyendo `styles.qss`, los assets, los hidden imports de `core/` y `ui/` y los datos de psd-tools y matplotlib."
+    },
+    {
+      "id": "file:styles.qss",
+      "type": "file",
+      "name": "styles.qss",
+      "filePath": "styles.qss",
+      "summary": "Hoja de estilos global de Qt (QSS) que define la tipografia Segoe UI, los botones redondeados en pastilla (normal, de navegacion y primario en azul de acento), las zonas de imagen y los deslizadores del histograma y del zoom."
+    },
+    {
+      "id": "file:tests/suite.py",
+      "type": "file",
+      "name": "suite.py",
+      "filePath": "tests/suite.py",
+      "summary": "Orquestador de la suite de verificacion: ejecuta en subproceso los 7 scripts de prueba (coherencia del documento, recorte, widgets, overlay, boton de modo, bordes y relleno) y devuelve codigo de salida 1 si alguna falla."
+    },
+    {
+      "id": "file:tests/test_bordes.py",
+      "type": "file",
+      "name": "test_bordes.py",
+      "filePath": "tests/test_bordes.py",
+      "summary": "Suite de `core/bordes.py` sin Qt (solo NumPy + OpenCV): valida los tres metodos de deteccion sobre un cuadrado ideal y los siete casos del relleno por barrera (interior, hueco sellado, acumulacion con OR, clic repetido, semilla sobre pared, mascara previa y fondo abierto)."
+    },
+    {
+      "id": "file:tests/test_overlay.py",
+      "type": "file",
+      "name": "test_overlay.py",
+      "filePath": "tests/test_overlay.py",
+      "summary": "Suite offscreen que extrae del documento los helpers `x_de_marcador` y `dibujar_marcadores`, los ejecuta en PySide6 real y compara el overlay con la posicion que Qt calcula para el handle del slider."
+    },
+    {
+      "id": "file:tests/test_recorte.py",
+      "type": "file",
+      "name": "test_recorte.py",
+      "filePath": "tests/test_recorte.py",
+      "summary": "Suite de `core/recorte.py` ejecutada sin PySide6 ni ventana: extrae el bloque real del documento y comprueba que `recortar`, `escalar` y `aplicar_recorte` respetan el contrato (lado de salida 512, recorte contiguo, proporcion conservada)."
+    },
+    {
+      "id": "file:tests/test_widgets.py",
+      "type": "file",
+      "name": "test_widgets.py",
+      "filePath": "tests/test_widgets.py",
+      "summary": "Suite offscreen que extrae del documento los widgets de recorte y de marcadores y los ejecuta de verdad en PySide6: verifica la ubicacion de las clases de Qt, el minimumSize del selector, el velo del recorte, el marco vacio y el overlay."
+    },
+    {
+      "id": "file:tests/verificar.py",
+      "type": "file",
+      "name": "verificar.py",
+      "filePath": "tests/verificar.py",
+      "summary": "Verificador estatico de `requisitos.md`: comprueba que los tokens existan y no esten huerfanos, que todos los bloques de Python parseen, que las firmas y el QSS del documento sean coherentes y que los helpers requeridos esten definidos."
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:main.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:ui/ventana_principal.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:core/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:core/segmentacion.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/helpers.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_recorte.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_rgb.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_ycm.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/widgets.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:core/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:core/recorte.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/helpers.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/widgets.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:core/recorte.py",
+      "target": "function:core/recorte.py:recorte_libre",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:main.py",
+      "target": "function:main.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:ZonaImagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VistaRecorte",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/recorte.py",
+      "target": "function:core/recorte.py:recorte_libre",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:main.py",
+      "target": "function:main.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:ZonaImagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VistaRecorte",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:ZonaImagen",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "function:main.py:main",
+      "target": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:ui/helpers.py:boton",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:core/segmentacion.py:segmentar",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:core/imagen.py:cargar_imagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:core/imagen.py:EstadoImagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_rgb.py:VentanaRGB",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_ycm.py:VentanaYCM",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:core/recorte.py:recorte_libre",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:core/imagen.py:guardar_rgb",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:ui/tokens.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:styles.qss",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/tokens.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/tokens.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ui/tokens.py",
+      "target": "file:styles.qss",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:core/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:core/canales.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:ui/helpers.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:ui/widgets.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_rgb.py",
+      "target": "file:ui/ventana_canales.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_ycm.py",
+      "target": "file:ui/ventana_canales.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:canal_rgb",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:componente_ycm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:componente",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:modo_color",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:modo_blanco_y_negro",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:aplicar_modo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:etiqueta_canal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:canal_rgb",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:componente_ycm",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:componente",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:modo_color",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:modo_blanco_y_negro",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:aplicar_modo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:etiqueta_canal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/helpers.py",
+      "target": "function:ui/helpers.py:boton",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/helpers.py",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/helpers.py",
+      "target": "function:ui/helpers.py:boton",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/helpers.py",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "class:ui/ventana_canales.py:LienzoCanal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "class:ui/ventana_canales.py:VentanaCanales",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "class:ui/ventana_canales.py:LienzoCanal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "class:ui/ventana_canales.py:VentanaCanales",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_rgb.py",
+      "target": "class:ui/ventana_rgb.py:VentanaRGB",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_rgb.py",
+      "target": "class:ui/ventana_rgb.py:VentanaRGB",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_ycm.py",
+      "target": "class:ui/ventana_ycm.py:VentanaYCM",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_ycm.py",
+      "target": "class:ui/ventana_ycm.py:VentanaYCM",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_canales.py:LienzoCanal",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:ui/ventana_rgb.py:VentanaRGB",
+      "target": "class:ui/ventana_canales.py:VentanaCanales",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:ui/ventana_ycm.py:VentanaYCM",
+      "target": "class:ui/ventana_canales.py:VentanaCanales",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:ui/ventana_canales.py:VentanaCanales",
+      "target": "function:core/canales.py:aplicar_modo",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_canales.py:VentanaCanales",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_canales.py:VentanaCanales",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "class:core/imagen.py:EstadoImagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:cargar_imagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_imagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_rgb",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_mascara",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_psd",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_a_escala",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_devolver_a_escala",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_grabcut",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_otsu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:segmentar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:limpiar_mascara",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:contorno",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "function:tests/test_boton_modo.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "class:tests/test_boton_modo.py:_VentanaFalsa",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "function:tests/test_relleno.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "class:tests/test_relleno.py:_VentanaFalsa",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "class:ui/ventana_histograma.py:ZonaBordes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "class:core/imagen.py:EstadoImagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:cargar_imagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_imagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_rgb",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_mascara",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_psd",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_a_escala",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_devolver_a_escala",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_grabcut",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_otsu",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:segmentar",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:limpiar_mascara",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:contorno",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "function:tests/test_boton_modo.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "class:tests/test_boton_modo.py:_VentanaFalsa",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "function:tests/test_relleno.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "class:tests/test_relleno.py:_VentanaFalsa",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "class:ui/ventana_histograma.py:ZonaBordes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "file:core/imagen.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "file:core/imagen.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/canales.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/segmentacion.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:ui/helpers.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:ui/widgets.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:ZonaBordes",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/canales.py:componente",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/canales.py:aplicar_modo",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/canales.py:etiqueta_canal",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/histograma.py:histograma_canal",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/histograma.py:figura_histograma",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/histograma.py:mascara_por_rango",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/bordes.py:detectar_bordes",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/bordes.py:rellenar_bordes",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/segmentacion.py:limpiar_mascara",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/segmentacion.py:contorno",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/imagen.py:guardar_imagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/imagen.py:guardar_psd",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:tests/test_boton_modo.py:_VentanaFalsa",
+      "target": "class:core/imagen.py:EstadoImagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:tests/test_relleno.py:_VentanaFalsa",
+      "target": "class:core/imagen.py:EstadoImagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "class:ui/ventana_histograma.py:ZonaBordes",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "class:ui/ventana_histograma.py:ZonaBordes",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "file:tests/test_boton_modo.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "file:tests/test_relleno.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:tests/test_boton_modo.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:tests/test_relleno.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/imagen.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/segmentacion.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/canales.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/tokens.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/helpers.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/widgets.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_principal.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_canales.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_rgb.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_ycm.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:styles.qss",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:main.spec",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:tests/suite.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:requirements.txt",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:requisitos.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:main.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/imagen.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/segmentacion.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/canales.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/histograma.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/recorte.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/bordes.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:main.spec",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/imagen.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/segmentacion.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/canales.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/bordes.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/tokens.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/widgets.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_principal.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_rgb.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_ycm.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:styles.qss",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:main.spec",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "document:requirements.txt",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "function:core/bordes.py:detectar_bordes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "function:core/bordes.py:rellenar_bordes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:histograma_canal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:figura_histograma",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:mascara_por_rango",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:legacy/analizador_imagenes.py",
+      "target": "class:legacy/analizador_imagenes.py:AnalizadorApp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:legacy/preprocesamiento.py",
+      "target": "class:legacy/preprocesamiento.py:PreprocesamientoApp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:_cuadro",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:_anillo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "function:tests/test_overlay.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "function:tests/test_overlay.py:cuenta",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "class:tests/test_overlay.py:Overlay",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_recorte.py",
+      "target": "function:tests/test_recorte.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_widgets.py",
+      "target": "function:tests/test_widgets.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:_norm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:en_arbol",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "function:core/bordes.py:detectar_bordes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "function:core/bordes.py:rellenar_bordes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:histograma_canal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:figura_histograma",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:mascara_por_rango",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:legacy/analizador_imagenes.py",
+      "target": "class:legacy/analizador_imagenes.py:AnalizadorApp",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:legacy/preprocesamiento.py",
+      "target": "class:legacy/preprocesamiento.py:PreprocesamientoApp",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:_cuadro",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:_anillo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "function:tests/test_overlay.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "function:tests/test_overlay.py:cuenta",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "class:tests/test_overlay.py:Overlay",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_recorte.py",
+      "target": "function:tests/test_recorte.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_widgets.py",
+      "target": "function:tests/test_widgets.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:_norm",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:en_arbol",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:legacy/preprocesamiento.py",
+      "target": "file:legacy/analizador_imagenes.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "file:core/bordes.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:core/bordes.py:detectar_bordes",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:core/bordes.py:rellenar_bordes",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:legacy/preprocesamiento.py:PreprocesamientoApp",
+      "target": "class:legacy/analizador_imagenes.py:AnalizadorApp",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "file:tests/test_bordes.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "file:tests/test_relleno.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:core/recorte.py",
+      "target": "file:tests/test_recorte.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "file:tests/test_widgets.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:tests/test_overlay.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/verificar.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_recorte.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_widgets.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_overlay.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_bordes.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_boton_modo.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_relleno.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_recorte.py",
+      "target": "document:requisitos.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_widgets.py",
+      "target": "document:requisitos.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "document:requisitos.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "document:requisitos.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:main.spec",
+      "target": "file:styles.qss",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:main.spec",
+      "target": "file:core/histograma.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:main.spec",
+      "target": "file:main.py",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:styles.qss",
+      "target": "file:main.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/bordes.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Import real detectado por verificacion AST del fuente (`from core import bordes as core_bordes`): el importMap del scanner omite los imports de submódulo con alias, asi que esta arista no aparece en scan-result.json#importMap."
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/histograma.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Import real detectado por verificacion AST del fuente (`from core import canales, histograma as core_hist`): el importMap del scanner omite los imports de submódulo con alias."
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/imagen.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Import real detectado por verificacion AST del fuente (`from core import imagen as core_imagen`): el importMap del scanner omite los imports de submódulo con alias."
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:core/imagen.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Import real detectado por verificacion AST del fuente (`from core import imagen as core_imagen`): el importMap del scanner omite los imports de submódulo con alias."
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:core/imagen.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Import real detectado por verificacion AST del fuente (`from core import imagen as core_imagen`): el importMap del scanner omite los imports de submódulo con alias."
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:core",
+      "name": "Nucleo de Procesamiento de Imagen",
+      "description": "Logica de imagen pura sin Qt: calculo de canales RGB/YCM, segmentacion GrabCut/OTSU, deteccion de bordes con flood fill acumulable, histograma de intensidades, recorte libre a 512 px y la entrada/salida de archivos con el dataclass EstadoImagen compartido."
+    },
+    {
+      "id": "layer:ui",
+      "name": "Capa de Presentacion PySide6",
+      "description": "Presentacion en Qt: las cinco pantallas (principal, RGB, YCM, histograma y recorte) con sus widgets, helpers y tokens de diseño, mas la hoja de estilos QSS global que fija el tema visual de la aplicacion."
+    },
+    {
+      "id": "layer:entry",
+      "name": "Punto de Entrada y Empaquetado",
+      "description": "Arranque y build de la aplicacion de escritorio: main.py crea el QApplication, resuelve la ruta de styles.qss y muestra la ventana principal, mientras main.spec define el ejecutable Analizador en modo onedir de PyInstaller."
+    },
+    {
+      "id": "layer:test",
+      "name": "Suite de Pruebas y Verificacion",
+      "description": "Verificacion del proyecto: siete scripts de prueba que cubren recorte, deteccion de bordes, relleno por flood fill, widgets, overlay, boton de modo y renderizado en Qt offscreen, orquestados por suite.py junto al verificador estatico de requisitos.md."
+    },
+    {
+      "id": "layer:legacy",
+      "name": "Codigo Heredado en Tkinter",
+      "description": "Codigo obsoleto conservado como referencia historica: visor de imagenes con canales RGB/YCM, eliminacion de fondo con GrabCut y mascaras globales, mas la ventana de preprocesado que exporta PNG y PSD; no participa en la app PySide6 actual."
+    },
+    {
+      "id": "layer:config",
+      "name": "Configuracion del Entorno",
+      "description": "Manifiesto de dependencias del proyecto: requirements.txt fija las versiones minimas de PySide6-Essentials, opencv-python, numpy, pillow, psd-tools, PyInstaller y matplotlib, y es la base tanto del venv como del compilado."
+    },
+    {
+      "id": "layer:documentation",
+      "name": "Documentacion del Proyecto",
+      "description": "Documentacion funcional y de uso: README.md describe instalacion, ejecucion, estructura con la regla de dependencias ui/ -> core/, navegacion entre pantallas y dataset del Reto 2, y requisitos.md actua como especificacion ejecutable de 12 secciones con sus criterios de aceptacion."
+    },
+    {
+      "id": "layer:assets",
+      "name": "Recursos y Dataset de Muestra",
+      "description": "Recursos binarios de imagen del proyecto: la muestra WebP de mango entero sobre mesa de piedra que sirve de referencia visual del dataset del Reto 2 y que la aplicacion no carga en runtime."
+    }
+  ]
+}

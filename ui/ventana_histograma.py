@@ -6,6 +6,19 @@ de rango. Los sliders acotan el rango [inf, sup] y alimentan el contorno
 binario (mascara por rango del canal + limpieza opcional de huecos e
 islas). "Quitar fondo" es solo preview local (no escribe estado) y
 "Guardar" escribe la vista previa tal cual.
+<<<<<<< Updated upstream
+=======
+
+La pantalla tiene DOS modos de analisis. "umbral" (predeterminado) es la
+pantalla descrita arriba. "bordes" reemplaza grafico/fila canal/fila
+"Limpiar mascara" por controles de deteccion de bordes (metodo +
+umbrales t1/t2) y vuelve clicable el contorno binario: cada clic rellena
+la region cerrada por los bordes y acumula en estado.mascara (ver
+core/bordes.py). El boton "Quitar fondo"/"Restaurar original" es el
+MISMO en los dos modos, pero cambia de sitio: en umbral va en la fila
+de la derecha y en bordes debajo del cuadro "Canal activo" de la
+rejilla.
+>>>>>>> Stashed changes
 """
 import os
 
@@ -57,8 +70,13 @@ class VentanaHistograma(QWidget):
         # --- miniaturas 2x2 ---
         mini = QGridLayout()
         mini.setSpacing(tokens.ESPACIO_ITEM)
+<<<<<<< Updated upstream
         self.mini_original = ProporcionImagen(
             tokens.RAZON_HISTO_IMG, (250, 250), self)
+=======
+        self._rejilla = mini
+        self.mini_original = ProporcionImagen(tokens.RAZON_HISTO_IMG, (250, 250), self)
+>>>>>>> Stashed changes
         self.mini_original.setObjectName("lienzoImagen")
         self.mini_canal = ProporcionImagen(
             tokens.RAZON_HISTO_IMG, (250, 250), self)
@@ -101,6 +119,7 @@ class VentanaHistograma(QWidget):
 
         fila_fondo = QHBoxLayout()
         fila_fondo.setSpacing(tokens.ESPACIO_ITEM)
+        self._fila_fondo = fila_fondo
         self.boton_fondo = QPushButton("Quitar fondo")
         self.boton_fondo.setFixedSize(tokens.BTN_ANCHO, tokens.BTN_ALTO)
         self.boton_fondo.clicked.connect(self.alternar_fondo)
@@ -311,11 +330,179 @@ class VentanaHistograma(QWidget):
     def alternar_fondo(self):
         # Preview local: usa la mascara viva del unico camino. No escribe
         # `estado`: histograma y contorno quedan intactos.
+        if self._modo == "bordes" and not self._hay_relleno():
+            # Nada falla en silencio: sin relleno no hay fondo que quitar.
+            self.lbl_aviso.setText(
+                "no hay relleno: haz clic en el contorno para llenar el objeto"
+            )
+            return
         self._fondo_activo = not self._fondo_activo
         self.boton_fondo.setText("Restaurar original" if self._fondo_activo
                                  else "Quitar fondo")
         self.refrescar()
 
+<<<<<<< Updated upstream
+=======
+    def _hay_relleno(self) -> bool:
+        """Hay alguna region rellena en la mascara compartida."""
+        mascara = self.estado.mascara
+        return mascara is not None and bool(np.any(mascara))
+
+    def _colocar_boton_fondo(self, bordes: bool) -> None:
+        """El boton 'Quitar fondo' cambia de sitio con el modo: en umbral
+        va en la fila de la derecha (junto a 'Limpiar mascara'); en bordes
+        va en la rejilla de miniaturas, DEBAJO del cuadro 'Canal activo'.
+        Es el MISMO boton en los dos modos: un solo estado y un solo texto.
+        """
+        if bordes:
+            self._fila_fondo.removeWidget(self.boton_fondo)
+            self._rejilla.addWidget(self.boton_fondo, 3, 1)
+        else:
+            self._rejilla.removeWidget(self.boton_fondo)
+            self._fila_fondo.insertWidget(0, self.boton_fondo)
+
+    # --- modos umbral / bordes ----------------------------------------
+    def alternar_modo(self):
+        # El texto del boton muestra SIEMPRE el modo activo. No escribe
+        # `estado` (salvia del relleno, que solo crece por clics).
+        self._modo = "bordes" if self._modo == "umbral" else "umbral"
+        self.boton_modo.setText(
+            "Detección de bordes" if self._modo == "bordes" else "Detección de umbral"
+        )
+        # El preview de quitar fondo es de cada modo: al cambiar, se
+        # reinicia (el relleno acumulado NO se pierde).
+        self._fondo_activo = False
+        self.boton_fondo.setText("Quitar fondo")
+        self._aplicar_modo()
+
+    def _aplicar_modo(self):
+        """Visibilidad de cada fila + recarga de sliders segun el modo.
+
+        El orden importa: `self._modo` ya cambio ANTES de llamar, porque
+        setValue dispara valueChanged -> al_cambiar_rango, que ramifica
+        por modo (cargar el mismo valor es inocuo; cargar el valor del
+        modo equivocado pisaria estado.inf/sup).
+        """
+        bordes = self._modo == "bordes"
+        # La vista grande SIEMPRE se ve: en umbral muestra el histograma,
+        # en bordes el mapa de bordes (tambien clicable, §6.4).
+        self.vista_histograma.setVisible(True)
+        self.lbl_canal.setVisible(not bordes)
+        self.valor_canal.setVisible(not bordes)
+        self.boton_canal.setVisible(not bordes)
+        self.boton_limpiar.setVisible(not bordes)
+        # El boton 'Quitar fondo' esta siempre visible: cambia de sitio
+        # con el modo (fila derecha en umbral, rejilla en bordes).
+        self.boton_fondo.setVisible(True)
+        self._colocar_boton_fondo(bordes)
+        self.lbl_metodo.setVisible(bordes)
+        self.boton_metodo.setVisible(bordes)
+        self.boton_vaciar.setVisible(bordes)
+        self.lbl_inf.setVisible(bordes)
+        self.lbl_sup.setVisible(bordes)
+        inf, sup = (
+            (self._t1, self._t2) if bordes else (self.estado.inf, self.estado.sup)
+        )
+        for slider, valor in ((self.slider_inf, inf), (self.slider_sup, sup)):
+            slider.blockSignals(True)
+            slider.setValue(valor)
+            slider.blockSignals(False)
+        self.refrescar()
+
+    def rotar_metodo(self):
+        metodos = core_bordes.METODOS
+        indice = (metodos.index(self._metodo) + 1) % len(metodos)
+        self._metodo = metodos[indice]
+        self.boton_metodo.setText(self._metodo.capitalize())
+        self.refrescar()
+
+    def vaciar_relleno(self):
+        # Vaciar relleno = mascara compartida a None: tambien descarta la
+        # de "Quitar fondo" de la principal (documentado en 6.4).
+        self.estado.mascara = None
+        self.refrescar()
+
+    def al_rellenar(self, ix: int, iy: int) -> None:
+        """Clic sobre el mapa de bordes: rellena la region y acumula con OR."""
+        if self._modo != "bordes" or self.estado.original is None:
+            return
+        if self._mapa_bordes is None:
+            return
+        nueva, hubo = core_bordes.rellenar_bordes(
+            self._mapa_bordes, self.estado.mascara, (ix, iy)
+        )
+        if hubo:
+            self.estado.mascara = nueva
+            self.refrescar()
+            # El aviso va DESPUES del refresco: el refresco limpia el chip.
+            self.lbl_aviso.setText(self._aviso_relleno())
+        else:
+            # Nada falla en silencio: el clic no cerro region nueva
+            # (fondo abierto, punto ya lleno o pared sin libre cercano).
+            self.lbl_aviso.setText("clic sin efecto: sin region cerrada ahi")
+
+    def _aviso_relleno(self) -> str:
+        """Que paso con el ultimo relleno: nada, cerrado con el marco de
+        la imagen, o el contorno tiene un hueco y se llevo el fondo."""
+        mascara = self.estado.mascara
+        if mascara is None or not np.any(mascara):
+            return ""
+        toca_borde = bool(
+            mascara[0, :].any()
+            or mascara[-1, :].any()
+            or mascara[:, 0].any()
+            or mascara[:, -1].any()
+        )
+        cobertura = float(np.count_nonzero(mascara)) / mascara.size
+        if cobertura > 0.90:
+            return "el contorno tiene un hueco: el relleno cubre casi toda la imagen"
+        if toca_borde:
+            return "objeto cerrado con el borde de la imagen"
+        return ""
+
+    def _refrescar_bordes(self, base):
+        """Miniaturas + vista grande en modo bordes.
+
+        - Imagen original: base con el relleno acumulado superpuesto; si
+          el preview de "Quitar fondo" esta activo, el fondo se deja en
+          negro y solo queda el objeto relleno.
+        - Canal activo: canal con los bordes superpuestos (tambien sin
+          fondo si el preview esta activo).
+        - Contorno binario y vista grande: el mapa de bordes.
+        """
+        letra = self._letra()
+        comp = canales.componente(base, self.estado.espacio, letra)
+        mapa = core_bordes.detectar_bordes(comp, self._metodo, self._t1, self._t2)
+        self._mapa_bordes = mapa
+        self.lbl_aviso.setText("")
+        hay = self._hay_relleno()
+        vista_orig = base.copy()
+        if hay:
+            mascara = self.estado.mascara
+            if self._fondo_activo:
+                # Preview: solo el objeto, el fondo en negro.
+                vista_orig[mascara == 0] = 0
+            else:
+                mascara3 = mascara > 0
+                vista_orig[mascara3] = (
+                    0.5 * vista_orig[mascara3].astype(np.float32)
+                    + 0.5 * np.array(_ACENTO_RGB, np.float32)
+                ).astype(np.uint8)
+        self.mini_original.set_imagen(a_pixmap(vista_orig))
+        canal_rgb = np.dstack([comp, comp, comp])
+        if hay and self._fondo_activo:
+            dentro = self.estado.mascara > 0
+            canal_rgb[~dentro] = 0
+            bordes_visibles = (mapa > 0) & dentro
+        else:
+            bordes_visibles = mapa > 0
+        canal_rgb[bordes_visibles] = _ACENTO_RGB
+        self.mini_canal.set_imagen(a_pixmap(canal_rgb))
+        pix_mapa = a_pixmap(mapa)
+        self.mini_contorno.set_imagen(pix_mapa)
+        self.vista_histograma.set_imagen(pix_mapa)
+
+>>>>>>> Stashed changes
     # --- guardado -----------------------------------------------------
     def guardar_imagen(self):
         ruta, _ = QFileDialog.getSaveFileName(self, "Guardar imagen", "",

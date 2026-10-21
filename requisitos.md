@@ -180,6 +180,11 @@ analizador/
 │   ├── segmentacion.py      # grabcut, otsu, limpieza de máscara
 │   ├── canales.py           # extracción RGB / YCM y modos color | blanco y negro
 │   ├── histograma.py        # cálculo del histograma y percentiles
+<<<<<<< Updated upstream
+=======
+│   ├── bordes.py            # detección de bordes (canny/sobel/laplaciano) y
+│                            #   relleno por objeto y clics (acumula en la máscara)
+>>>>>>> Stashed changes
 │   └── recorte.py           # recorte y redimensionado
 └── assets/
     └── icon.ico
@@ -858,7 +863,7 @@ Elementos:
 | 2 miniaturas de canal | **250×250** c/u | Canal activo + el siguiente en el orden del espacio (RGB: R→G→B; YCM: Y→C→M) |
 | Selector de canal | **200×60** | Botón que rota el canal activo: `R/G/B` en RGB, `Y/C/M` en YCM. Al entrar queda activo el **primero del espacio** (`R` en RGB, `Y` en YCM). Es el único control que cambia el campo "Canal actual" |
 | `Canal actual:` | etiqueta + valor | Muestra el espacio de color (**RGB** o **YCM**) y el canal activo en español |
-| Botón "Quitar fondo" / "Restaurar original" | **200×60** | Un **único** botón que alterna entre quitar el fondo y restaurarlo, con el modelo elegido. Mismo patrón que en la pantalla principal (§6.1) |
+| Botón "Quitar fondo" / "Restaurar original" | **200×60** | Un **único** botón que alterna entre quitar el fondo y restaurarlo, con el modelo elegido. Mismo patrón que en la pantalla principal (§6.1). **Cambia de sitio con el modo**: en umbral está en la fila de la derecha (junto a "Limpiar máscara") y en bordes debajo del cuadro "Canal activo" de la rejilla de miniaturas |
 | Canal de contorno binario | **250×250** | Muestra el contorno del objeto en blanco/negro |
 | Gráfico del histograma | **467×333** | Frecuencia de píxeles por canal |
 | Marcador del slider inferior | ancho 3 px, alto completo | Línea vertical **naranja** + flecha debajo |
@@ -1110,6 +1115,22 @@ Comportamiento:
 - **Guardar imagen:** `QFileDialog.getSaveFileName` con `*.png`; escribe **siempre RGBA con el fondo transparente** (`np.dstack([rgb, mascara])`, §7.5). El fondo negro de `preprocesada` es solo para mostrar en pantalla.
 - **Guardar máscara:** guarda la máscara binaria en escala de grises (blanco = objeto).
 
+<<<<<<< Updated upstream
+=======
+#### Modos umbral / bordes y relleno por clics (agregado)
+
+La pantalla tiene DOS modos de análisis, alternados por el botón de la cabecera (el texto muestra el modo ACTIVO; `al_entrar()` siempre restaura el modo umbral, sin tocar la máscara acumulada):
+
+- **Umbral** (predeterminado): todo lo descrito arriba — gráfico + barras, fila "Canal actual", fila "Quitar fondo"/"Limpiar máscara" y sliders como rango `[inf, sup]`.
+- **Bordes**: se ocultan el gráfico, la fila "Canal actual" y el botón "Limpiar máscara". El botón "Quitar fondo"/"Restaurar original" **no se oculta: cambia de sitio** y pasa a la rejilla de miniaturas, debajo del cuadro "Canal activo" (es el mismo botón, con el mismo estado y el mismo texto). Aparecen la fila "Método:" (botón que cicla canny → sobel → laplaciano), el botón "Vaciar relleno" y las etiquetas "Umbral inferior"/"Umbral superior": los dos sliders pasan a ser los umbrales `t1`/`t2` del método (`t1`/`t2` = low/high en canny; en sobel y laplaciano `t2` es el corte de magnitud). Cambiar de método o mover los umbrales recalcula el mapa de bordes; el relleno YA acumulado no se pierde (solo afecta a los clics siguientes).
+
+En modo bordes las tres miniaturas se afectan por el método: la original muestra la base con el relleno acumulado superpuesto en el color de acento, el canal activo muestra el canal con los bordes superpuestos, y "Contorno binario" muestra el mapa de bordes. El área grande (donde estaba el histograma) también muestra el mapa de bordes. **Contorno binario y área grande son clicables**: cada clic rellena el **objeto completo** que encierran los bordes, de una sola vez y **sin huecos**: los bordes internos (textura, manchas, vetas) dejan de ser paredes y pasan a ser relleno, así que un clic basta y el interior no queda partido en regiones. El relleno es **por objeto**: las paredes son los bordes detectados dilatados 3×3 (para sellar huecos de 1-2 px); el **fondo** son las regiones libres que tocan el borde de la imagen, y todo lo demás (paredes + regiones interiores) forma un objeto; la región del objeto es su componente conexo (conectividad 8) menos el anillo exterior —las paredes pegadas al fondo—, de modo que la silueta coincide con el contorno detectado. La región se acumula con OR en `estado.mascara` — la misma máscara compartida que usan "Quitar fondo" de la principal y el guardado PSD. Un clic sobre el **fondo abierto** de un objeto cerrado no llena nada: rellenaría el fondo entero, así que se descarta y el chip de aviso lo informa (nada falla en silencio); lo mismo ocurre con una arista suelta que no encierra ninguna región.
+
+**El objeto se cierra con el marco de la imagen.** Una foto de una fruta llena el cuadro: su contorno sale de la imagen y nunca cierra, así que el relleno no tenía región que llenar. Ahora, cuando la región del clic llega al borde de la imagen, el **borde del cuadro hace de pared**: el contorno se cierra con el marco y el objeto se rellena igual (el marco cuenta como parte de la silueta, por eso la máscara llega hasta el borde). El muro del objeto es su **contorno principal** (el componente de bordes que separa el objeto del fondo), no los bordes internos: por eso el interior queda **sólido**, sin las líneas de textura. Si el contorno además está roto por el medio (un hueco en medio de la curva), se dilata un poco —radio proporcional al lado menor de la imagen— para cerrar ese hueco y se devuelve el grosor a la región con la misma dilatación. El chip de aviso informa de lo que pasó: **"objeto cerrado con el borde de la imagen"** cuando la región llegó al borde del cuadro, y **"el contorno tiene un hueco: el relleno cubre casi toda la imagen"** cuando el hueco no se pudo cerrar y el relleno se llevó el fondo (en ese caso la miniatura lo muestra y "Vaciar relleno" lo deshace). Al volver a umbral, el contorno, el preview y los guardados usan esa máscara (la intersección con el rango ya existente). "Vaciar relleno" pone `estado.mascara = None` (también descarta la máscara de "Quitar fondo" de la principal). En modo bordes, "Guardar máscara" exporta el relleno tal cual, sin intersecar con el rango.
+
+**"Quitar fondo" en modo bordes.** El botón (el mismo que en umbral, movido debajo del cuadro "Canal activo") alterna el **preview local** con la máscara acumulada: "Quitar fondo" deja en la miniatura original y en el canal activo **solo el objeto relleno, con el fondo en negro** (los bordes que quedan fuera del objeto tampoco se dibujan); "Restaurar original" vuelve a la vista normal, donde la imagen original muestra el relleno marcado en el color de acento. Como en umbral, es **solo preview**: no escribe `estado`. Si todavía no hay nada relleno el botón **no hace nada y avisa** ("no hay relleno: haz clic en el contorno para llenar el objeto"): sin máscara no hay fondo que quitar y la imagen no debe quedar en negro. Al cambiar de modo el preview se reinicia (el relleno acumulado no se pierde).
+
+>>>>>>> Stashed changes
 #### Campo "Canal actual" (obligatorio)
 
 El campo de texto de la pantalla de histograma **no** muestra el modo `color` / `blanco y negro`: muestra **qué espacio de color y qué canal se está analizando**, en el formato:

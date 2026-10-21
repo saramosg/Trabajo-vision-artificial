@@ -1,0 +1,3834 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "Trabajo-vision-artificial",
+    "languages": [
+      "markdown",
+      "python",
+      "qss",
+      "spec",
+      "txt",
+      "webp"
+    ],
+    "frameworks": [
+      "PySide6",
+      "OpenCV",
+      "NumPy",
+      "Pillow",
+      "matplotlib",
+      "psd-tools",
+      "PyInstaller"
+    ],
+    "description": "Aplicación de escritorio en PySide6 para el análisis de imágenes: preprocesado con eliminación de fondo (GrabCut u OTSU), canales de color RGB/YCM, histograma de color y recorte con marco fijo, con la lógica de imagen aislada en un núcleo (core/) comprobable sin abrir ventanas. Incluye además el dataset de frutas del Reto 2 (imagenes/) para la detección de fitopatógenos poscosecha.",
+    "analyzedAt": "2026-10-21T00:06:28.030Z",
+    "gitCommitHash": "aaa4ca05f61eeb016d73d73f0d1b44b10a490e55"
+  },
+  "nodes": [
+    {
+      "id": "file:core/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "core/__init__.py",
+      "summary": "Paquete `core` que agrupa la logica de imagen sin Qt; su docstring fija la regla de dependencia: `ui/` importa desde aqui, nunca al reves.",
+      "tags": [
+        "paquete",
+        "punto-de-entrada",
+        "arquitectura",
+        "capa-nucleo"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Modulo sin codigo ejecutable: su valor es documental, declara la frontera entre la capa de procesamiento y la de presentacion."
+    },
+    {
+      "id": "file:core/recorte.py",
+      "type": "file",
+      "name": "recorte.py",
+      "filePath": "core/recorte.py",
+      "summary": "Implementa el recorte libre: remuestrea una ventana arbitraria de la imagen a un lienzo cuadrado de lado fijo, rellenando en blanco la parte que queda fuera.",
+      "tags": [
+        "procesamiento-imagen",
+        "recorte",
+        "opencv",
+        "utilidad",
+        "tested"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Remuestreo y relleno se resuelven en una sola llamada a `cv2.warpAffine` con `BORDER_CONSTANT` y un `borderValue` por canal, segun sea en color o en grises."
+    },
+    {
+      "id": "file:main.py",
+      "type": "file",
+      "name": "main.py",
+      "filePath": "main.py",
+      "summary": "Punto de entrada de la aplicacion de escritorio: crea el QApplication, carga la hoja de estilos global `styles.qss` resolviendo la ruta del ejecutable y muestra la ventana principal.",
+      "tags": [
+        "punto-de-entrada",
+        "bootstrap",
+        "pyside6",
+        "estilos"
+      ],
+      "complexity": "simple",
+      "languageNotes": "La ruta de recursos se resuelve con `getattr(sys, \"_MEIPASS\", ...)`, el mecanismo estandar de PyInstaller para localizar archivos empaquetados."
+    },
+    {
+      "id": "file:ui/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "ui/__init__.py",
+      "summary": "Paquete `ui` que agrupa pantallas, widgets y decisiones de diseno, dejando toda la logica de imagen en `core/`.",
+      "tags": [
+        "paquete",
+        "punto-de-entrada",
+        "arquitectura",
+        "capa-presentacion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ui/tokens.py",
+      "type": "file",
+      "name": "tokens.py",
+      "filePath": "ui/tokens.py",
+      "summary": "Fuente unica de verdad de los tokens de diseno (colores, medidas, tipografias, radios y proporciones) que alimentan el layout de todas las pantallas.",
+      "tags": [
+        "tokens",
+        "configuracion",
+        "tema",
+        "constantes"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Solo declara constantes de nivel de modulo; `styles.qss` es CSS plano y no puede leerlas, asi que sus valores estan duplicados a mano y deben mantenerse sincronizados."
+    },
+    {
+      "id": "file:ui/ventana_principal.py",
+      "type": "file",
+      "name": "ventana_principal.py",
+      "filePath": "ui/ventana_principal.py",
+      "summary": "Define la pantalla de preprocesado (cargar imagen, elegir modelo grabcut/otsu, quitar o restaurar el fondo) y la ventana principal que centraliza las cinco pantallas en un QStackedWidget con atajos de teclado.",
+      "tags": [
+        "interfaz",
+        "ventana",
+        "navegacion",
+        "preprocesado",
+        "pyside6"
+      ],
+      "complexity": "complex",
+      "languageNotes": "La navegacion entre pantallas se resuelve con `QStackedWidget` mas señales `Signal` de PySide6, de modo que la pantalla de preprocesado no conoce la implementacion de las demas."
+    },
+    {
+      "id": "file:ui/ventana_recorte.py",
+      "type": "file",
+      "name": "ventana_recorte.py",
+      "filePath": "ui/ventana_recorte.py",
+      "summary": "Pantalla de recorte con marco fijo en pantalla: la imagen se escala con un slider y se panea por arrastre, y `recorte_libre` exporta el encuadre a 512 px con relleno blanco habilitando despues el guardado.",
+      "tags": [
+        "interfaz",
+        "recorte",
+        "zoom",
+        "opencv",
+        "pyside6"
+      ],
+      "complexity": "complex",
+      "languageNotes": "El velo oscuro del marco fijo se pinta en `drawForeground` con `resetTransform`, porque debe dibujarse en coordenadas de pantalla y no bajo la transformacion de la escena."
+    },
+    {
+      "id": "file:ui/widgets.py",
+      "type": "file",
+      "name": "widgets.py",
+      "filePath": "ui/widgets.py",
+      "summary": "Widgets reutilizables de imagen: conversion de arrays numpy a QPixmap y una etiqueta que encaja la foto en su cuadro sin deformarla.",
+      "tags": [
+        "widgets",
+        "utilidad",
+        "conversion-imagen",
+        "pyside6",
+        "tested"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "`QImage` exige un buffer C-contiguo y lanza `BufferError` con vistas con strides discontinuous, por eso `a_pixmap` fuerza `np.ascontiguousarray` antes de copiar el buffer."
+    },
+    {
+      "id": "function:core/recorte.py:recorte_libre",
+      "type": "function",
+      "name": "recorte_libre",
+      "filePath": "core/recorte.py",
+      "lineRange": [
+        16,
+        35
+      ],
+      "summary": "Remuestrea con `cv2.warpAffine` la ventana (x, y, ancho, alto) seleccionada sobre la imagen a un lienzo cuadrado de `lado` pixeles, dejando en blanco lo que cae fuera de la imagen.",
+      "tags": [
+        "recorte",
+        "opencv",
+        "transformacion",
+        "utilidad"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:main.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "main.py",
+      "lineRange": [
+        20,
+        31
+      ],
+      "summary": "Arranque de la aplicacion: crea el QApplication, aplica la hoja de estilos global y muestra la ventana principal con el tamano minimo definido en los tokens.",
+      "tags": [
+        "punto-de-entrada",
+        "bootstrap",
+        "pyside6"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:ui/widgets.py:a_pixmap",
+      "type": "function",
+      "name": "a_pixmap",
+      "filePath": "ui/widgets.py",
+      "lineRange": [
+        16,
+        37
+      ],
+      "summary": "Convierte un array numpy RGB, RGBA o en escala de grises a QPixmap, distinguiendo el formato segun la dimension del array y copiando el buffer para que Qt lo mantenga vivo.",
+      "tags": [
+        "utilidad",
+        "conversion-imagen",
+        "numpy",
+        "pyside6"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:ui/ventana_principal.py:ZonaImagen",
+      "type": "class",
+      "name": "ZonaImagen",
+      "filePath": "ui/ventana_principal.py",
+      "lineRange": [
+        37,
+        51
+      ],
+      "summary": "Zona de previsualizacion clickeable que hereda de `ProporcionImagen` y emite su senal `clicked` cuando se pulsa el boton izquierdo.",
+      "tags": [
+        "widget",
+        "componente",
+        "senal",
+        "previsualizacion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "type": "class",
+      "name": "PantallaPreprocesado",
+      "filePath": "ui/ventana_principal.py",
+      "lineRange": [
+        54,
+        183
+      ],
+      "summary": "Pantalla principal de preprocesado: permite elegir imagen, alternar el modelo de segmentacion (grabcut/otsu), quitar o restaurar el fondo y navegar a las pantallas de canales o de recorte.",
+      "tags": [
+        "pantalla",
+        "preprocesado",
+        "segmentacion",
+        "navegacion"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "type": "class",
+      "name": "VentanaPrincipal",
+      "filePath": "ui/ventana_principal.py",
+      "lineRange": [
+        186,
+        251
+      ],
+      "summary": "QMainWindow que hospeda las cinco pantallas en un QStackedWidget, comparte el estado `EstadoImagen` por referencia, expone senales de cambio y define atajos de teclado entre RGB, YCM y la pantalla principal.",
+      "tags": [
+        "ventana",
+        "navegacion",
+        "contenedor",
+        "atajos"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:ui/ventana_recorte.py:VistaRecorte",
+      "type": "class",
+      "name": "VistaRecorte",
+      "filePath": "ui/ventana_recorte.py",
+      "lineRange": [
+        23,
+        179
+      ],
+      "summary": "QGraphicsView con marco fijo centrado en el viewport que dibuja un velo oscuro fuera del encuadre, permite zoom y paneo por arrastre y expone la seleccion en coordenadas de la imagen original.",
+      "tags": [
+        "widget",
+        "recorte",
+        "zoom",
+        "paneo",
+        "pyside6"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "type": "class",
+      "name": "VentanaRecorte",
+      "filePath": "ui/ventana_recorte.py",
+      "lineRange": [
+        182,
+        405
+      ],
+      "summary": "Pantalla de recorte que combina la vista con zoom, la vista previa del resultado y las acciones de redimensionar a 512 px, guardar copia y sobrescribir el archivo original.",
+      "tags": [
+        "pantalla",
+        "recorte",
+        "guardado",
+        "previsualizacion"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:ui/widgets.py:ProporcionImagen",
+      "type": "class",
+      "name": "ProporcionImagen",
+      "filePath": "ui/widgets.py",
+      "lineRange": [
+        43,
+        86
+      ],
+      "summary": "QLabel que dibuja la imagen escalada para caber dentro de su cuadro, centrada y sin deformar, recalculando el ajuste en cada resize.",
+      "tags": [
+        "widget",
+        "componente",
+        "escalado",
+        "pyside6"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:core/canales.py",
+      "type": "file",
+      "name": "canales.py",
+      "filePath": "core/canales.py",
+      "summary": "Modulo de calculo puro (sin UI) que extrae los componentes 2D de los canales RGB e YCM de una imagen y los convierte a los modos de visualizacion 'color' y 'blanco y negro', ademas de etiquetar el canal activo en espanol.",
+      "tags": [
+        "core",
+        "procesamiento-imagen",
+        "canales",
+        "numpy",
+        "utility"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Los promedios YCM se calculan en float32 y se castean a uint8 al final para evitar saturacion por desbordamiento."
+    },
+    {
+      "id": "function:core/canales.py:canal_rgb",
+      "type": "function",
+      "name": "canal_rgb",
+      "filePath": "core/canales.py",
+      "lineRange": [
+        26,
+        28
+      ],
+      "summary": "Devuelve la componente 2D (alto x ancho) del canal R, G o B indexando el tercer eje del array de la imagen.",
+      "tags": [
+        "canales",
+        "numpy",
+        "extraccion",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/canales.py:componente_ycm",
+      "type": "function",
+      "name": "componente_ycm",
+      "filePath": "core/canales.py",
+      "lineRange": [
+        31,
+        47
+      ],
+      "summary": "Calcula el componente 2D de Y, C o M como promedio de dos canales (Y=(R+G)/2, C=(G+B)/2, M=(R+B)/2) en float32 y lo castea a uint8; lanza ValueError si la letra no es valida.",
+      "tags": [
+        "ycm",
+        "numpy",
+        "conversion",
+        "validacion"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:core/canales.py:componente",
+      "type": "function",
+      "name": "componente",
+      "filePath": "core/canales.py",
+      "lineRange": [
+        50,
+        56
+      ],
+      "summary": "Despacha al extractor de componente correcto segun el espacio de color (RGB o YCM) y valida que el espacio sea uno de los dos admitidos.",
+      "tags": [
+        "dispatch",
+        "canales",
+        "validacion",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/canales.py:modo_color",
+      "type": "function",
+      "name": "modo_color",
+      "filePath": "core/canales.py",
+      "lineRange": [
+        59,
+        81
+      ],
+      "summary": "Construye el array 3D con la representacion en color del canal pedido (R, G, B, Y, C o M) mediante np.dstack, dejando en cero los componentes no correspondientes.",
+      "tags": [
+        "color",
+        "numpy",
+        "renderizado",
+        "canales"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:core/canales.py:modo_blanco_y_negro",
+      "type": "function",
+      "name": "modo_blanco_y_negro",
+      "filePath": "core/canales.py",
+      "lineRange": [
+        84,
+        86
+      ],
+      "summary": "Devuelve el componente 2D del canal tal cual, ya que en blanco y negro la imagen resultante es monocromatica.",
+      "tags": [
+        "blanco-y-negro",
+        "canales",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/canales.py:aplicar_modo",
+      "type": "function",
+      "name": "aplicar_modo",
+      "filePath": "core/canales.py",
+      "lineRange": [
+        89,
+        95
+      ],
+      "summary": "Punto de entrada que devuelve el array del canal segun el modo 'color' o 'blanco y negro', componiendo el componente 2D cuando el modo es monocromatico.",
+      "tags": [
+        "dispatch",
+        "modos",
+        "canales",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/canales.py:etiqueta_canal",
+      "type": "function",
+      "name": "etiqueta_canal",
+      "filePath": "core/canales.py",
+      "lineRange": [
+        98,
+        102
+      ],
+      "summary": "Genera el texto en espanol del canal activo del tipo 'RGB - Azul' o 'YCM - Magenta' a partir del espacio y la letra.",
+      "tags": [
+        "etiqueta",
+        "i18n",
+        "canales",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ui/helpers.py",
+      "type": "file",
+      "name": "helpers.py",
+      "filePath": "ui/helpers.py",
+      "summary": "Ayudas compartidas por las pantallas de la aplicacion: un constructor de QPushButton con tamano fijo de tokens y un envoltorio que traslada el contenido de un layout raiz a un QScrollArea.",
+      "tags": [
+        "ui",
+        "utility",
+        "helpers",
+        "widgets"
+      ],
+      "complexity": "simple",
+      "languageNotes": "envolver_en_scroll drena el layout con takeAt(0) para reubicar widgets, layouts y spacers dentro de un QScrollArea resizable."
+    },
+    {
+      "id": "function:ui/helpers.py:boton",
+      "type": "function",
+      "name": "boton",
+      "filePath": "ui/helpers.py",
+      "lineRange": [
+        10,
+        17
+      ],
+      "summary": "Crea un QPushButton con el texto indicado y, opcionalmente, object_name y tamano fijo, centralizando las medidas 200x60 / 160x48 definidas en los tokens.",
+      "tags": [
+        "factory",
+        "boton",
+        "widgets",
+        "ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "function",
+      "name": "envolver_en_scroll",
+      "filePath": "ui/helpers.py",
+      "lineRange": [
+        20,
+        35
+      ],
+      "summary": "Traslada todos los widgets, layouts y spacers del layout raiz a un QWidget interno y lo inserta en un QScrollArea resizable para evitar contenido recortado.",
+      "tags": [
+        "ui",
+        "scroll",
+        "layout",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:ui/ventana_canales.py",
+      "type": "file",
+      "name": "ventana_canales.py",
+      "filePath": "ui/ventana_canales.py",
+      "summary": "Implementa la pantalla base de canales: tres lienzos clicables (uno por componente del espacio), selector de modo color/blanco y negro, acceso al histograma y boton REGRESAR, alimentandose siempre de la imagen original.",
+      "tags": [
+        "ui",
+        "pantalla",
+        "canales",
+        "pyside6",
+        "componente"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Aplica el patron signal/slot de Qt (LienzoCanal.clicked) con lambdas de captura por defecto para asociar cada lienzo a su letra de canal."
+    },
+    {
+      "id": "class:ui/ventana_canales.py:LienzoCanal",
+      "type": "class",
+      "name": "LienzoCanal",
+      "filePath": "ui/ventana_canales.py",
+      "lineRange": [
+        20,
+        34
+      ],
+      "summary": "Lienzo de canal cliceable que extiende ProporcionImagen, emite la signal clicked con el boton izquierdo y usa el cursor de mano para indicar que es interactivo.",
+      "tags": [
+        "component",
+        "widget",
+        "signal",
+        "canales"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:ui/ventana_canales.py:VentanaCanales",
+      "type": "class",
+      "name": "VentanaCanales",
+      "filePath": "ui/ventana_canales.py",
+      "lineRange": [
+        37,
+        143
+      ],
+      "summary": "Pantalla base reutilizable por los espacios RGB y YCM: construye la cabecera con los datos de la imagen y los botones de modo, histograma y regresar, y refresca los tres lienzos con el canal seleccionado.",
+      "tags": [
+        "component",
+        "pantalla",
+        "ui",
+        "pyside6",
+        "estado"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:ui/ventana_rgb.py",
+      "type": "file",
+      "name": "ventana_rgb.py",
+      "filePath": "ui/ventana_rgb.py",
+      "summary": "Pantalla concreta de canales RGB: subclase de VentanaCanales que fija el espacio 'RGB' con las letras R, G y B.",
+      "tags": [
+        "ui",
+        "pantalla",
+        "canales",
+        "rgb"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:ui/ventana_rgb.py:VentanaRGB",
+      "type": "class",
+      "name": "VentanaRGB",
+      "filePath": "ui/ventana_rgb.py",
+      "lineRange": [
+        5,
+        7
+      ],
+      "summary": "Subclase de VentanaCanales que inicializa la pantalla con el espacio de color 'RGB'.",
+      "tags": [
+        "component",
+        "pantalla",
+        "rgb",
+        "herencia"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ui/ventana_ycm.py",
+      "type": "file",
+      "name": "ventana_ycm.py",
+      "filePath": "ui/ventana_ycm.py",
+      "summary": "Pantalla concreta de canales YCM: subclase de VentanaCanales que fija el espacio 'YCM' con las letras Y, C y M.",
+      "tags": [
+        "ui",
+        "pantalla",
+        "canales",
+        "ycm"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:ui/ventana_ycm.py:VentanaYCM",
+      "type": "class",
+      "name": "VentanaYCM",
+      "filePath": "ui/ventana_ycm.py",
+      "lineRange": [
+        5,
+        7
+      ],
+      "summary": "Subclase de VentanaCanales que inicializa la pantalla con el espacio de color 'YCM'.",
+      "tags": [
+        "component",
+        "pantalla",
+        "ycm",
+        "herencia"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:core/imagen.py",
+      "type": "file",
+      "name": "imagen.py",
+      "filePath": "core/imagen.py",
+      "summary": "Modulo de entrada/salida de imagenes: carga RGB de 8 bits, guardado en PNG/RGB/PSD y definicion del dataclass EstadoImagen que las cinco pantallas comparten por referencia.",
+      "tags": [
+        "io-imagen",
+        "estado-compartido",
+        "persistencia",
+        "utilidad",
+        "tested"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Dataclass con anotaciones de tipo union (str | None) propias de Python 3.10+; la importacion de psd_tools es perezosa dentro de la funcion para que el resto de la app no dependa de esa libreria."
+    },
+    {
+      "id": "class:core/imagen.py:EstadoImagen",
+      "type": "class",
+      "name": "EstadoImagen",
+      "filePath": "core/imagen.py",
+      "lineRange": [
+        22,
+        39
+      ],
+      "summary": "Contenedor de estado compartido por las pantallas: guarda la imagen original (RGB uint8 que nunca se modifica), la preprocesada, la mascara, el modelo de segmentacion, el modo, el canal activo, el rango del histograma y el recorte.",
+      "tags": [
+        "data-model",
+        "estado-compartido",
+        "dataclass"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/imagen.py:cargar_imagen",
+      "type": "function",
+      "name": "cargar_imagen",
+      "filePath": "core/imagen.py",
+      "lineRange": [
+        42,
+        50
+      ],
+      "summary": "Carga la imagen con IMREAD_COLOR (8 bits, 3 canales) y la convierte de BGR a RGB, lanzando FileNotFoundError si el archivo no se puede leer.",
+      "tags": [
+        "io-imagen",
+        "carga",
+        "opencv",
+        "conversion-rgb"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/imagen.py:guardar_imagen",
+      "type": "function",
+      "name": "guardar_imagen",
+      "filePath": "core/imagen.py",
+      "lineRange": [
+        53,
+        56
+      ],
+      "summary": "Guarda la imagen como PNG RGBA con fondo transparente, apilando la mascara como canal alfa con np.dstack.",
+      "tags": [
+        "io-imagen",
+        "guardado",
+        "png",
+        "canal-alfa"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/imagen.py:guardar_rgb",
+      "type": "function",
+      "name": "guardar_rgb",
+      "filePath": "core/imagen.py",
+      "lineRange": [
+        59,
+        61
+      ],
+      "summary": "Guarda la imagen tal cual en PNG o JPEG RGB, sin canal alfa, descartando cualquier cuarto canal del array.",
+      "tags": [
+        "io-imagen",
+        "guardado",
+        "rgb"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/imagen.py:guardar_mascara",
+      "type": "function",
+      "name": "guardar_mascara",
+      "filePath": "core/imagen.py",
+      "lineRange": [
+        64,
+        66
+      ],
+      "summary": "Guarda la mascara binaria como PNG de 8 bits en escala de grises, con 255 para el objeto y 0 para el fondo.",
+      "tags": [
+        "io-imagen",
+        "guardado",
+        "mascara",
+        "escala-de-grises"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/imagen.py:guardar_psd",
+      "type": "function",
+      "name": "guardar_psd",
+      "filePath": "core/imagen.py",
+      "lineRange": [
+        69,
+        77
+      ],
+      "summary": "Exporta un PSD de Photoshop con la capa RGB completa y la mascara como mascara de capa, usando psd_tools.",
+      "tags": [
+        "io-imagen",
+        "guardado",
+        "psd",
+        "exportacion"
+      ],
+      "complexity": "simple",
+      "languageNotes": "La importacion de psd_tools es perezosa (dentro de la funcion), de modo que un ImportError solo rompe esta operacion y no el resto de la app."
+    },
+    {
+      "id": "file:core/segmentacion.py",
+      "type": "file",
+      "name": "segmentacion.py",
+      "filePath": "core/segmentacion.py",
+      "summary": "Motor de segmentacion del objeto: implementa los modelos grabcut (recorte al 10 % de los bordes sobre copia reducida) y otsu (umbral por canal unido con OR e invertido), mas la limpieza de mascara por flood fill y el contorno de 1 px.",
+      "tags": [
+        "segmentacion",
+        "opencv",
+        "mascara-binaria",
+        "procesamiento-de-imagenes"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "La segmentacion trabaja siempre sobre una copia reducida (lado mayor 500 px) y reescala despues la mascara con INTER_NEAREST para no suavizar los bordes."
+    },
+    {
+      "id": "function:core/segmentacion.py:_a_escala",
+      "type": "function",
+      "name": "_a_escala",
+      "filePath": "core/segmentacion.py",
+      "lineRange": [
+        22,
+        32
+      ],
+      "summary": "Devuelve una copia reducida de la imagen para acelerar la segmentacion, junto con el factor de escala aplicado.",
+      "tags": [
+        "utilidad",
+        "escalado",
+        "optimizacion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/segmentacion.py:_devolver_a_escala",
+      "type": "function",
+      "name": "_devolver_a_escala",
+      "filePath": "core/segmentacion.py",
+      "lineRange": [
+        35,
+        41
+      ],
+      "summary": "Reescala la mascara binaria al tamano original de la imagen con interpolacion INTER_NEAREST para conservar bordes nitidos.",
+      "tags": [
+        "utilidad",
+        "escalado",
+        "mascara-binaria"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/segmentacion.py:_grabcut",
+      "type": "function",
+      "name": "_grabcut",
+      "filePath": "core/segmentacion.py",
+      "lineRange": [
+        44,
+        54
+      ],
+      "summary": "Ejecuta GrabCut inicializado con un rectangulo que deja fuera el 10 % de los bordes y convierte las etiquetas de grabcut en una mascara binaria 0/255.",
+      "tags": [
+        "segmentacion",
+        "grabcut",
+        "opencv",
+        "mascara-binaria"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/segmentacion.py:_otsu",
+      "type": "function",
+      "name": "_otsu",
+      "filePath": "core/segmentacion.py",
+      "lineRange": [
+        57,
+        66
+      ],
+      "summary": "Calcula el umbral de Otsu canal a canal, une los resultados con OR bitwise e invierte la binaria cuando el blanco es mayoritario.",
+      "tags": [
+        "segmentacion",
+        "otsu",
+        "threshold",
+        "mascara-binaria"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/segmentacion.py:segmentar",
+      "type": "function",
+      "name": "segmentar",
+      "filePath": "core/segmentacion.py",
+      "lineRange": [
+        69,
+        88
+      ],
+      "summary": "Punto de entrada de la segmentacion: valida el modelo, segmenta sobre la imagen reducida, devuelve la mascara a escala original y aplica cierre morfologico mas seleccion del componente conexo mayor.",
+      "tags": [
+        "segmentacion",
+        "api-publica",
+        "morfologia",
+        "post-procesado"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:core/segmentacion.py:limpiar_mascara",
+      "type": "function",
+      "name": "limpiar_mascara",
+      "filePath": "core/segmentacion.py",
+      "lineRange": [
+        91,
+        140
+      ],
+      "summary": "Limpia la mascara binaria: rellena huecos internos con flood fill sembrado en el fondo exterior y descarta las islas cuyo area queda por debajo del umbral indicado.",
+      "tags": [
+        "limpieza-de-mascara",
+        "flood-fill",
+        "morfologia",
+        "post-procesado"
+      ],
+      "complexity": "complex",
+      "languageNotes": "La semilla del flood fill se busca primero en el borde de la imagen: sembrarla dentro de un hueco convertiria el fondo exterior en objeto."
+    },
+    {
+      "id": "function:core/segmentacion.py:contorno",
+      "type": "function",
+      "name": "contorno",
+      "filePath": "core/segmentacion.py",
+      "lineRange": [
+        143,
+        156
+      ],
+      "summary": "Devuelve el perimetro de 1 px del objeto en blanco sobre negro, usando findContours y drawContours sobre la mascara binaria.",
+      "tags": [
+        "contorno",
+        "edge-detection",
+        "opencv",
+        "mascara-binaria"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/test_boton_modo.py",
+      "type": "file",
+      "name": "test_boton_modo.py",
+      "filePath": "tests/test_boton_modo.py",
+      "summary": "Suite de pruebas del boton de modo de la pantalla de histograma, ejecutada en Qt offscreen contra la VentanaHistograma real: verifica la disposicion del boton junto a REGRESAR, la alternancia entre los modos umbral y bordes y la restauracion del modo al entrar.",
+      "tags": [
+        "test",
+        "qt",
+        "offscreen",
+        "interfaz-grafica"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Script de prueba autonomo sin pytest: acumula los fallos en una lista global y termina con sys.exit(1) si hubo alguno."
+    },
+    {
+      "id": "function:tests/test_boton_modo.py:check",
+      "type": "function",
+      "name": "check",
+      "filePath": "tests/test_boton_modo.py",
+      "lineRange": [
+        27,
+        35
+      ],
+      "summary": "Asercion propia de la suite: imprime el resultado de la comprobacion y registra el nombre en la lista global de fallos cuando la condicion no se cumple.",
+      "tags": [
+        "test",
+        "asercion",
+        "utilidad"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:tests/test_boton_modo.py:_VentanaFalsa",
+      "type": "class",
+      "name": "_VentanaFalsa",
+      "filePath": "tests/test_boton_modo.py",
+      "lineRange": [
+        38,
+        46
+      ],
+      "summary": "Doble de prueba minimo que emula a la ventana principal: un QWidget con un EstadoImagen y un metodo mostrar() sin efecto, usado como parent de la pantalla.",
+      "tags": [
+        "test",
+        "test-double",
+        "qt"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/test_relleno.py",
+      "type": "file",
+      "name": "test_relleno.py",
+      "filePath": "tests/test_relleno.py",
+      "summary": "Suite de pruebas del relleno por clics sobre el mapa de bordes en modo bordes, en Qt offscreen: valida el aviso de fondo abierto, la acumulacion con OR de la mascara, el vaciado del relleno y el mapeo de coordenadas widget-imagen con barras de letterbox.",
+      "tags": [
+        "test",
+        "qt",
+        "offscreen",
+        "flood-fill"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Usa una imagen sintetica 96x96 con dos cuadrados claros para forzar dos regiones cerradas y comprobar la acumulacion por OR de la mascara."
+    },
+    {
+      "id": "function:tests/test_relleno.py:check",
+      "type": "function",
+      "name": "check",
+      "filePath": "tests/test_relleno.py",
+      "lineRange": [
+        26,
+        34
+      ],
+      "summary": "Asercion propia de la suite: imprime el resultado de la comprobacion y anade el nombre a la lista global de fallos cuando la condicion es falsa.",
+      "tags": [
+        "test",
+        "asercion",
+        "utilidad"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:tests/test_relleno.py:_VentanaFalsa",
+      "type": "class",
+      "name": "_VentanaFalsa",
+      "filePath": "tests/test_relleno.py",
+      "lineRange": [
+        37,
+        43
+      ],
+      "summary": "Doble de prueba minimo que emula a la ventana principal como QWidget con un EstadoImagen y un metodo mostrar() vacio.",
+      "tags": [
+        "test",
+        "test-double",
+        "qt"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ui/ventana_histograma.py",
+      "type": "file",
+      "name": "ventana_histograma.py",
+      "filePath": "ui/ventana_histograma.py",
+      "summary": "Pantalla de histograma de color con dos modos de analisis: umbral (rango del canal activo, limpiar/quitar fondo y guardado) y bordes (deteccion con canny, sobel o laplaciano y relleno por clics que acumula en la mascara compartida).",
+      "tags": [
+        "interfaz-grafica",
+        "ventana",
+        "histograma",
+        "event-handler",
+        "componente",
+        "tested"
+      ],
+      "complexity": "complex",
+      "languageNotes": "El cambio de modo se aplica con setVisible por filas y recarga los sliders con blockSignals para no disparar valueChanged; un unico metodo refrescar() reconstruye miniaturas, contorno e histograma."
+    },
+    {
+      "id": "class:ui/ventana_histograma.py:ZonaBordes",
+      "type": "class",
+      "name": "ZonaBordes",
+      "filePath": "ui/ventana_histograma.py",
+      "lineRange": [
+        46,
+        74
+      ],
+      "summary": "Lienzo que traduce los clics del widget a pixeles de la imagen original replicando el letterbox del paintEvent, y emite la signal clic_en_imagen solo cuando el punto cae dentro de la imagen.",
+      "tags": [
+        "componente",
+        "signal-slot",
+        "mapeo-de-coordenadas",
+        "qt"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "class",
+      "name": "VentanaHistograma",
+      "filePath": "ui/ventana_histograma.py",
+      "lineRange": [
+        77,
+        566
+      ],
+      "summary": "Widget principal de la pantalla de histograma: arma la cabecera, las miniaturas 2x2, los controles de cada modo y los sliders, y centraliza la construccion de la mascara en _reconstruir_mascara() y refrescar() antes de exportar en PNG o PSD.",
+      "tags": [
+        "componente",
+        "ventana",
+        "interfaz-grafica",
+        "event-handler",
+        "refrescar"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "README del proyecto: presenta la aplicacion de escritorio en PySide6 para analisis de imagenes (preprocesado con GrabCut/OTSU, canales RGB/YCM, histograma de color y recorte con marco fijo de 512x512) y documenta requisitos, instalacion con venv, ejecucion de main.py, el arbol de la estructura con la regla de dependencias `ui/` -> `core/`, las cinco pantallas y su navegacion, el dataset de mango del Reto 2 (738 imagenes en 5 clases), los comandos de la suite de tests y el empaquetado a .exe con PyInstaller en modo --onedir.",
+      "tags": [
+        "documentacion",
+        "punto-de-entrada",
+        "estructura-del-proyecto",
+        "guia-de-instalacion",
+        "vision-artificial"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Markdown con 11 secciones de nivel 2; el arbol de directorios va en un bloque cercado sin lenguaje (arbol ASCII) y las medidas de la interfaz se resumen en listas y tablas markdown en lugar de fragmentos de codigo."
+    },
+    {
+      "id": "document:requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "requirements.txt",
+      "summary": "Lista de dependencias Python del proyecto con versiones minimas fijadas: PySide6-Essentials (interfaz Qt 6), opencv-python (GrabCut, OTSU, morfologia y contornos), numpy (arrays de pixeles), pillow (E/S de imagen), psd-tools (PSD con mascara de capa), PyInstaller (empaquetado a .exe) y matplotlib (histograma con plt). Se instala con `pip install -r requirements.txt` y es la base tanto del entorno virtual como del compilado.",
+      "tags": [
+        "dependencias",
+        "configuracion",
+        "entorno-virtual",
+        "paquetes-python"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Formato pip requirements con versiones minimas (`>=`) y un comentario en linea que documenta la excepcion de matplotlib pedida por el usuario al §3.3 de la especificacion."
+    },
+    {
+      "id": "document:requisitos.md",
+      "type": "document",
+      "name": "requisitos.md",
+      "filePath": "requisitos.md",
+      "summary": "Especificacion funcional ejecutable del Analizador de imagenes en 12 secciones: stack (PySide6 + QSS + OpenCV + numpy), preparacion del entorno, estructura por modulos con la regla `ui/` importa de `core/` y `core/` nunca importa de Qt, sistema de diseño con tokens en ui/tokens.py (botones 200x60, navegacion 160x48, radios pastilla, proporciones 1:1 y 467:333), las cinco pantallas (principal, RGB, YCM, histograma y recorte) con su mapa de navegacion y atajos, los modos `color`/`blanco y negro` y umbral/bordes con relleno por flood fill, la logica de `core/` (EstadoImagen compartido, segmentacion GrabCut/OTSU, canales YCM en float32, recorte a 512), el formato de guardado (PNG RGBA con mascara, PNG en escala de grises y PSD con mascara de capa) y mas de 70 criterios de aceptacion verificables. Notifica divergencia con la implementacion real: sus secciones §3.3 y §11 prohiben matplotlib y describen el histograma con QPainter, pero requirements.txt y README si lo incluyen con `plt.hist`.",
+      "tags": [
+        "documentacion",
+        "especificacion-funcional",
+        "requisitos-de-ui",
+        "sistema-de-diseno",
+        "criterios-de-aceptacion"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Guia ejecutable con 7 pasos y punto de control verificable por paso, 58 encabezados, bloques de codigo Python de referencia en cada seccion con comentarios que explican los porques (p. ej. por que `bgd`/`fgd` de GrabCut deben ser arrays preasignados de np.float64) y listas de checklist para los criterios de aceptacion."
+    },
+    {
+      "id": "file:core/bordes.py",
+      "type": "file",
+      "name": "bordes.py",
+      "filePath": "core/bordes.py",
+      "summary": "Modulo de NumPy/OpenCV con la deteccion de bordes del canal activo (Canny, Sobel y Laplaciano) y el relleno por flood fill cuyas paredes son los bordes detectados, acumulable con OR sobre la mascara.",
+      "tags": [
+        "procesamiento-imagen",
+        "deteccion-bordes",
+        "flood-fill",
+        "opencv",
+        "numpy",
+        "tested"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Modulo puro, sin Qt ni tokens de interfaz: la frontera con la UI la resuelve quien lo importa. `rellenar_bordes` devuelve la tupla `(mascara, hubo_cambio)` para que la vista sepa si el clic agrego pixeles."
+    },
+    {
+      "id": "function:core/bordes.py:detectar_bordes",
+      "type": "function",
+      "name": "detectar_bordes",
+      "filePath": "core/bordes.py",
+      "lineRange": [
+        24,
+        42
+      ],
+      "summary": "Devuelve el mapa binario de bordes 0/255 de un componente 2D uint8 usando Canny (umbrales t1/t2), Sobel (magnitud umbralizada en t2) o Laplaciano (valor absoluto umbralizado en t2), tras un blur gaussiano 5x5 comun.",
+      "tags": [
+        "deteccion-bordes",
+        "canny",
+        "sobel",
+        "laplaciano",
+        "opencv"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:core/bordes.py:rellenar_bordes",
+      "type": "function",
+      "name": "rellenar_bordes",
+      "filePath": "core/bordes.py",
+      "lineRange": [
+        45,
+        109
+      ],
+      "summary": "Rellena con flood fill la region cerrada por el mapa de bordes desde un clic y la acumula con OR sobre la mascara existente; devuelve `(mascara, hubo_cambio)` y descarta clics sobre el fondo abierto o sobre paredes sin pixel libre cercano.",
+      "tags": [
+        "flood-fill",
+        "mascara",
+        "region-conectada",
+        "acumulacion",
+        "opencv"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:core/histograma.py",
+      "type": "file",
+      "name": "histograma.py",
+      "filePath": "core/histograma.py",
+      "summary": "Utilidades de histograma de intensidades: conteo de 256 bins por canal, generacion del PNG del histograma con matplotlib (backend Agg) y construccion de mascaras binarias por rango de valores.",
+      "tags": [
+        "procesamiento-imagen",
+        "histograma",
+        "matplotlib",
+        "umbral",
+        "numpy"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Fija `matplotlib.use('Agg')` antes de importar pyplot para renderizar sin ventana, y submuestrea los pixeles solo para pintar: los bins y el `ylim` siguen siendo exactos con todos los pixeles."
+    },
+    {
+      "id": "function:core/histograma.py:histograma_canal",
+      "type": "function",
+      "name": "histograma_canal",
+      "filePath": "core/histograma.py",
+      "lineRange": [
+        19,
+        21
+      ],
+      "summary": "Calcula los 256 conteos de intensidades de un componente 2D uint8 usando `np.bincount` sobre el array aplanado.",
+      "tags": [
+        "histograma",
+        "utilidad",
+        "numpy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:core/histograma.py:figura_histograma",
+      "type": "function",
+      "name": "figura_histograma",
+      "filePath": "core/histograma.py",
+      "lineRange": [
+        24,
+        67
+      ],
+      "summary": "Genera el PNG del histograma (estilo modulo 2) con `plt.hist`, titulo y ejes, lineas rojas en los limites inf/sup y eje Y dinamico al 105 % del pico dominante sin contar los fondos saturados.",
+      "tags": [
+        "histograma",
+        "matplotlib",
+        "renderizado",
+        "umbral"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:core/histograma.py:mascara_por_rango",
+      "type": "function",
+      "name": "mascara_por_rango",
+      "filePath": "core/histograma.py",
+      "lineRange": [
+        70,
+        79
+      ],
+      "summary": "Construye la mascara binaria 0/255 de los pixeles cuyo valor esta dentro del rango [inf, sup], ordenando el rango cuando llega invertido para no devolver una mascara vacia en silencio.",
+      "tags": [
+        "mascara",
+        "umbral",
+        "utilidad",
+        "numpy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "resource:frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp",
+      "type": "resource",
+      "name": "174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp",
+      "filePath": "frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp",
+      "summary": "Imagen WebP binaria (32 KB, contenedor RIFF con formato extendido VP8X) de mangos enteros sobre una mesa de piedra oscura; es una foto de referencia del dataset del Reto 2, no codigo ni un recurso que la aplicacion cargue en runtime.",
+      "tags": [
+        "asset",
+        "imagen-muestra",
+        "binario",
+        "dataset"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:legacy/analizador_imagenes.py",
+      "type": "file",
+      "name": "analizador_imagenes.py",
+      "filePath": "legacy/analizador_imagenes.py",
+      "summary": "Codigo heredado en tkinter, ya no usado por la app actual en PySide6: ventana con visor de imagenes, canales RGB/YCM, eliminacion de fondo con GrabCut y mascaras globales.",
+      "tags": [
+        "legacy",
+        "codigo-obsoleto",
+        "tkinter",
+        "interfaz-grafica",
+        "segmentacion"
+      ],
+      "complexity": "complex",
+      "languageNotes": "GUI antigua con `place` en coordenadas absolutas en vez de layouts; conserva helpers de OpenCV (`_grabcut`, `_objeto_de`) que despues reutiliza `legacy/preprocesamiento.py`."
+    },
+    {
+      "id": "class:legacy/analizador_imagenes.py:AnalizadorApp",
+      "type": "class",
+      "name": "AnalizadorApp",
+      "filePath": "legacy/analizador_imagenes.py",
+      "lineRange": [
+        14,
+        378
+      ],
+      "summary": "Ventana Tk heredada de dos paginas (menu y filtros) que muestra la imagen, alterna el modo de color, renderiza los canales RGB/YCM y calcula la eliminacion de fondo con GrabCut o por metodo global.",
+      "tags": [
+        "legacy",
+        "tkinter",
+        "interfaz-grafica",
+        "segmentacion",
+        "canales"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:legacy/preprocesamiento.py",
+      "type": "file",
+      "name": "preprocesamiento.py",
+      "filePath": "legacy/preprocesamiento.py",
+      "summary": "Codigo heredado en tkinter, no usado por la app actual: ventana secundaria de preprocesado que quita el fondo con GrabCut o metodo global y exporta el resultado en PNG o en PSD con la mascara como capa.",
+      "tags": [
+        "legacy",
+        "codigo-obsoleto",
+        "tkinter",
+        "preprocesado",
+        "exportacion-psd"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:legacy/preprocesamiento.py:PreprocesamientoApp",
+      "type": "class",
+      "name": "PreprocesamientoApp",
+      "filePath": "legacy/preprocesamiento.py",
+      "lineRange": [
+        11,
+        221
+      ],
+      "summary": "Ventana Tk heredada de preprocesado: selecciona imagen, quita el fondo, permite restaurar el original y exporta el resultado como PNG o como PSD con la mascara en una capa.",
+      "tags": [
+        "legacy",
+        "tkinter",
+        "preprocesado",
+        "exportacion-psd",
+        "interfaz-grafica"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:main.spec",
+      "type": "file",
+      "name": "main.spec",
+      "filePath": "main.spec",
+      "summary": "Archivo de PyInstaller que empaqueta la aplicacion de escritorio en un ejecutable `Analizador` (onedir), incluyendo `styles.qss`, los assets, los hidden imports de `core/` y `ui/` y los datos de psd-tools y matplotlib.",
+      "tags": [
+        "build-system",
+        "pyinstaller",
+        "empaquetado",
+        "configuracion"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Los `hiddenimports` enumeran a mano los modulos de `core/` y `ui/`; `core.bordes` no figura en esa lista y queda a cargo del analisis estatico de PyInstaller sobre el `from core import bordes`."
+    },
+    {
+      "id": "file:styles.qss",
+      "type": "file",
+      "name": "styles.qss",
+      "filePath": "styles.qss",
+      "summary": "Hoja de estilos global de Qt (QSS) que define la tipografia Segoe UI, los botones redondeados en pastilla (normal, de navegacion y primario en azul de acento), las zonas de imagen y los deslizadores del histograma y del zoom.",
+      "tags": [
+        "estilos",
+        "qss",
+        "interfaz-grafica",
+        "tema"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Estiliza por objectName (`#tituloPantalla`, `#navegacion`, `#primario`, `#zoomRecorte`), lo que obliga a que los widgets de `ui/` fijen esos nombres al construirse."
+    },
+    {
+      "id": "file:tests/suite.py",
+      "type": "file",
+      "name": "suite.py",
+      "filePath": "tests/suite.py",
+      "summary": "Orquestador de la suite de verificacion: ejecuta en subproceso los 7 scripts de prueba (coherencia del documento, recorte, widgets, overlay, boton de modo, bordes y relleno) y devuelve codigo de salida 1 si alguna falla.",
+      "tags": [
+        "test",
+        "orquestador",
+        "subprocess",
+        "verificacion"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "El modo `--rapido` filtra a las suites 1, 2 y 6 (las que no necesitan Qt); el codigo de salida distinto de cero evita que un fallo se disimule como verde para quien lanza la suite."
+    },
+    {
+      "id": "file:tests/test_bordes.py",
+      "type": "file",
+      "name": "test_bordes.py",
+      "filePath": "tests/test_bordes.py",
+      "summary": "Suite de `core/bordes.py` sin Qt (solo NumPy + OpenCV): valida los tres metodos de deteccion sobre un cuadrado ideal y los siete casos del relleno por barrera (interior, hueco sellado, acumulacion con OR, clic repetido, semilla sobre pared, mascara previa y fondo abierto).",
+      "tags": [
+        "test",
+        "deteccion-bordes",
+        "flood-fill",
+        "opencv",
+        "sin-qt"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_bordes.py:check",
+      "type": "function",
+      "name": "check",
+      "filePath": "tests/test_bordes.py",
+      "lineRange": [
+        21,
+        29
+      ],
+      "summary": "Asercion de la suite de bordes: imprime OK/FALLA con el detalle opcional y acumula el nombre de la comprobacion fallida en la lista global `fallos`.",
+      "tags": [
+        "test",
+        "asercion",
+        "utilidad"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_bordes.py:_cuadro",
+      "type": "function",
+      "name": "_cuadro",
+      "filePath": "tests/test_bordes.py",
+      "lineRange": [
+        71,
+        81
+      ],
+      "summary": "Genera una imagen 32x32 con un anillo de pared 0/255 en [10..21]x[10..21], opcionalmente con un hueco de 2 px en la pared superior para probar el sellado por dilatacion.",
+      "tags": [
+        "test",
+        "utilidad",
+        "fixture"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_bordes.py:_anillo",
+      "type": "function",
+      "name": "_anillo",
+      "filePath": "tests/test_bordes.py",
+      "lineRange": [
+        101,
+        106
+      ],
+      "summary": "Dibuja un anillo rectangular de paredes 0/255 en el array `dst` con la esquina superior izquierda (y0, x0) y el lado indicados.",
+      "tags": [
+        "test",
+        "utilidad",
+        "fixture"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/test_overlay.py",
+      "type": "file",
+      "name": "test_overlay.py",
+      "filePath": "tests/test_overlay.py",
+      "summary": "Suite offscreen que extrae del documento los helpers `x_de_marcador` y `dibujar_marcadores`, los ejecuta en PySide6 real y compara el overlay con la posicion que Qt calcula para el handle del slider.",
+      "tags": [
+        "test",
+        "overlay",
+        "pyside6",
+        "offscreen",
+        "renderizado"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_overlay.py:check",
+      "type": "function",
+      "name": "check",
+      "filePath": "tests/test_overlay.py",
+      "lineRange": [
+        23,
+        25
+      ],
+      "summary": "Asercion de la suite del overlay: imprime OK/FALLA en linea y registra el nombre del fallo para el resumen final.",
+      "tags": [
+        "test",
+        "asercion",
+        "utilidad"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_overlay.py:cuenta",
+      "type": "function",
+      "name": "cuenta",
+      "filePath": "tests/test_overlay.py",
+      "lineRange": [
+        62,
+        64
+      ],
+      "summary": "Cuenta cuantos pixeles de la imagen capturada tienen exactamente el color indicado en una columna x, para verificar que las lineas del overlay se pintan donde deben.",
+      "tags": [
+        "test",
+        "utilidad",
+        "overlay"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:tests/test_overlay.py:Overlay",
+      "type": "class",
+      "name": "Overlay",
+      "filePath": "tests/test_overlay.py",
+      "lineRange": [
+        47,
+        53
+      ],
+      "summary": "Widget de prueba que en su `paintEvent` invoca `dibujar_marcadores` con los dos sliders reales, para capturar la imagen del overlay y compararla con la referencia de Qt.",
+      "tags": [
+        "test",
+        "pyside6",
+        "overlay",
+        "widget"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/test_recorte.py",
+      "type": "file",
+      "name": "test_recorte.py",
+      "filePath": "tests/test_recorte.py",
+      "summary": "Suite de `core/recorte.py` ejecutada sin PySide6 ni ventana: extrae el bloque real del documento y comprueba que `recortar`, `escalar` y `aplicar_recorte` respetan el contrato (lado de salida 512, recorte contiguo, proporcion conservada).",
+      "tags": [
+        "test",
+        "recorte",
+        "opencv",
+        "sin-qt",
+        "contrato"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/test_recorte.py:check",
+      "type": "function",
+      "name": "check",
+      "filePath": "tests/test_recorte.py",
+      "lineRange": [
+        23,
+        25
+      ],
+      "summary": "Asercion de la suite de recorte: imprime OK/FALLA con el detalle y acumula el nombre de la comprobacion fallida en la lista global `fallos`.",
+      "tags": [
+        "test",
+        "asercion",
+        "utilidad"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/test_widgets.py",
+      "type": "file",
+      "name": "test_widgets.py",
+      "filePath": "tests/test_widgets.py",
+      "summary": "Suite offscreen que extrae del documento los widgets de recorte y de marcadores y los ejecuta de verdad en PySide6: verifica la ubicacion de las clases de Qt, el minimumSize del selector, el velo del recorte, el marco vacio y el overlay.",
+      "tags": [
+        "test",
+        "pyside6",
+        "widgets",
+        "offscreen",
+        "renderizado"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/test_widgets.py:check",
+      "type": "function",
+      "name": "check",
+      "filePath": "tests/test_widgets.py",
+      "lineRange": [
+        17,
+        19
+      ],
+      "summary": "Asercion de la suite de widgets: imprime OK/FALLA con el detalle opcional y registra los fallos para el resumen final.",
+      "tags": [
+        "test",
+        "asercion",
+        "utilidad"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/verificar.py",
+      "type": "file",
+      "name": "verificar.py",
+      "filePath": "tests/verificar.py",
+      "summary": "Verificador estatico de `requisitos.md`: comprueba que los tokens existan y no esten huerfanos, que todos los bloques de Python parseen, que las firmas y el QSS del documento sean coherentes y que los helpers requeridos esten definidos.",
+      "tags": [
+        "test",
+        "verificacion-estatica",
+        "documentacion",
+        "analisis"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/verificar.py:check",
+      "type": "function",
+      "name": "check",
+      "filePath": "tests/verificar.py",
+      "lineRange": [
+        10,
+        13
+      ],
+      "summary": "Asercion del verificador del documento: imprime el resultado de cada comprobacion y acumula los nombres de las fallidas en la lista global `fallos`.",
+      "tags": [
+        "test",
+        "asercion",
+        "utilidad"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/verificar.py:_norm",
+      "type": "function",
+      "name": "_norm",
+      "filePath": "tests/verificar.py",
+      "lineRange": [
+        358,
+        359
+      ],
+      "summary": "Normaliza una ruta sustituyendo las barras invertidas por barras normales, para comparar rutas del documento con las del arbol de archivos.",
+      "tags": [
+        "test",
+        "utilidad",
+        "normalizacion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/verificar.py:en_arbol",
+      "type": "function",
+      "name": "en_arbol",
+      "filePath": "tests/verificar.py",
+      "lineRange": [
+        521,
+        523
+      ],
+      "summary": "Indica si el nombre de un archivo aparece referenciado en el texto del documento, usando una busqueda con el patron escapado.",
+      "tags": [
+        "test",
+        "utilidad",
+        "busqueda"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:main.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:ui/ventana_principal.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:core/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:core/segmentacion.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/helpers.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_recorte.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_rgb.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_ycm.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/widgets.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:core/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:core/recorte.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/helpers.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/widgets.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:core/recorte.py",
+      "target": "function:core/recorte.py:recorte_libre",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:main.py",
+      "target": "function:main.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:ZonaImagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VistaRecorte",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/recorte.py",
+      "target": "function:core/recorte.py:recorte_libre",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:main.py",
+      "target": "function:main.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:ZonaImagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VistaRecorte",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:ZonaImagen",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "function:main.py:main",
+      "target": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:ui/helpers.py:boton",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:core/segmentacion.py:segmentar",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:core/imagen.py:cargar_imagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:core/imagen.py:EstadoImagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_rgb.py:VentanaRGB",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_ycm.py:VentanaYCM",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:core/recorte.py:recorte_libre",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:core/imagen.py:guardar_rgb",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:ui/tokens.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:styles.qss",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/tokens.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/tokens.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ui/tokens.py",
+      "target": "file:styles.qss",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:core/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:core/canales.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:ui/helpers.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "file:ui/widgets.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_rgb.py",
+      "target": "file:ui/ventana_canales.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_ycm.py",
+      "target": "file:ui/ventana_canales.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:canal_rgb",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:componente_ycm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:componente",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:modo_color",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:modo_blanco_y_negro",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:aplicar_modo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:etiqueta_canal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:canal_rgb",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:componente_ycm",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:componente",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:modo_color",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:modo_blanco_y_negro",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:aplicar_modo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/canales.py",
+      "target": "function:core/canales.py:etiqueta_canal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/helpers.py",
+      "target": "function:ui/helpers.py:boton",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/helpers.py",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/helpers.py",
+      "target": "function:ui/helpers.py:boton",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/helpers.py",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "class:ui/ventana_canales.py:LienzoCanal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "class:ui/ventana_canales.py:VentanaCanales",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "class:ui/ventana_canales.py:LienzoCanal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_canales.py",
+      "target": "class:ui/ventana_canales.py:VentanaCanales",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_rgb.py",
+      "target": "class:ui/ventana_rgb.py:VentanaRGB",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_rgb.py",
+      "target": "class:ui/ventana_rgb.py:VentanaRGB",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_ycm.py",
+      "target": "class:ui/ventana_ycm.py:VentanaYCM",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_ycm.py",
+      "target": "class:ui/ventana_ycm.py:VentanaYCM",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_canales.py:LienzoCanal",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:ui/ventana_rgb.py:VentanaRGB",
+      "target": "class:ui/ventana_canales.py:VentanaCanales",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:ui/ventana_ycm.py:VentanaYCM",
+      "target": "class:ui/ventana_canales.py:VentanaCanales",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:ui/ventana_canales.py:VentanaCanales",
+      "target": "function:core/canales.py:aplicar_modo",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_canales.py:VentanaCanales",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_canales.py:VentanaCanales",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "class:core/imagen.py:EstadoImagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:cargar_imagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_imagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_rgb",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_mascara",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_psd",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_a_escala",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_devolver_a_escala",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_grabcut",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_otsu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:segmentar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:limpiar_mascara",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:contorno",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "function:tests/test_boton_modo.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "class:tests/test_boton_modo.py:_VentanaFalsa",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "function:tests/test_relleno.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "class:tests/test_relleno.py:_VentanaFalsa",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "class:ui/ventana_histograma.py:ZonaBordes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "class:core/imagen.py:EstadoImagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:cargar_imagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_imagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_rgb",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_mascara",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "function:core/imagen.py:guardar_psd",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_a_escala",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_devolver_a_escala",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_grabcut",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:_otsu",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:segmentar",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:limpiar_mascara",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/segmentacion.py",
+      "target": "function:core/segmentacion.py:contorno",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "function:tests/test_boton_modo.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "class:tests/test_boton_modo.py:_VentanaFalsa",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "function:tests/test_relleno.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "class:tests/test_relleno.py:_VentanaFalsa",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "class:ui/ventana_histograma.py:ZonaBordes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "file:core/imagen.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "file:core/imagen.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/canales.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/segmentacion.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:ui/helpers.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:ui/widgets.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:ZonaBordes",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/canales.py:componente",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/canales.py:aplicar_modo",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/canales.py:etiqueta_canal",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/histograma.py:histograma_canal",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/histograma.py:figura_histograma",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/histograma.py:mascara_por_rango",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/bordes.py:detectar_bordes",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/bordes.py:rellenar_bordes",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/segmentacion.py:limpiar_mascara",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/segmentacion.py:contorno",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/imagen.py:guardar_imagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:core/imagen.py:guardar_psd",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:tests/test_boton_modo.py:_VentanaFalsa",
+      "target": "class:core/imagen.py:EstadoImagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:tests/test_relleno.py:_VentanaFalsa",
+      "target": "class:core/imagen.py:EstadoImagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_boton_modo.py",
+      "target": "class:ui/ventana_histograma.py:ZonaBordes",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_relleno.py",
+      "target": "class:ui/ventana_histograma.py:ZonaBordes",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "file:tests/test_boton_modo.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:core/imagen.py",
+      "target": "file:tests/test_relleno.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:tests/test_boton_modo.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:tests/test_relleno.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/imagen.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/segmentacion.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/canales.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/tokens.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/helpers.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/widgets.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_principal.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_canales.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_rgb.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_ycm.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:styles.qss",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:main.spec",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:tests/suite.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:requirements.txt",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:requisitos.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:main.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/imagen.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/segmentacion.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/canales.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/histograma.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/recorte.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/bordes.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:main.spec",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/imagen.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/segmentacion.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/canales.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/bordes.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/tokens.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/widgets.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_principal.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_rgb.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_ycm.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:styles.qss",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:main.spec",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "document:requirements.txt",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "function:core/bordes.py:detectar_bordes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "function:core/bordes.py:rellenar_bordes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:histograma_canal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:figura_histograma",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:mascara_por_rango",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:legacy/analizador_imagenes.py",
+      "target": "class:legacy/analizador_imagenes.py:AnalizadorApp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:legacy/preprocesamiento.py",
+      "target": "class:legacy/preprocesamiento.py:PreprocesamientoApp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:_cuadro",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:_anillo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "function:tests/test_overlay.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "function:tests/test_overlay.py:cuenta",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "class:tests/test_overlay.py:Overlay",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_recorte.py",
+      "target": "function:tests/test_recorte.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_widgets.py",
+      "target": "function:tests/test_widgets.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:_norm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:en_arbol",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "function:core/bordes.py:detectar_bordes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "function:core/bordes.py:rellenar_bordes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:histograma_canal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:figura_histograma",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/histograma.py",
+      "target": "function:core/histograma.py:mascara_por_rango",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:legacy/analizador_imagenes.py",
+      "target": "class:legacy/analizador_imagenes.py:AnalizadorApp",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:legacy/preprocesamiento.py",
+      "target": "class:legacy/preprocesamiento.py:PreprocesamientoApp",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:_cuadro",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:tests/test_bordes.py:_anillo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "function:tests/test_overlay.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "function:tests/test_overlay.py:cuenta",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "class:tests/test_overlay.py:Overlay",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_recorte.py",
+      "target": "function:tests/test_recorte.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_widgets.py",
+      "target": "function:tests/test_widgets.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:_norm",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "function:tests/verificar.py:en_arbol",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:legacy/preprocesamiento.py",
+      "target": "file:legacy/analizador_imagenes.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "file:core/bordes.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:core/bordes.py:detectar_bordes",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_bordes.py",
+      "target": "function:core/bordes.py:rellenar_bordes",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:legacy/preprocesamiento.py:PreprocesamientoApp",
+      "target": "class:legacy/analizador_imagenes.py:AnalizadorApp",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "file:tests/test_bordes.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:core/bordes.py",
+      "target": "file:tests/test_relleno.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:core/recorte.py",
+      "target": "file:tests/test_recorte.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "file:tests/test_widgets.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:tests/test_overlay.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/verificar.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_recorte.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_widgets.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_overlay.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_bordes.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_boton_modo.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/suite.py",
+      "target": "file:tests/test_relleno.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_recorte.py",
+      "target": "document:requisitos.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_widgets.py",
+      "target": "document:requisitos.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/test_overlay.py",
+      "target": "document:requisitos.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tests/verificar.py",
+      "target": "document:requisitos.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:main.spec",
+      "target": "file:styles.qss",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:main.spec",
+      "target": "file:core/histograma.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:main.spec",
+      "target": "file:main.py",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:styles.qss",
+      "target": "file:main.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/bordes.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Import real detectado por verificacion AST del fuente (`from core import bordes as core_bordes`): el importMap del scanner omite los imports de submódulo con alias, asi que esta arista no aparece en scan-result.json#importMap."
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/histograma.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Import real detectado por verificacion AST del fuente (`from core import canales, histograma as core_hist`): el importMap del scanner omite los imports de submódulo con alias."
+    },
+    {
+      "source": "file:ui/ventana_histograma.py",
+      "target": "file:core/imagen.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Import real detectado por verificacion AST del fuente (`from core import imagen as core_imagen`): el importMap del scanner omite los imports de submódulo con alias."
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:core/imagen.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Import real detectado por verificacion AST del fuente (`from core import imagen as core_imagen`): el importMap del scanner omite los imports de submódulo con alias."
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:core/imagen.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Import real detectado por verificacion AST del fuente (`from core import imagen as core_imagen`): el importMap del scanner omite los imports de submódulo con alias."
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:core",
+      "name": "Nucleo de Procesamiento de Imagen",
+      "description": "Logica de imagen pura sin Qt: calculo de canales RGB/YCM, segmentacion GrabCut/OTSU, deteccion de bordes con flood fill acumulable, histograma de intensidades, recorte libre a 512 px y la entrada/salida de archivos con el dataclass EstadoImagen compartido.",
+      "nodeIds": [
+        "file:core/__init__.py",
+        "file:core/bordes.py",
+        "file:core/canales.py",
+        "file:core/histograma.py",
+        "file:core/imagen.py",
+        "file:core/recorte.py",
+        "file:core/segmentacion.py"
+      ]
+    },
+    {
+      "id": "layer:ui",
+      "name": "Capa de Presentacion PySide6",
+      "description": "Presentacion en Qt: las cinco pantallas (principal, RGB, YCM, histograma y recorte) con sus widgets, helpers y tokens de diseño, mas la hoja de estilos QSS global que fija el tema visual de la aplicacion.",
+      "nodeIds": [
+        "file:styles.qss",
+        "file:ui/__init__.py",
+        "file:ui/helpers.py",
+        "file:ui/tokens.py",
+        "file:ui/ventana_canales.py",
+        "file:ui/ventana_histograma.py",
+        "file:ui/ventana_principal.py",
+        "file:ui/ventana_recorte.py",
+        "file:ui/ventana_rgb.py",
+        "file:ui/ventana_ycm.py",
+        "file:ui/widgets.py"
+      ]
+    },
+    {
+      "id": "layer:entry",
+      "name": "Punto de Entrada y Empaquetado",
+      "description": "Arranque y build de la aplicacion de escritorio: main.py crea el QApplication, resuelve la ruta de styles.qss y muestra la ventana principal, mientras main.spec define el ejecutable Analizador en modo onedir de PyInstaller.",
+      "nodeIds": [
+        "file:main.py",
+        "file:main.spec"
+      ]
+    },
+    {
+      "id": "layer:test",
+      "name": "Suite de Pruebas y Verificacion",
+      "description": "Verificacion del proyecto: siete scripts de prueba que cubren recorte, deteccion de bordes, relleno por flood fill, widgets, overlay, boton de modo y renderizado en Qt offscreen, orquestados por suite.py junto al verificador estatico de requisitos.md.",
+      "nodeIds": [
+        "file:tests/suite.py",
+        "file:tests/test_bordes.py",
+        "file:tests/test_boton_modo.py",
+        "file:tests/test_overlay.py",
+        "file:tests/test_recorte.py",
+        "file:tests/test_relleno.py",
+        "file:tests/test_widgets.py",
+        "file:tests/verificar.py"
+      ]
+    },
+    {
+      "id": "layer:legacy",
+      "name": "Codigo Heredado en Tkinter",
+      "description": "Codigo obsoleto conservado como referencia historica: visor de imagenes con canales RGB/YCM, eliminacion de fondo con GrabCut y mascaras globales, mas la ventana de preprocesado que exporta PNG y PSD; no participa en la app PySide6 actual.",
+      "nodeIds": [
+        "file:legacy/analizador_imagenes.py",
+        "file:legacy/preprocesamiento.py"
+      ]
+    },
+    {
+      "id": "layer:config",
+      "name": "Configuracion del Entorno",
+      "description": "Manifiesto de dependencias del proyecto: requirements.txt fija las versiones minimas de PySide6-Essentials, opencv-python, numpy, pillow, psd-tools, PyInstaller y matplotlib, y es la base tanto del venv como del compilado.",
+      "nodeIds": [
+        "document:requirements.txt"
+      ]
+    },
+    {
+      "id": "layer:documentation",
+      "name": "Documentacion del Proyecto",
+      "description": "Documentacion funcional y de uso: README.md describe instalacion, ejecucion, estructura con la regla de dependencias ui/ -> core/, navegacion entre pantallas y dataset del Reto 2, y requisitos.md actua como especificacion ejecutable de 12 secciones con sus criterios de aceptacion.",
+      "nodeIds": [
+        "document:README.md",
+        "document:requisitos.md"
+      ]
+    },
+    {
+      "id": "layer:assets",
+      "name": "Recursos y Dataset de Muestra",
+      "description": "Recursos binarios de imagen del proyecto: la muestra WebP de mango entero sobre mesa de piedra que sirve de referencia visual del dataset del Reto 2 y que la aplicacion no carga en runtime.",
+      "nodeIds": [
+        "resource:frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Visión general del proyecto",
+      "description": "El README presenta el Analizador, una aplicación de escritorio en PySide6 para analizar imágenes: preprocesado (quitar fondo con GrabCut u OTSU), canales RGB/YCM, histograma de color y recorte con marco fijo de 512x512. También documenta la estructura de carpetas, la regla de dependencias `ui/` -> `core/`, la navegación entre las cinco pantallas, el dataset de mango del Reto 2 (738 imágenes en 5 clases) y el empaquetado a `.exe`. Es la mejor puerta de entrada al tour porque fija el vocabulario (pantallas, modos y atajos) que usaremos en el resto de los pasos.",
+      "nodeIds": [
+        "document:README.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Especificación funcional y dependencias",
+      "description": "requisitos.md funciona como especificación ejecutable del proyecto: doce secciones que describen el stack, el sistema de tokens de diseño, las cinco pantallas y más de setenta criterios de aceptación que `tests/verificar.py` comprueba estáticamente. Por su parte, requirements.txt fija las versiones mínimas de PySide6-Essentials, opencv-python, numpy, pillow, psd-tools, PyInstaller y matplotlib, y es a la vez la base del entorno virtual y del compilado. Conviene sacar a la luz una divergencia declarada en el propio documento: sus secciones §3.3 y §11 prohíben matplotlib, mientras la implementación real usa `plt.hist`.",
+      "nodeIds": [
+        "document:requisitos.md",
+        "document:requirements.txt"
+      ],
+      "languageLesson": "Declarar dependencias con `>=` y un mínimo en vez de Versions exactas (`==`) permite que pip resuelva parches más recientes sin romper la API usada; el precio es un entorno menos reproducible que un lockfile."
+    },
+    {
+      "order": 3,
+      "title": "Arranque de la aplicación",
+      "description": "main.py es el punto de entrada de la aplicación: crea el `QApplication`, resuelve la ruta de la hoja de estilos y muestra la ventana principal. styles.qss es la hoja de estilos global de Qt que fija la tipografía Segoe UI, los botones redondeados en pastilla, las zonas de imagen y los deslizadores, de modo que el tema visual se resuelve en un solo lugar y no widget por widget. Estos dos archivos explican juntos cómo arranca el programa y por qué todo lo demás cuelga de la capa `ui/`.",
+      "nodeIds": [
+        "file:main.py",
+        "file:styles.qss"
+      ],
+      "languageLesson": "En PyInstaller, `sys.frozen` distingue la ejecución desde el `.exe` de la ejecución en el repositorio, y la ruta de un recurso empaquetado se resuelve con `sys._MEIPASS` en lugar de `__file__`; de eso depende que `styles.qss` se encuentre dentro del ejecutable."
+    },
+    {
+      "order": 4,
+      "title": "Ventana principal y navegación",
+      "description": "La ventana principal es el corazón de la navegación: un `QStackedWidget` que aloja las cinco pantallas junto con el mapa de atajos (`->` RGB→YCM, `<-` YCM→RGB, `Esc` a Principal y `REGRESAR` en las cuatro pantallas secundarias). El mismo módulo define la pantalla de preprocesado, donde se carga la imagen, se elige el modelo grabcut/otsu y se quita o restaura el fondo sin modificar el archivo original. Es el punto donde la lógica de `core/` entra en contacto con Qt, así que conviene leerlo antes que cualquier pantalla concreta.",
+      "nodeIds": [
+        "file:ui/ventana_principal.py",
+        "file:ui/__init__.py"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Tokens, helpers y widgets de UI",
+      "description": "ui/tokens.py es la fuente única de verdad del diseño (colores, medidas, tipografías, radios y proporciones, con `tokens.LADO_SALIDA` para el recorte a 512) y aparece entre los nodos con mayor fan-in del grafo, porque casi toda pantalla lo consulta. ui/helpers.py centraliza el constructor de botones y el envoltorio que traslada el contenido a un `QScrollArea`, y ui/widgets.py aporta la conversión de arrays numpy a `QPixmap` (`a_pixmap`) y la etiqueta `ProporcionImagen` que encaja la foto sin deformarla. Este paso fija el vocabulario visual que reutilizarán las pantallas que veremos a continuación.",
+      "nodeIds": [
+        "file:ui/tokens.py",
+        "file:ui/helpers.py",
+        "file:ui/widgets.py"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "El estado compartido de la imagen",
+      "description": "core/imagen.py define el dataclass `EstadoImagen`, el objeto que las cinco pantallas comparten por referencia: guarda la imagen original, la de trabajo y la máscara, de modo que cualquier cambio de preprocesado se propaga a todas las vistas. El módulo centraliza además la carga RGB de 8 bits y el guardado en PNG, PNG con alfa y PSD con máscara de capa. El docstring de `core/__init__.py` declara la frontera del paquete (`ui/` importa desde `core/`, nunca al revés), y esa regla es la que permite probar toda la lógica de imagen sin abrir una ventana.",
+      "nodeIds": [
+        "file:core/imagen.py",
+        "file:core/__init__.py"
+      ],
+      "languageLesson": "Un `dataclass` genera automáticamente `__init__`, `__repr__` y `__eq__` a partir de los campos anotados; al compartir una instancia por referencia entre widgets, todas las pantallas observan las mismas mutaciones del objeto `estado` sin necesidad de señales."
+    },
+    {
+      "order": 7,
+      "title": "Segmentación: quitar el fondo",
+      "description": "core/segmentacion.py es el motor de aislamiento del objeto: el modelo `grabcut` recorta al 10 % de los bordes sobre una copia reducida para ganar velocidad, y el modelo `otsu` calcula un umbral por canal que luego se une con OR y se invierte. El módulo también limpia la máscara por flood fill y extrae el contorno de 1 px. Al ser lógica pura de numpy y OpenCV, es la parte más fácil de verificar de todo el proyecto, tal y como demuestra el cluster de pruebas que veremos en el paso 12.",
+      "nodeIds": [
+        "file:core/segmentacion.py"
+      ],
+      "languageLesson": "En OpenCV una máscara es un array numpy con la misma forma que la imagen, y componerla con `|`, `&` o `~` permite acumular resultados bit a bit sin bucles de Python; un umbral OTSU por canal unido con OR equivale a esa operación vectorizada."
+    },
+    {
+      "order": 8,
+      "title": "Pantalla de histograma: umbral y bordes",
+      "description": "La pantalla de histograma es la más rica de la aplicación y el nodo con mayor fan-out del grafo, porque se apoya en casi todo lo demás: ofrece dos modos de análisis. En modo umbral, los sliders acotan el rango `[inf, sup]` del canal activo y alimentan el contorno binario; en modo bordes, la imagen se convierte en mapa de bordes y el usuario rellena por clic las regiones cerradas. Las acciones disponibles son limpiar máscara, quitar fondo en preview local, guardar la imagen en RGBA y guardar la máscara en PSD, y el botón de modo conmuta entre ambas estrategias.",
+      "nodeIds": [
+        "file:ui/ventana_histograma.py",
+        "file:core/histograma.py"
+      ]
+    },
+    {
+      "order": 9,
+      "title": "Bordes y relleno por flood fill",
+      "description": "core/bordes.py implementa la detección de bordes del canal activo con Canny, Sobel y Laplaciano, además del relleno por flood fill cuyas paredes son precisamente los bordes detectados. Cada clic rellena una región cerrada y se acumula con OR sobre la misma `estado.mascara` que usan «Quitar fondo» y el guardado en PSD, de modo que los dos modos comparten un único estado. Este es el cluster más acoplado del grafo: `core/bordes.py`, `core/imagen.py`, la pantalla de histograma y sus dos suites (`test_bordes.py` y `test_relleno.py`) evolucionan de la mano.",
+      "nodeIds": [
+        "file:core/bordes.py",
+        "file:tests/test_bordes.py",
+        "file:tests/test_relleno.py"
+      ],
+      "languageLesson": "El relleno por barrera se resuelve con `cv2.floodFill` usando `FLOODFILL_MASK_ONLY` para no modificar la imagen original y `FLOODFILL_FIXED_RANGE` para que la propagación respete el rango de valores del borde; la acumulación posterior es un `mascara |= relleno` sobre arrays booleanos."
+    },
+    {
+      "order": 10,
+      "title": "Canales RGB y YCM",
+      "description": "core/canales.py extrae los componentes 2D de los canales RGB e YCM y los convierte a los modos de visualización `color` y `blanco y negro`, además de etiquetar el canal activo en español. Sobre esa base, ui/ventana_canales.py implementa la pantalla base con tres lienzos clicables, selector de modo, acceso al histograma y botón REGRESAR, alimentándose siempre de la imagen original; `ventana_rgb.py` y `ventana_ycm.py` son subclases que solo fijan el espacio de color y sus letras. La estructura muestra un patrón de herencia útil: la lógica de pantalla se escribe una vez y cada variante la reutiliza.",
+      "nodeIds": [
+        "file:core/canales.py",
+        "file:ui/ventana_canales.py",
+        "file:ui/ventana_rgb.py",
+        "file:ui/ventana_ycm.py"
+      ],
+      "languageLesson": "El cálculo de YCM se hace en `float32` antes de convertir a `uint8`: operar directamente sobre arrays de 8 bits desbordaría al sumar dos canales y saturaría los valores altos en 255."
+    },
+    {
+      "order": 11,
+      "title": "Recorte libre a 512 px",
+      "description": "core/recorte.py remuestrea una ventana arbitraria de la imagen a un lienzo cuadrado de lado fijo, rellenando en blanco la parte que queda fuera de la imagen original. ui/ventana_recorte.py lo expone con un marco fijo al 70 % del visor, un slider que escala y el arrastre que desplaza la imagen, pudiendo el marco salirse del encuadre. La salida es siempre de 512x512 (`tokens.LADO_SALIDA`), sin opción de cambiarlo desde la interfaz, y solo entonces se habilita el guardado; la suite test_recorte.py valida ese contrato sin necesitar PySide6.",
+      "nodeIds": [
+        "file:core/recorte.py",
+        "file:ui/ventana_recorte.py",
+        "file:tests/test_recorte.py"
+      ]
+    },
+    {
+      "order": 12,
+      "title": "Suite de pruebas y verificación",
+      "description": "tests/suite.py es el orquestador: ejecuta en subproceso los siete scripts de prueba (coherencia del documento, recorte, widgets, overlay, botón de modo, bordes y relleno) y devuelve código de salida 1 si alguna falla. Las pruebas que necesitan Qt corren en modo offscreen, mientras que las de `core/` usan solo numpy y OpenCV, como se aprecia en el par `test_bordes.py`/`test_relleno.py` del paso 9. Además, tests/verificar.py comprueba estáticamente que los tokens de `requisitos.md` existan y no estén huérfanos y que los bloques de Python del documento parseen, cerrando el círculo entre especificación y código.",
+      "nodeIds": [
+        "file:tests/suite.py",
+        "file:tests/test_widgets.py",
+        "file:tests/test_overlay.py",
+        "file:tests/test_boton_modo.py",
+        "file:tests/verificar.py"
+      ],
+      "languageLesson": "Ejecutar cada suite en un subproceso nuevo aísla los fallos: una excepción dentro de Qt offscreen aborta ese proceso sin contaminar la siguiente prueba, y el orquestador decide el código de salida final con `sys.exit`."
+    },
+    {
+      "order": 13,
+      "title": "Empaquetado a ejecutable",
+      "description": "main.spec empaqueta la aplicación con PyInstaller en modo `--onedir`, produciendo `dist/Analizador/Analizador.exe` junto a la carpeta `_internal/` que debe distribuirse completa. El spec incluye los hidden imports de `core/` y `ui/`, los assets y la hoja de estilos, y fuerza `collect_all` de `psd-tools` y `matplotlib` con `backend_agg`; sin eso el histograma falla dentro del ejecutable. Como GitHub rechaza archivos de más de 25 MB en la web, el release se sube comprimido y excluir IPython, jedi y tkinter ahorra entre 50 y 100 MB.",
+      "nodeIds": [
+        "file:main.spec"
+      ],
+      "languageLesson": "`hiddenimports` existen porque el análisis estático de PyInstaller no sigue los imports dinámicos, y `collect_all` empaqueta subpaquetes y archivos de datos de terceros (matplotlib arrastra fuentes y recursos) que de otro modo faltarían en el ejecutable."
+    },
+    {
+      "order": 14,
+      "title": "Código heredado y dataset de referencia",
+      "description": "legacy/ conserva la primera versión de la aplicación en tkinter: un visor con canales RGB/YCM, eliminación de fondo con GrabCut y máscaras globales, más una ventana de preprocesado que exportaba PNG y PSD. No participa en el runtime actual y se conserva como referencia histórica de la lógica que hoy vive repartida entre `core/` y `ui/`. Junto a él, `frutas/` guarda la muestra WebP de mangos enteros sobre mesa de piedra que sirve de referencia visual del dataset del Reto 2, y que la aplicación tampoco carga en runtime.",
+      "nodeIds": [
+        "file:legacy/analizador_imagenes.py",
+        "file:legacy/preprocesamiento.py",
+        "resource:frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp"
+      ]
+    }
+  ]
+}

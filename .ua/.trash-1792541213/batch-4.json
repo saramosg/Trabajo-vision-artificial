@@ -1,0 +1,358 @@
+{
+  "nodes": [
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "README del proyecto: presenta la aplicacion de escritorio en PySide6 para analisis de imagenes (preprocesado con GrabCut/OTSU, canales RGB/YCM, histograma de color y recorte con marco fijo de 512x512) y documenta requisitos, instalacion con venv, ejecucion de main.py, el arbol de la estructura con la regla de dependencias `ui/` -> `core/`, las cinco pantallas y su navegacion, el dataset de mango del Reto 2 (738 imagenes en 5 clases), los comandos de la suite de tests y el empaquetado a .exe con PyInstaller en modo --onedir.",
+      "tags": ["documentacion", "punto-de-entrada", "estructura-del-proyecto", "guia-de-instalacion", "vision-artificial"],
+      "complexity": "moderate",
+      "languageNotes": "Markdown con 11 secciones de nivel 2; el arbol de directorios va en un bloque cercado sin lenguaje (arbol ASCII) y las medidas de la interfaz se resumen en listas y tablas markdown en lugar de fragmentos de codigo."
+    },
+    {
+      "id": "document:requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "requirements.txt",
+      "summary": "Lista de dependencias Python del proyecto con versiones minimas fijadas: PySide6-Essentials (interfaz Qt 6), opencv-python (GrabCut, OTSU, morfologia y contornos), numpy (arrays de pixeles), pillow (E/S de imagen), psd-tools (PSD con mascara de capa), PyInstaller (empaquetado a .exe) y matplotlib (histograma con plt). Se instala con `pip install -r requirements.txt` y es la base tanto del entorno virtual como del compilado.",
+      "tags": ["dependencias", "configuracion", "entorno-virtual", "paquetes-python"],
+      "complexity": "simple",
+      "languageNotes": "Formato pip requirements con versiones minimas (`>=`) y un comentario en linea que documenta la excepcion de matplotlib pedida por el usuario al §3.3 de la especificacion."
+    },
+    {
+      "id": "document:requisitos.md",
+      "type": "document",
+      "name": "requisitos.md",
+      "filePath": "requisitos.md",
+      "summary": "Especificacion funcional ejecutable del Analizador de imagenes en 12 secciones: stack (PySide6 + QSS + OpenCV + numpy), preparacion del entorno, estructura por modulos con la regla `ui/` importa de `core/` y `core/` nunca importa de Qt, sistema de diseño con tokens en ui/tokens.py (botones 200x60, navegacion 160x48, radios pastilla, proporciones 1:1 y 467:333), las cinco pantallas (principal, RGB, YCM, histograma y recorte) con su mapa de navegacion y atajos, los modos `color`/`blanco y negro` y umbral/bordes con relleno por flood fill, la logica de `core/` (EstadoImagen compartido, segmentacion GrabCut/OTSU, canales YCM en float32, recorte a 512), el formato de guardado (PNG RGBA con mascara, PNG en escala de grises y PSD con mascara de capa) y mas de 70 criterios de aceptacion verificables. Notifica divergencia con la implementacion real: sus secciones §3.3 y §11 prohiben matplotlib y describen el histograma con QPainter, pero requirements.txt y README si lo incluyen con `plt.hist`.",
+      "tags": ["documentacion", "especificacion-funcional", "requisitos-de-ui", "sistema-de-diseno", "criterios-de-aceptacion"],
+      "complexity": "complex",
+      "languageNotes": "Guia ejecutable con 7 pasos y punto de control verificable por paso, 58 encabezados, bloques de codigo Python de referencia en cada seccion con comentarios que explican los porques (p. ej. por que `bgd`/`fgd` de GrabCut deben ser arrays preasignados de np.float64) y listas de checklist para los criterios de aceptacion."
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:README.md",
+      "target": "file:main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/imagen.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/segmentacion.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/canales.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:core/recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/tokens.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/helpers.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/widgets.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_principal.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_canales.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_rgb.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_ycm.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:ui/ventana_recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:styles.qss",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:main.spec",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:tests/suite.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:requirements.txt",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:requisitos.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:main.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/imagen.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/segmentacion.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/canales.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/histograma.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/recorte.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:core/bordes.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:main.spec",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/imagen.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/segmentacion.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/canales.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:core/bordes.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/tokens.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/widgets.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_principal.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_rgb.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_ycm.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:ui/ventana_recorte.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:styles.qss",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "file:main.spec",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requisitos.md",
+      "target": "document:requirements.txt",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

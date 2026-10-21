@@ -1,0 +1,2725 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 10,
+  "filesSkipped": [
+    "frutas/174107565-juego-de-frutas-enteras-de-mango-sobre-fondo-de-mesa-de-piedra-oscura-negra-con-espacio-de-copia.webp",
+    "main.spec",
+    "styles.qss"
+  ],
+  "filesUnreadable": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 10,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 10,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "core/bordes.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 109,
+      "nonEmptyLines": 98,
+      "functions": [
+        {
+          "name": "detectar_bordes",
+          "startLine": 24,
+          "endLine": 42,
+          "params": [
+            "imagen",
+            "metodo",
+            "t1",
+            "t2"
+          ]
+        },
+        {
+          "name": "rellenar_bordes",
+          "startLine": 45,
+          "endLine": 109,
+          "params": [
+            "mapa_bordes",
+            "mascara",
+            "punto"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "detectar_bordes",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "rellenar_bordes",
+          "line": 45,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "detectar_bordes",
+          "callee": "ValueError",
+          "lineNumber": 32
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "cv2.GaussianBlur",
+          "lineNumber": 33
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "cv2.Canny",
+          "lineNumber": 35
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "cv2.Sobel",
+          "lineNumber": 37
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "cv2.Sobel",
+          "lineNumber": 38
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "cv2.convertScaleAbs",
+          "lineNumber": 39
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "cv2.magnitude",
+          "lineNumber": 39
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "np.where(mag >= t2, 255, 0).astype",
+          "lineNumber": 40
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "np.where",
+          "lineNumber": 40
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "cv2.convertScaleAbs",
+          "lineNumber": 41
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "cv2.Laplacian",
+          "lineNumber": 41
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "np.where(lap >= t2, 255, 0).astype",
+          "lineNumber": 42
+        },
+        {
+          "caller": "detectar_bordes",
+          "callee": "np.where",
+          "lineNumber": 42
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "np.zeros",
+          "lineNumber": 59
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "mascara.astype",
+          "lineNumber": 61
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "cv2.dilate",
+          "lineNumber": 63
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "(mapa_bordes > 0).astype",
+          "lineNumber": 63
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "np.ones",
+          "lineNumber": 63
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "int",
+          "lineNumber": 64
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "int",
+          "lineNumber": 64
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "np.where(paredes > 0, 0, 255).astype",
+          "lineNumber": 67
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "np.where",
+          "lineNumber": 67
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "cv2.connectedComponents",
+          "lineNumber": 70
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "set",
+          "lineNumber": 71
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "etiquetas[0, :].tolist",
+          "lineNumber": 72
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "etiquetas[-1, :].tolist",
+          "lineNumber": 73
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "etiquetas[:, 0].tolist",
+          "lineNumber": 74
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "etiquetas[:, -1].tolist",
+          "lineNumber": 75
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "range",
+          "lineNumber": 82
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "range",
+          "lineNumber": 83
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "range",
+          "lineNumber": 84
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "max",
+          "lineNumber": 85
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "abs",
+          "lineNumber": 85
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "abs",
+          "lineNumber": 85
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "cv2.floodFill",
+          "lineNumber": 105
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "np.zeros",
+          "lineNumber": 105
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "np.where(lienzo == 128, 255, 0).astype",
+          "lineNumber": 106
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "np.where",
+          "lineNumber": 106
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "cv2.bitwise_or",
+          "lineNumber": 107
+        },
+        {
+          "caller": "rellenar_bordes",
+          "callee": "np.array_equal",
+          "lineNumber": 108
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "core/histograma.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 79,
+      "nonEmptyLines": 68,
+      "functions": [
+        {
+          "name": "histograma_canal",
+          "startLine": 19,
+          "endLine": 21,
+          "params": [
+            "canal"
+          ]
+        },
+        {
+          "name": "figura_histograma",
+          "startLine": 24,
+          "endLine": 67,
+          "params": [
+            "componente",
+            "inf",
+            "sup"
+          ]
+        },
+        {
+          "name": "mascara_por_rango",
+          "startLine": 70,
+          "endLine": 79,
+          "params": [
+            "componente",
+            "inf",
+            "sup"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "histograma_canal",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "figura_histograma",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "mascara_por_rango",
+          "line": 70,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "histograma_canal",
+          "callee": "np.bincount(canal.ravel(), minlength=256).astype",
+          "lineNumber": 21
+        },
+        {
+          "caller": "histograma_canal",
+          "callee": "np.bincount",
+          "lineNumber": 21
+        },
+        {
+          "caller": "histograma_canal",
+          "callee": "canal.ravel",
+          "lineNumber": 21
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "np.ascontiguousarray(componente).ravel",
+          "lineNumber": 32
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "np.ascontiguousarray",
+          "lineNumber": 32
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "plt.figure",
+          "lineNumber": 33
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "max",
+          "lineNumber": 37
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "plt.hist",
+          "lineNumber": 38
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "plt.axvline",
+          "lineNumber": 39
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "int",
+          "lineNumber": 39
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "plt.axvline",
+          "lineNumber": 40
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "int",
+          "lineNumber": 40
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "np.bincount",
+          "lineNumber": 48
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "gris.astype",
+          "lineNumber": 48
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "conteos[6:250].astype",
+          "lineNumber": 49
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "int",
+          "lineNumber": 50
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "interior.max",
+          "lineNumber": 50
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "np.sort",
+          "lineNumber": 51
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "int",
+          "lineNumber": 52
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "int",
+          "lineNumber": 52
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "max",
+          "lineNumber": 53
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "int",
+          "lineNumber": 57
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "conteos.max",
+          "lineNumber": 57
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "plt.ylim",
+          "lineNumber": 58
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "max",
+          "lineNumber": 58
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "plt.title",
+          "lineNumber": 59
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "plt.xlabel",
+          "lineNumber": 60
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "plt.ylabel",
+          "lineNumber": 61
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "plt.tight_layout",
+          "lineNumber": 62
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "io.BytesIO",
+          "lineNumber": 63
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "fig.savefig",
+          "lineNumber": 64
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "buf.getvalue",
+          "lineNumber": 65
+        },
+        {
+          "caller": "figura_histograma",
+          "callee": "plt.close",
+          "lineNumber": 67
+        },
+        {
+          "caller": "mascara_por_rango",
+          "callee": "int",
+          "lineNumber": 76
+        },
+        {
+          "caller": "mascara_por_rango",
+          "callee": "int",
+          "lineNumber": 76
+        },
+        {
+          "caller": "mascara_por_rango",
+          "callee": "int",
+          "lineNumber": 76
+        },
+        {
+          "caller": "mascara_por_rango",
+          "callee": "int",
+          "lineNumber": 76
+        },
+        {
+          "caller": "mascara_por_rango",
+          "callee": "int",
+          "lineNumber": 77
+        },
+        {
+          "caller": "mascara_por_rango",
+          "callee": "int",
+          "lineNumber": 77
+        },
+        {
+          "caller": "mascara_por_rango",
+          "callee": "np.ascontiguousarray",
+          "lineNumber": 78
+        },
+        {
+          "caller": "mascara_por_rango",
+          "callee": "np.where((comp >= lo) & (comp <= hi), 255, 0).astype",
+          "lineNumber": 79
+        },
+        {
+          "caller": "mascara_por_rango",
+          "callee": "np.where",
+          "lineNumber": 79
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "legacy/analizador_imagenes.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 382,
+      "nonEmptyLines": 342,
+      "classes": [
+        {
+          "name": "AnalizadorApp",
+          "startLine": 14,
+          "endLine": 378,
+          "methods": [
+            "__init__",
+            "_crear_paginas",
+            "mostrar",
+            "_crear_menu",
+            "_crear_filtros",
+            "seleccionar_imagen",
+            "_mostrar_vista_previa",
+            "directorio_desde_src",
+            "_renderar_canales",
+            "alternar_modo",
+            "aplicar_canal",
+            "canal_segun",
+            "_objeto_de",
+            "_grabcut",
+            "_mascara_global",
+            "alternar_fondo",
+            "alternar_metodo",
+            "_foto_para"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AnalizadorApp",
+          "line": 14,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "super().__init__",
+          "lineNumber": 16
+        },
+        {
+          "caller": "__init__",
+          "callee": "super",
+          "lineNumber": 16
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.title",
+          "lineNumber": 17
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.geometry",
+          "lineNumber": 18
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.resizable",
+          "lineNumber": 19
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.configure",
+          "lineNumber": 20
+        },
+        {
+          "caller": "__init__",
+          "callee": "self._crear_paginas",
+          "lineNumber": 32
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.mostrar",
+          "lineNumber": 33
+        },
+        {
+          "caller": "_crear_paginas",
+          "callee": "self._crear_menu",
+          "lineNumber": 36
+        },
+        {
+          "caller": "_crear_paginas",
+          "callee": "self._crear_filtros",
+          "lineNumber": 37
+        },
+        {
+          "caller": "_crear_paginas",
+          "callee": "self._crear_filtros",
+          "lineNumber": 38
+        },
+        {
+          "caller": "mostrar",
+          "callee": "self._renderar_canales",
+          "lineNumber": 42
+        },
+        {
+          "caller": "mostrar",
+          "callee": "self._paginas[nombre].tkraise",
+          "lineNumber": 43
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "tk.Frame",
+          "lineNumber": 46
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "frame.place",
+          "lineNumber": 47
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "frame.grid_propagate",
+          "lineNumber": 48
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "tk.Label",
+          "lineNumber": 50
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "titulo.place",
+          "lineNumber": 51
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "tk.Frame",
+          "lineNumber": 53
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.zona_imagen.place",
+          "lineNumber": 54
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.zona_imagen.grid_propagate",
+          "lineNumber": 55
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "tk.Canvas",
+          "lineNumber": 57
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.vista_previa.place",
+          "lineNumber": 58
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.vista_previa.create_text",
+          "lineNumber": 59
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "tk.Label",
+          "lineNumber": 61
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.nombre_imagen.place",
+          "lineNumber": 62
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "widget.bind",
+          "lineNumber": 65
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.seleccionar_imagen",
+          "lineNumber": 65
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "tk.Button",
+          "lineNumber": 67
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.boton_fondo_menu.place",
+          "lineNumber": 71
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "tk.Button",
+          "lineNumber": 72
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.boton_metodo.place",
+          "lineNumber": 76
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "tk.Button",
+          "lineNumber": 78
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.mostrar",
+          "lineNumber": 80
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.boton_rgb.place",
+          "lineNumber": 82
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "tk.Button",
+          "lineNumber": 84
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.mostrar",
+          "lineNumber": 86
+        },
+        {
+          "caller": "_crear_menu",
+          "callee": "self.boton_ycm.place",
+          "lineNumber": 88
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Frame",
+          "lineNumber": 93
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "frame.place",
+          "lineNumber": 94
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "frame.grid_propagate",
+          "lineNumber": 95
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Label",
+          "lineNumber": 97
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "etiqueta_ima.place",
+          "lineNumber": 98
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Label",
+          "lineNumber": 99
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "valor_ima.place",
+          "lineNumber": 100
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Label",
+          "lineNumber": 102
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "etiqueta_dir.place",
+          "lineNumber": 103
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Label",
+          "lineNumber": 104
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "valor_dir.place",
+          "lineNumber": 105
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Label",
+          "lineNumber": 108
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "titulo_label.place",
+          "lineNumber": 109
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Button",
+          "lineNumber": 111
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "self.mostrar",
+          "lineNumber": 113
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "regresar.place",
+          "lineNumber": 115
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Button",
+          "lineNumber": 117
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "self.alternar_modo",
+          "lineNumber": 119
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "boton_modo.place",
+          "lineNumber": 121
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Button",
+          "lineNumber": 124
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "boton_fondo.place",
+          "lineNumber": 128
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "enumerate",
+          "lineNumber": 132
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Label",
+          "lineNumber": 134
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "etiqueta.place",
+          "lineNumber": 135
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Canvas",
+          "lineNumber": 136
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "lienzo.place",
+          "lineNumber": 137
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "lienzo.bind",
+          "lineNumber": 138
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "self.aplicar_canal",
+          "lineNumber": 138
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "tk.Label",
+          "lineNumber": 140
+        },
+        {
+          "caller": "_crear_filtros",
+          "callee": "metrica.place",
+          "lineNumber": 141
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "filedialog.askopenfilename",
+          "lineNumber": 148
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "np.array",
+          "lineNumber": 155
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "Image.open(ruta).convert",
+          "lineNumber": 155
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "Image.open",
+          "lineNumber": 155
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "messagebox.showerror",
+          "lineNumber": 157
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.boton_fondo_menu.configure",
+          "lineNumber": 161
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.boton_metodo.configure",
+          "lineNumber": 162
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.nombre_imagen.configure",
+          "lineNumber": 163
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "os.path.basename",
+          "lineNumber": 163
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self._mostrar_vista_previa",
+          "lineNumber": 164
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.boton_rgb.configure",
+          "lineNumber": 165
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.boton_ycm.configure",
+          "lineNumber": 166
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self._info_filtros.values",
+          "lineNumber": 167
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "valores[\"ima\"].configure",
+          "lineNumber": 168
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "os.path.basename",
+          "lineNumber": 168
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "valores[\"dir\"].configure",
+          "lineNumber": 169
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.directorio_desde_src",
+          "lineNumber": 169
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self._renderar_canales",
+          "lineNumber": 170
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self._renderar_canales",
+          "lineNumber": 171
+        },
+        {
+          "caller": "_mostrar_vista_previa",
+          "callee": "lienzo.delete",
+          "lineNumber": 175
+        },
+        {
+          "caller": "_mostrar_vista_previa",
+          "callee": "lienzo.create_text",
+          "lineNumber": 179
+        },
+        {
+          "caller": "_mostrar_vista_previa",
+          "callee": "Image.fromarray",
+          "lineNumber": 181
+        },
+        {
+          "caller": "_mostrar_vista_previa",
+          "callee": "min",
+          "lineNumber": 182
+        },
+        {
+          "caller": "_mostrar_vista_previa",
+          "callee": "max",
+          "lineNumber": 183
+        },
+        {
+          "caller": "_mostrar_vista_previa",
+          "callee": "round",
+          "lineNumber": 183
+        },
+        {
+          "caller": "_mostrar_vista_previa",
+          "callee": "max",
+          "lineNumber": 183
+        },
+        {
+          "caller": "_mostrar_vista_previa",
+          "callee": "round",
+          "lineNumber": 183
+        },
+        {
+          "caller": "_mostrar_vista_previa",
+          "callee": "imagen.resize",
+          "lineNumber": 184
+        },
+        {
+          "caller": "_mostrar_vista_previa",
+          "callee": "ImageTk.PhotoImage",
+          "lineNumber": 185
+        },
+        {
+          "caller": "_mostrar_vista_previa",
+          "callee": "lienzo.create_image",
+          "lineNumber": 187
+        },
+        {
+          "caller": "directorio_desde_src",
+          "callee": "os.path.dirname",
+          "lineNumber": 191
+        },
+        {
+          "caller": "directorio_desde_src",
+          "callee": "directorio.lower().find",
+          "lineNumber": 192
+        },
+        {
+          "caller": "directorio_desde_src",
+          "callee": "directorio.lower",
+          "lineNumber": 192
+        },
+        {
+          "caller": "_renderar_canales",
+          "callee": "self.aplicar_canal",
+          "lineNumber": 201
+        },
+        {
+          "caller": "alternar_modo",
+          "callee": "orden.index",
+          "lineNumber": 206
+        },
+        {
+          "caller": "alternar_modo",
+          "callee": "len",
+          "lineNumber": 206
+        },
+        {
+          "caller": "alternar_modo",
+          "callee": "self._botones_modo[clave].configure",
+          "lineNumber": 207
+        },
+        {
+          "caller": "alternar_modo",
+          "callee": "self._renderar_canales",
+          "lineNumber": 208
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "messagebox.showwarning",
+          "lineNumber": 212
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "self.canal_segun",
+          "lineNumber": 214
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "Image.fromarray",
+          "lineNumber": 217
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "Image.fromarray",
+          "lineNumber": 219
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "min",
+          "lineNumber": 221
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "max",
+          "lineNumber": 222
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "round",
+          "lineNumber": 222
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "max",
+          "lineNumber": 222
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "round",
+          "lineNumber": 222
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "imagen.resize",
+          "lineNumber": 223
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "ImageTk.PhotoImage",
+          "lineNumber": 224
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "lienzo.delete",
+          "lineNumber": 226
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "lienzo.create_image",
+          "lineNumber": 227
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "self.modo_canal.get",
+          "lineNumber": 229
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "float",
+          "lineNumber": 230
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "np.count_nonzero",
+          "lineNumber": 230
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "metrica.configure",
+          "lineNumber": 231
+        },
+        {
+          "caller": "aplicar_canal",
+          "callee": "metrica.configure",
+          "lineNumber": 233
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "self.modo_canal.get",
+          "lineNumber": 240
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "np.zeros_like",
+          "lineNumber": 243
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "self._objeto_de",
+          "lineNumber": 252
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "np.dstack",
+          "lineNumber": 256
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "np.dstack",
+          "lineNumber": 258
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "np.dstack",
+          "lineNumber": 259
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "((rojos.astype(np.float32) + verdes.astype(np.float32)) / 2).astype",
+          "lineNumber": 261
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "rojos.astype",
+          "lineNumber": 261
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "verdes.astype",
+          "lineNumber": 261
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "self._objeto_de",
+          "lineNumber": 263
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "np.dstack",
+          "lineNumber": 266
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "((verdes.astype(np.float32) + azules.astype(np.float32)) / 2).astype",
+          "lineNumber": 268
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "verdes.astype",
+          "lineNumber": 268
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "azules.astype",
+          "lineNumber": 268
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "self._objeto_de",
+          "lineNumber": 270
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "np.dstack",
+          "lineNumber": 273
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "((rojos.astype(np.float32) + azules.astype(np.float32)) / 2).astype",
+          "lineNumber": 274
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "rojos.astype",
+          "lineNumber": 274
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "azules.astype",
+          "lineNumber": 274
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "self._objeto_de",
+          "lineNumber": 276
+        },
+        {
+          "caller": "canal_segun",
+          "callee": "np.dstack",
+          "lineNumber": 279
+        },
+        {
+          "caller": "_objeto_de",
+          "callee": "cv2.GaussianBlur",
+          "lineNumber": 283
+        },
+        {
+          "caller": "_objeto_de",
+          "callee": "cv2.threshold",
+          "lineNumber": 284
+        },
+        {
+          "caller": "_objeto_de",
+          "callee": "cv2.countNonZero",
+          "lineNumber": 285
+        },
+        {
+          "caller": "_objeto_de",
+          "callee": "cv2.bitwise_not",
+          "lineNumber": 286
+        },
+        {
+          "caller": "_objeto_de",
+          "callee": "np.ones",
+          "lineNumber": 287
+        },
+        {
+          "caller": "_objeto_de",
+          "callee": "cv2.morphologyEx",
+          "lineNumber": 288
+        },
+        {
+          "caller": "_objeto_de",
+          "callee": "cv2.findContours",
+          "lineNumber": 289
+        },
+        {
+          "caller": "_objeto_de",
+          "callee": "np.zeros_like",
+          "lineNumber": 290
+        },
+        {
+          "caller": "_objeto_de",
+          "callee": "max",
+          "lineNumber": 292
+        },
+        {
+          "caller": "_objeto_de",
+          "callee": "cv2.drawContours",
+          "lineNumber": 293
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "max",
+          "lineNumber": 299
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "cv2.resize",
+          "lineNumber": 301
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "round",
+          "lineNumber": 301
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "round",
+          "lineNumber": 301
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "np.zeros",
+          "lineNumber": 305
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "np.zeros",
+          "lineNumber": 306
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "np.zeros",
+          "lineNumber": 307
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "max",
+          "lineNumber": 309
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "int",
+          "lineNumber": 309
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "max",
+          "lineNumber": 310
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "int",
+          "lineNumber": 310
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "int",
+          "lineNumber": 311
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "int",
+          "lineNumber": 312
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "cv2.grabCut",
+          "lineNumber": 314
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "np.where(\n            (mascara == cv2.GC_FGD) | (mascara == cv2.GC_PR_FGD), 255, 0\n        ).astype",
+          "lineNumber": 315
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "np.where",
+          "lineNumber": 315
+        },
+        {
+          "caller": "_grabcut",
+          "callee": "cv2.resize",
+          "lineNumber": 318
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "self._grabcut",
+          "lineNumber": 323
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "imagen[:, :, 0].astype",
+          "lineNumber": 328
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "imagen[:, :, 1].astype",
+          "lineNumber": 329
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "imagen[:, :, 2].astype",
+          "lineNumber": 330
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "((rojos + verdes) / 2).astype",
+          "lineNumber": 332
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "((verdes + azules) / 2).astype",
+          "lineNumber": 333
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "((rojos + azules) / 2).astype",
+          "lineNumber": 334
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.zeros",
+          "lineNumber": 336
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "cv2.bitwise_or",
+          "lineNumber": 338
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "self._objeto_de",
+          "lineNumber": 338
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.ones",
+          "lineNumber": 339
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "cv2.morphologyEx",
+          "lineNumber": 340
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "cv2.connectedComponents",
+          "lineNumber": 341
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.bincount",
+          "lineNumber": 343
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "marcada.ravel",
+          "lineNumber": 343
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "int",
+          "lineNumber": 344
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.argmax",
+          "lineNumber": 344
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.where(marcada == mayor, 255, 0).astype",
+          "lineNumber": 345
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.where",
+          "lineNumber": 345
+        },
+        {
+          "caller": "alternar_fondo",
+          "callee": "messagebox.showwarning",
+          "lineNumber": 350
+        },
+        {
+          "caller": "alternar_fondo",
+          "callee": "self._mascara_global",
+          "lineNumber": 353
+        },
+        {
+          "caller": "alternar_fondo",
+          "callee": "self.img_rgb.copy",
+          "lineNumber": 354
+        },
+        {
+          "caller": "alternar_fondo",
+          "callee": "self.boton_fondo_menu.configure",
+          "lineNumber": 359
+        },
+        {
+          "caller": "alternar_fondo",
+          "callee": "self._mostrar_vista_previa",
+          "lineNumber": 360
+        },
+        {
+          "caller": "alternar_fondo",
+          "callee": "self._renderar_canales",
+          "lineNumber": 361
+        },
+        {
+          "caller": "alternar_fondo",
+          "callee": "self._renderar_canales",
+          "lineNumber": 362
+        },
+        {
+          "caller": "alternar_metodo",
+          "callee": "self.boton_metodo.configure",
+          "lineNumber": 366
+        },
+        {
+          "caller": "alternar_metodo",
+          "callee": "self.alternar_fondo",
+          "lineNumber": 368
+        },
+        {
+          "caller": "alternar_metodo",
+          "callee": "self.alternar_fondo",
+          "lineNumber": 369
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "min",
+          "lineNumber": 373
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "max",
+          "lineNumber": 374
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "round",
+          "lineNumber": 374
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "max",
+          "lineNumber": 374
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "round",
+          "lineNumber": 374
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "ImageTk.PhotoImage",
+          "lineNumber": 375
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "imagen.resize",
+          "lineNumber": 375
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "min",
+          "lineNumber": 376
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "max",
+          "lineNumber": 377
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "round",
+          "lineNumber": 377
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "max",
+          "lineNumber": 377
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "round",
+          "lineNumber": 377
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "ImageTk.PhotoImage",
+          "lineNumber": 378
+        },
+        {
+          "caller": "_foto_para",
+          "callee": "imagen.resize",
+          "lineNumber": 378
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "legacy/preprocesamiento.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 225,
+      "nonEmptyLines": 200,
+      "classes": [
+        {
+          "name": "PreprocesamientoApp",
+          "startLine": 11,
+          "endLine": 221,
+          "methods": [
+            "__init__",
+            "_construir",
+            "_foto_en",
+            "seleccionar_imagen",
+            "_mascara_global",
+            "quitar_fondo",
+            "alternar_metodo",
+            "restaurar",
+            "guardar_psd",
+            "guardar"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "PreprocesamientoApp",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "super().__init__",
+          "lineNumber": 13
+        },
+        {
+          "caller": "__init__",
+          "callee": "super",
+          "lineNumber": 13
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.title",
+          "lineNumber": 14
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.configure",
+          "lineNumber": 15
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.geometry",
+          "lineNumber": 16
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.resizable",
+          "lineNumber": 17
+        },
+        {
+          "caller": "__init__",
+          "callee": "self._construir",
+          "lineNumber": 26
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Frame",
+          "lineNumber": 29
+        },
+        {
+          "caller": "_construir",
+          "callee": "controles.pack",
+          "lineNumber": 30
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Button",
+          "lineNumber": 32
+        },
+        {
+          "caller": "_construir",
+          "callee": "boton_seleccion.grid",
+          "lineNumber": 36
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Button",
+          "lineNumber": 38
+        },
+        {
+          "caller": "_construir",
+          "callee": "self.boton_quitar.grid",
+          "lineNumber": 42
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Button",
+          "lineNumber": 44
+        },
+        {
+          "caller": "_construir",
+          "callee": "self.boton_metodo.grid",
+          "lineNumber": 48
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Button",
+          "lineNumber": 50
+        },
+        {
+          "caller": "_construir",
+          "callee": "self.boton_guardar.grid",
+          "lineNumber": 54
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Button",
+          "lineNumber": 56
+        },
+        {
+          "caller": "_construir",
+          "callee": "self.boton_psd.grid",
+          "lineNumber": 60
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Button",
+          "lineNumber": 62
+        },
+        {
+          "caller": "_construir",
+          "callee": "self.boton_restaurar.grid",
+          "lineNumber": 66
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Frame",
+          "lineNumber": 68
+        },
+        {
+          "caller": "_construir",
+          "callee": "paneles.pack",
+          "lineNumber": 69
+        },
+        {
+          "caller": "_construir",
+          "callee": "enumerate",
+          "lineNumber": 71
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Frame",
+          "lineNumber": 72
+        },
+        {
+          "caller": "_construir",
+          "callee": "marco.grid",
+          "lineNumber": 73
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Label(marco, text=titulo, font=(\"Segoe UI\", 14, \"bold\"), fg=NEGRO, bg=BLANCO).pack",
+          "lineNumber": 74
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Label",
+          "lineNumber": 74
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Canvas",
+          "lineNumber": 75
+        },
+        {
+          "caller": "_construir",
+          "callee": "lienzo.pack",
+          "lineNumber": 76
+        },
+        {
+          "caller": "_construir",
+          "callee": "lienzo.create_text",
+          "lineNumber": 77
+        },
+        {
+          "caller": "_construir",
+          "callee": "tk.Label",
+          "lineNumber": 80
+        },
+        {
+          "caller": "_construir",
+          "callee": "self.estado.pack",
+          "lineNumber": 83
+        },
+        {
+          "caller": "_foto_en",
+          "callee": "Image.fromarray",
+          "lineNumber": 86
+        },
+        {
+          "caller": "_foto_en",
+          "callee": "min",
+          "lineNumber": 87
+        },
+        {
+          "caller": "_foto_en",
+          "callee": "max",
+          "lineNumber": 88
+        },
+        {
+          "caller": "_foto_en",
+          "callee": "round",
+          "lineNumber": 88
+        },
+        {
+          "caller": "_foto_en",
+          "callee": "max",
+          "lineNumber": 88
+        },
+        {
+          "caller": "_foto_en",
+          "callee": "round",
+          "lineNumber": 88
+        },
+        {
+          "caller": "_foto_en",
+          "callee": "ImageTk.PhotoImage",
+          "lineNumber": 89
+        },
+        {
+          "caller": "_foto_en",
+          "callee": "imagen.resize",
+          "lineNumber": 89
+        },
+        {
+          "caller": "_foto_en",
+          "callee": "lienzo.delete",
+          "lineNumber": 91
+        },
+        {
+          "caller": "_foto_en",
+          "callee": "lienzo.create_image",
+          "lineNumber": 92
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "filedialog.askopenfilename",
+          "lineNumber": 95
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "np.array",
+          "lineNumber": 102
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "Image.open(ruta).convert",
+          "lineNumber": 102
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "Image.open",
+          "lineNumber": 102
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "messagebox.showerror",
+          "lineNumber": 104
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self._foto_en",
+          "lineNumber": 109
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self._foto_en",
+          "lineNumber": 110
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.estado.configure",
+          "lineNumber": 111
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "os.path.basename",
+          "lineNumber": 111
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.boton_quitar.configure",
+          "lineNumber": 112
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.boton_metodo.configure",
+          "lineNumber": 113
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.boton_guardar.configure",
+          "lineNumber": 114
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.boton_psd.configure",
+          "lineNumber": 115
+        },
+        {
+          "caller": "seleccionar_imagen",
+          "callee": "self.boton_restaurar.configure",
+          "lineNumber": 116
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "AnalizadorApp._grabcut",
+          "lineNumber": 120
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.zeros",
+          "lineNumber": 125
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "cv2.bitwise_or",
+          "lineNumber": 127
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "AnalizadorApp._objeto_de",
+          "lineNumber": 127
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.ones",
+          "lineNumber": 128
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "cv2.morphologyEx",
+          "lineNumber": 129
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "cv2.connectedComponents",
+          "lineNumber": 130
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.bincount",
+          "lineNumber": 132
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "marcada.ravel",
+          "lineNumber": 132
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "int",
+          "lineNumber": 133
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.argmax",
+          "lineNumber": 133
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.where(marcada == mayor, 255, 0).astype",
+          "lineNumber": 134
+        },
+        {
+          "caller": "_mascara_global",
+          "callee": "np.where",
+          "lineNumber": 134
+        },
+        {
+          "caller": "quitar_fondo",
+          "callee": "messagebox.showwarning",
+          "lineNumber": 139
+        },
+        {
+          "caller": "quitar_fondo",
+          "callee": "self._mascara_global",
+          "lineNumber": 141
+        },
+        {
+          "caller": "quitar_fondo",
+          "callee": "self.img_rgb.copy",
+          "lineNumber": 143
+        },
+        {
+          "caller": "quitar_fondo",
+          "callee": "np.dstack",
+          "lineNumber": 145
+        },
+        {
+          "caller": "quitar_fondo",
+          "callee": "self._foto_en",
+          "lineNumber": 147
+        },
+        {
+          "caller": "quitar_fondo",
+          "callee": "float",
+          "lineNumber": 148
+        },
+        {
+          "caller": "quitar_fondo",
+          "callee": "np.count_nonzero",
+          "lineNumber": 148
+        },
+        {
+          "caller": "quitar_fondo",
+          "callee": "self.estado.configure",
+          "lineNumber": 149
+        },
+        {
+          "caller": "quitar_fondo",
+          "callee": "self.metodo.upper",
+          "lineNumber": 150
+        },
+        {
+          "caller": "quitar_fondo",
+          "callee": "self.boton_guardar.configure",
+          "lineNumber": 152
+        },
+        {
+          "caller": "quitar_fondo",
+          "callee": "self.boton_psd.configure",
+          "lineNumber": 153
+        },
+        {
+          "caller": "alternar_metodo",
+          "callee": "self.boton_metodo.configure",
+          "lineNumber": 157
+        },
+        {
+          "caller": "alternar_metodo",
+          "callee": "self.quitar_fondo",
+          "lineNumber": 159
+        },
+        {
+          "caller": "restaurar",
+          "callee": "self._foto_en",
+          "lineNumber": 166
+        },
+        {
+          "caller": "restaurar",
+          "callee": "self.estado.configure",
+          "lineNumber": 167
+        },
+        {
+          "caller": "restaurar",
+          "callee": "self.boton_guardar.configure",
+          "lineNumber": 168
+        },
+        {
+          "caller": "restaurar",
+          "callee": "self.boton_psd.configure",
+          "lineNumber": 169
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "messagebox.showwarning",
+          "lineNumber": 173
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "os.path.splitext",
+          "lineNumber": 175
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "os.path.basename",
+          "lineNumber": 175
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "filedialog.asksaveasfilename",
+          "lineNumber": 176
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "messagebox.showerror",
+          "lineNumber": 187
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "PSDImage.new",
+          "lineNumber": 194
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "psd.create_pixel_layer",
+          "lineNumber": 195
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "Image.fromarray",
+          "lineNumber": 195
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "capa.create_mask",
+          "lineNumber": 196
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "Image.fromarray",
+          "lineNumber": 196
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "psd.save",
+          "lineNumber": 197
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "os.path.splitext",
+          "lineNumber": 198
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "Image.fromarray(mascara, mode=\"L\").save",
+          "lineNumber": 199
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "Image.fromarray",
+          "lineNumber": 199
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "messagebox.showerror",
+          "lineNumber": 201
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "self.estado.configure",
+          "lineNumber": 203
+        },
+        {
+          "caller": "guardar_psd",
+          "callee": "os.path.basename",
+          "lineNumber": 204
+        },
+        {
+          "caller": "guardar",
+          "callee": "messagebox.showwarning",
+          "lineNumber": 209
+        },
+        {
+          "caller": "guardar",
+          "callee": "os.path.splitext",
+          "lineNumber": 211
+        },
+        {
+          "caller": "guardar",
+          "callee": "os.path.basename",
+          "lineNumber": 211
+        },
+        {
+          "caller": "guardar",
+          "callee": "filedialog.asksaveasfilename",
+          "lineNumber": 212
+        },
+        {
+          "caller": "guardar",
+          "callee": "Image.fromarray(self.img_sin_fondo).save",
+          "lineNumber": 220
+        },
+        {
+          "caller": "guardar",
+          "callee": "Image.fromarray",
+          "lineNumber": 220
+        },
+        {
+          "caller": "guardar",
+          "callee": "self.estado.configure",
+          "lineNumber": 221
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "tests/suite.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 80,
+      "nonEmptyLines": 73,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_bordes.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 143,
+      "nonEmptyLines": 116,
+      "functions": [
+        {
+          "name": "check",
+          "startLine": 21,
+          "endLine": 29,
+          "params": [
+            "nombre",
+            "cond",
+            "detalle"
+          ]
+        },
+        {
+          "name": "_cuadro",
+          "startLine": 71,
+          "endLine": 81,
+          "params": [
+            "anillo",
+            "hueco"
+          ]
+        },
+        {
+          "name": "_anillo",
+          "startLine": 101,
+          "endLine": 106,
+          "params": [
+            "dst",
+            "y0",
+            "x0",
+            "lado"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "check",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "_cuadro",
+          "line": 71,
+          "isDefault": false
+        },
+        {
+          "name": "_anillo",
+          "line": 101,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "check",
+          "callee": "print",
+          "lineNumber": 22
+        },
+        {
+          "caller": "check",
+          "callee": "fallos.append",
+          "lineNumber": 29
+        },
+        {
+          "caller": "_cuadro",
+          "callee": "np.zeros",
+          "lineNumber": 73
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_overlay.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 100,
+      "nonEmptyLines": 90,
+      "functions": [
+        {
+          "name": "check",
+          "startLine": 23,
+          "endLine": 25,
+          "params": [
+            "n",
+            "c",
+            "d"
+          ]
+        },
+        {
+          "name": "cuenta",
+          "startLine": 62,
+          "endLine": 64,
+          "params": [
+            "im",
+            "x",
+            "color",
+            "ys"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "Overlay",
+          "startLine": 47,
+          "endLine": 53,
+          "methods": [
+            "__init__",
+            "paintEvent"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "check",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "Overlay",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "cuenta",
+          "line": 62,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "check",
+          "callee": "print",
+          "lineNumber": 24
+        },
+        {
+          "caller": "check",
+          "callee": "fallos.append",
+          "lineNumber": 25
+        },
+        {
+          "caller": "__init__",
+          "callee": "super().__init__",
+          "lineNumber": 49
+        },
+        {
+          "caller": "__init__",
+          "callee": "super",
+          "lineNumber": 49
+        },
+        {
+          "caller": "paintEvent",
+          "callee": "QtGui.QPainter",
+          "lineNumber": 51
+        },
+        {
+          "caller": "paintEvent",
+          "callee": "dm",
+          "lineNumber": 52
+        },
+        {
+          "caller": "paintEvent",
+          "callee": "self.a.value",
+          "lineNumber": 52
+        },
+        {
+          "caller": "paintEvent",
+          "callee": "self.b.value",
+          "lineNumber": 52
+        },
+        {
+          "caller": "paintEvent",
+          "callee": "p.end",
+          "lineNumber": 53
+        },
+        {
+          "caller": "cuenta",
+          "callee": "QtGui.QColor",
+          "lineNumber": 63
+        },
+        {
+          "caller": "cuenta",
+          "callee": "sum",
+          "lineNumber": 64
+        },
+        {
+          "caller": "cuenta",
+          "callee": "im.pixelColor",
+          "lineNumber": 64
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "tests/test_recorte.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 251,
+      "nonEmptyLines": 234,
+      "functions": [
+        {
+          "name": "check",
+          "startLine": 23,
+          "endLine": 25,
+          "params": [
+            "nombre",
+            "cond",
+            "detalle"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "check",
+          "line": 23,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "check",
+          "callee": "print",
+          "lineNumber": 24
+        },
+        {
+          "caller": "check",
+          "callee": "fallos.append",
+          "lineNumber": 25
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_widgets.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 507,
+      "nonEmptyLines": 466,
+      "functions": [
+        {
+          "name": "check",
+          "startLine": 17,
+          "endLine": 19,
+          "params": [
+            "nombre",
+            "cond",
+            "detalle"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "check",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "check",
+          "callee": "print",
+          "lineNumber": 18
+        },
+        {
+          "caller": "check",
+          "callee": "fallos.append",
+          "lineNumber": 19
+        },
+        {
+          "caller": "a_pixmap",
+          "callee": "QtGui.QPixmap.fromImage",
+          "lineNumber": 190
+        },
+        {
+          "caller": "a_pixmap",
+          "callee": "QtGui.QImage(a.data, w, h, w * 3, QtGui.QImage.Format_RGB888).copy",
+          "lineNumber": 191
+        },
+        {
+          "caller": "a_pixmap",
+          "callee": "QtGui.QImage",
+          "lineNumber": 191
+        },
+        {
+          "caller": "handle_x",
+          "callee": "s.setValue",
+          "lineNumber": 272
+        },
+        {
+          "caller": "handle_x",
+          "callee": "QtWidgets.QStyleOptionSlider",
+          "lineNumber": 273
+        },
+        {
+          "caller": "handle_x",
+          "callee": "s.initStyleOption",
+          "lineNumber": 273
+        },
+        {
+          "caller": "handle_x",
+          "callee": "s.style().subControlRect(QtWidgets.QStyle.CC_Slider, o,\n                                        QtWidgets.QStyle.SC_SliderHandle, s).center().x",
+          "lineNumber": 274
+        },
+        {
+          "caller": "handle_x",
+          "callee": "s.style().subControlRect(QtWidgets.QStyle.CC_Slider, o,\n                                        QtWidgets.QStyle.SC_SliderHandle, s).center",
+          "lineNumber": 274
+        },
+        {
+          "caller": "handle_x",
+          "callee": "s.style().subControlRect",
+          "lineNumber": 274
+        },
+        {
+          "caller": "handle_x",
+          "callee": "s.style",
+          "lineNumber": 274
+        },
+        {
+          "caller": "paintEvent",
+          "callee": "QtGui.QPainter",
+          "lineNumber": 296
+        },
+        {
+          "caller": "paintEvent",
+          "callee": "dm",
+          "lineNumber": 297
+        },
+        {
+          "caller": "paintEvent",
+          "callee": "p.end",
+          "lineNumber": 298
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/verificar.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 549,
+      "nonEmptyLines": 517,
+      "functions": [
+        {
+          "name": "check",
+          "startLine": 10,
+          "endLine": 13,
+          "params": [
+            "nombre",
+            "ok",
+            "detalle"
+          ]
+        },
+        {
+          "name": "_norm",
+          "startLine": 358,
+          "endLine": 359,
+          "params": [
+            "p"
+          ]
+        },
+        {
+          "name": "en_arbol",
+          "startLine": 521,
+          "endLine": 523,
+          "params": [
+            "nombre",
+            "texto"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "check",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "_norm",
+          "line": 358,
+          "isDefault": false
+        },
+        {
+          "name": "en_arbol",
+          "line": 521,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "check",
+          "callee": "print",
+          "lineNumber": 11
+        },
+        {
+          "caller": "check",
+          "callee": "fallos.append",
+          "lineNumber": 13
+        },
+        {
+          "caller": "_norm",
+          "callee": "re.sub",
+          "lineNumber": 359
+        },
+        {
+          "caller": "en_arbol",
+          "callee": "re.search",
+          "lineNumber": 522
+        },
+        {
+          "caller": "en_arbol",
+          "callee": "re.escape",
+          "lineNumber": 522
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    }
+  ]
+}

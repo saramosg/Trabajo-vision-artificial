@@ -1,0 +1,31 @@
+{
+  "projectRoot": "C:\\Users\\santiago\\Desktop\\unal\\vision artificial\\trabajo_grupal\\Trabajo-vision-artificial",
+  "batchFiles": [
+    { "path": "core/imagen.py", "language": "python", "sizeLines": 77, "fileCategory": "code" },
+    { "path": "core/segmentacion.py", "language": "python", "sizeLines": 156, "fileCategory": "code" },
+    { "path": "tests/test_boton_modo.py", "language": "python", "sizeLines": 212, "fileCategory": "code" },
+    { "path": "tests/test_relleno.py", "language": "python", "sizeLines": 159, "fileCategory": "code" },
+    { "path": "ui/ventana_histograma.py", "language": "python", "sizeLines": 566, "fileCategory": "code" }
+  ],
+  "batchImportData": {
+    "core/imagen.py": [],
+    "core/segmentacion.py": [],
+    "tests/test_boton_modo.py": [
+      "core/imagen.py",
+      "ui/ventana_histograma.py"
+    ],
+    "tests/test_relleno.py": [
+      "core/imagen.py",
+      "ui/ventana_histograma.py"
+    ],
+    "ui/ventana_histograma.py": [
+      "core/__init__.py",
+      "core/canales.py",
+      "core/segmentacion.py",
+      "ui/__init__.py",
+      "ui/helpers.py",
+      "ui/tokens.py",
+      "ui/widgets.py"
+    ]
+  }
+}

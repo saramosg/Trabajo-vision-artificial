@@ -98,8 +98,9 @@ imagenes/mango/
 - El dataset anterior multirruta (10 especies desde Wikimedia Commons con
   `manifest.csv`) se retiro: tenia etiquetas por consulta de busqueda sin
   validacion humana y quedo incompleto en disco.
-- Entrada al modelo: resize a **224x224** + normalizacion ImageNet en el pipeline
-  de entrenamiento (la app sigue exportando a 512; ver `tokens.LADO_SALIDA`).
+- Entrada al modelo propio: resize a **224x224** en el pipeline de entrenamiento
+  (la app sigue exportando a 512; ver `tokens.LADO_SALIDA`). Los clasificadores
+  existentes solo son referencia: el proyecto **entrena su propio modelo**.
 
 ## Tests
 

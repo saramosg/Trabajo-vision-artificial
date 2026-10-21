@@ -1,0 +1,588 @@
+{
+  "nodes": [
+    {
+      "id": "file:core/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "core/__init__.py",
+      "summary": "Paquete `core` que agrupa la logica de imagen sin Qt; su docstring fija la regla de dependencia: `ui/` importa desde aqui, nunca al reves.",
+      "tags": ["paquete", "punto-de-entrada", "arquitectura", "capa-nucleo"],
+      "complexity": "simple",
+      "languageNotes": "Modulo sin codigo ejecutable: su valor es documental, declara la frontera entre la capa de procesamiento y la de presentacion."
+    },
+    {
+      "id": "file:core/recorte.py",
+      "type": "file",
+      "name": "recorte.py",
+      "filePath": "core/recorte.py",
+      "summary": "Implementa el recorte libre: remuestrea una ventana arbitraria de la imagen a un lienzo cuadrado de lado fijo, rellenando en blanco la parte que queda fuera.",
+      "tags": ["procesamiento-imagen", "recorte", "opencv", "utilidad"],
+      "complexity": "simple",
+      "languageNotes": "Remuestreo y relleno se resuelven en una sola llamada a `cv2.warpAffine` con `BORDER_CONSTANT` y un `borderValue` por canal, segun sea en color o en grises."
+    },
+    {
+      "id": "file:main.py",
+      "type": "file",
+      "name": "main.py",
+      "filePath": "main.py",
+      "summary": "Punto de entrada de la aplicacion de escritorio: crea el QApplication, carga la hoja de estilos global `styles.qss` resolviendo la ruta del ejecutable y muestra la ventana principal.",
+      "tags": ["punto-de-entrada", "bootstrap", "pyside6", "estilos"],
+      "complexity": "simple",
+      "languageNotes": "La ruta de recursos se resuelve con `getattr(sys, \"_MEIPASS\", ...)`, el mecanismo estandar de PyInstaller para localizar archivos empaquetados."
+    },
+    {
+      "id": "file:ui/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "ui/__init__.py",
+      "summary": "Paquete `ui` que agrupa pantallas, widgets y decisiones de diseno, dejando toda la logica de imagen en `core/`.",
+      "tags": ["paquete", "punto-de-entrada", "arquitectura", "capa-presentacion"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ui/tokens.py",
+      "type": "file",
+      "name": "tokens.py",
+      "filePath": "ui/tokens.py",
+      "summary": "Fuente unica de verdad de los tokens de diseno (colores, medidas, tipografias, radios y proporciones) que alimentan el layout de todas las pantallas.",
+      "tags": ["tokens", "configuracion", "tema", "constantes"],
+      "complexity": "moderate",
+      "languageNotes": "Solo declara constantes de nivel de modulo; `styles.qss` es CSS plano y no puede leerlas, asi que sus valores estan duplicados a mano y deben mantenerse sincronizados."
+    },
+    {
+      "id": "file:ui/ventana_principal.py",
+      "type": "file",
+      "name": "ventana_principal.py",
+      "filePath": "ui/ventana_principal.py",
+      "summary": "Define la pantalla de preprocesado (cargar imagen, elegir modelo grabcut/otsu, quitar o restaurar el fondo) y la ventana principal que centraliza las cinco pantallas en un QStackedWidget con atajos de teclado.",
+      "tags": ["interfaz", "ventana", "navegacion", "preprocesado", "pyside6"],
+      "complexity": "complex",
+      "languageNotes": "La navegacion entre pantallas se resuelve con `QStackedWidget` mas señales `Signal` de PySide6, de modo que la pantalla de preprocesado no conoce la implementacion de las demas."
+    },
+    {
+      "id": "file:ui/ventana_recorte.py",
+      "type": "file",
+      "name": "ventana_recorte.py",
+      "filePath": "ui/ventana_recorte.py",
+      "summary": "Pantalla de recorte con marco fijo en pantalla: la imagen se escala con un slider y se panea por arrastre, y `recorte_libre` exporta el encuadre a 512 px con relleno blanco habilitando despues el guardado.",
+      "tags": ["interfaz", "recorte", "zoom", "opencv", "pyside6"],
+      "complexity": "complex",
+      "languageNotes": "El velo oscuro del marco fijo se pinta en `drawForeground` con `resetTransform`, porque debe dibujarse en coordenadas de pantalla y no bajo la transformacion de la escena."
+    },
+    {
+      "id": "file:ui/widgets.py",
+      "type": "file",
+      "name": "widgets.py",
+      "filePath": "ui/widgets.py",
+      "summary": "Widgets reutilizables de imagen: conversion de arrays numpy a QPixmap y una etiqueta que encaja la foto en su cuadro sin deformarla.",
+      "tags": ["widgets", "utilidad", "conversion-imagen", "pyside6"],
+      "complexity": "moderate",
+      "languageNotes": "`QImage` exige un buffer C-contiguo y lanza `BufferError` con vistas con strides discontinuous, por eso `a_pixmap` fuerza `np.ascontiguousarray` antes de copiar el buffer."
+    },
+    {
+      "id": "function:core/recorte.py:recorte_libre",
+      "type": "function",
+      "name": "recorte_libre",
+      "filePath": "core/recorte.py",
+      "lineRange": [16, 35],
+      "summary": "Remuestrea con `cv2.warpAffine` la ventana (x, y, ancho, alto) seleccionada sobre la imagen a un lienzo cuadrado de `lado` pixeles, dejando en blanco lo que cae fuera de la imagen.",
+      "tags": ["recorte", "opencv", "transformacion", "utilidad"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:main.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "main.py",
+      "lineRange": [20, 31],
+      "summary": "Arranque de la aplicacion: crea el QApplication, aplica la hoja de estilos global y muestra la ventana principal con el tamano minimo definido en los tokens.",
+      "tags": ["punto-de-entrada", "bootstrap", "pyside6"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:ui/widgets.py:a_pixmap",
+      "type": "function",
+      "name": "a_pixmap",
+      "filePath": "ui/widgets.py",
+      "lineRange": [16, 37],
+      "summary": "Convierte un array numpy RGB, RGBA o en escala de grises a QPixmap, distinguiendo el formato segun la dimension del array y copiando el buffer para que Qt lo mantenga vivo.",
+      "tags": ["utilidad", "conversion-imagen", "numpy", "pyside6"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:ui/ventana_principal.py:ZonaImagen",
+      "type": "class",
+      "name": "ZonaImagen",
+      "filePath": "ui/ventana_principal.py",
+      "lineRange": [37, 51],
+      "summary": "Zona de previsualizacion clickeable que hereda de `ProporcionImagen` y emite su senal `clicked` cuando se pulsa el boton izquierdo.",
+      "tags": ["widget", "componente", "senal", "previsualizacion"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "type": "class",
+      "name": "PantallaPreprocesado",
+      "filePath": "ui/ventana_principal.py",
+      "lineRange": [54, 183],
+      "summary": "Pantalla principal de preprocesado: permite elegir imagen, alternar el modelo de segmentacion (grabcut/otsu), quitar o restaurar el fondo y navegar a las pantallas de canales o de recorte.",
+      "tags": ["pantalla", "preprocesado", "segmentacion", "navegacion"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "type": "class",
+      "name": "VentanaPrincipal",
+      "filePath": "ui/ventana_principal.py",
+      "lineRange": [186, 251],
+      "summary": "QMainWindow que hospeda las cinco pantallas en un QStackedWidget, comparte el estado `EstadoImagen` por referencia, expone senales de cambio y define atajos de teclado entre RGB, YCM y la pantalla principal.",
+      "tags": ["ventana", "navegacion", "contenedor", "atajos"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:ui/ventana_recorte.py:VistaRecorte",
+      "type": "class",
+      "name": "VistaRecorte",
+      "filePath": "ui/ventana_recorte.py",
+      "lineRange": [23, 179],
+      "summary": "QGraphicsView con marco fijo centrado en el viewport que dibuja un velo oscuro fuera del encuadre, permite zoom y paneo por arrastre y expone la seleccion en coordenadas de la imagen original.",
+      "tags": ["widget", "recorte", "zoom", "paneo", "pyside6"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "type": "class",
+      "name": "VentanaRecorte",
+      "filePath": "ui/ventana_recorte.py",
+      "lineRange": [182, 405],
+      "summary": "Pantalla de recorte que combina la vista con zoom, la vista previa del resultado y las acciones de redimensionar a 512 px, guardar copia y sobrescribir el archivo original.",
+      "tags": ["pantalla", "recorte", "guardado", "previsualizacion"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:ui/widgets.py:ProporcionImagen",
+      "type": "class",
+      "name": "ProporcionImagen",
+      "filePath": "ui/widgets.py",
+      "lineRange": [43, 86],
+      "summary": "QLabel que dibuja la imagen escalada para caber dentro de su cuadro, centrada y sin deformar, recalculando el ajuste en cada resize.",
+      "tags": ["widget", "componente", "escalado", "pyside6"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:main.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:ui/ventana_principal.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:core/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:core/segmentacion.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/helpers.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_histograma.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_recorte.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_rgb.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/ventana_ycm.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/widgets.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:core/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:core/recorte.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/helpers.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/tokens.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/widgets.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:core/recorte.py",
+      "target": "function:core/recorte.py:recorte_libre",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:main.py",
+      "target": "function:main.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:ZonaImagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VistaRecorte",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:core/recorte.py",
+      "target": "function:core/recorte.py:recorte_libre",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:main.py",
+      "target": "function:main.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/widgets.py",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:ZonaImagen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VistaRecorte",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:ZonaImagen",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "function:main.py:main",
+      "target": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:ui/helpers.py:boton",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:core/segmentacion.py:segmentar",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:PantallaPreprocesado",
+      "target": "function:core/imagen.py:cargar_imagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:core/imagen.py:EstadoImagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_rgb.py:VentanaRGB",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_ycm.py:VentanaYCM",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_histograma.py:VentanaHistograma",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_principal.py:VentanaPrincipal",
+      "target": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:core/recorte.py:recorte_libre",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:core/imagen.py:guardar_rgb",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:ui/widgets.py:a_pixmap",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "function:ui/helpers.py:envolver_en_scroll",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:ui/ventana_recorte.py:VentanaRecorte",
+      "target": "class:ui/widgets.py:ProporcionImagen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:ui/tokens.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:main.py",
+      "target": "file:styles.qss",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ui/ventana_principal.py",
+      "target": "file:ui/tokens.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ui/ventana_recorte.py",
+      "target": "file:ui/tokens.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ui/tokens.py",
+      "target": "file:styles.qss",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}
