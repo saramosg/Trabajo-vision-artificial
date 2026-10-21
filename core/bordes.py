@@ -359,7 +359,17 @@ def rellenar_bordes(
     # El cierre va aqui y no en `detectar_bordes` a proposito: el mapa
     # que ve el usuario sigue siendo el crudo y en fotos grandes
     # cerrarlo ahi fundiria la textura de la piel en una sola mancha.
-    mapa = cerrar_mapa(mapa_bordes, radio_cierre(alto, ancho))
+    # El cierre morfologico solo se aplica a CANNY: su mapa es una linea
+    # de 1 px, y cerrarla solo tapa los huecos del contorno (sin el, el
+    # interior se une con el fondo y el relleno se lleva la foto entera).
+    # En sobel/laplaciano el mapa es una banda de 3-4 px con ruido:
+    # cerrarlo fusiona la textura con el contorno y el relleno se
+    # extiende mas alla del objeto (medido: la sobreextension sube del
+    # 8 % al 11 % y el maximo del 25 % al 49 %).
+    if metodo == "canny":
+        mapa = cerrar_mapa(mapa_bordes, radio_cierre(alto, ancho))
+    else:
+        mapa = mapa_bordes
     paredes = cv2.dilate((mapa > 0).astype(np.uint8), np.ones((3, 3), np.uint8))
     libre = (paredes == 0).astype(np.uint8)
     _n, etq_libre = cv2.connectedComponents(libre, connectivity=4)
