@@ -51,6 +51,11 @@ def cerrar_mapa(mapa: np.ndarray, radio: int) -> np.ndarray:
     un objeto sale con huecos de varios pixeles y, sin cerrarlos, el
     interior se une con el fondo y el relleno se lleva la foto entera.
     No engrosa la linea (por eso es cierre y no solo dilatacion).
+
+    El kernel es una ELIPSE y no un rectangulo: el rectangular es mas
+    agresivo (convierte en puente un hueco de 5 px entre un borde
+    interno y el exterior del objeto, y el objeto deja de quedar
+    solido). Se paga con el tiempo: 0,96 s en una foto de 45 MP.
     """
     if radio <= 0:
         return mapa
@@ -256,19 +261,24 @@ def _objeto_con_marco(
         # en dos partes. Un borde interno suelto no separa nada.
         separadores = []
         for muro in muros:
+            # El MARCO DE LA IMAGEN solo cuenta si el contorno SALE del
+            # cuadro: entonces el objeto esta cortado por la imagen y el
+            # marco lo cierra. Si el contorno no sale, la region la acota
+            # el propio contorno (sin marco): si no, el marco cerraria
+            # cualquier region y el relleno se extenderia mas alla del
+            # objeto (se comeria el fondo de alrededor).
+            sale = _contorno_sale_del_cuadro(mapa_bordes, etq_paredes, muro)
             etq, etiqueta, region = _region_con_muro(
-                etq_paredes, muro, sx, sy, True, paso
+                etq_paredes, muro, sx, sy, sale, paso
             )
             if etiqueta == 0:
                 continue
             if len(set(np.unique(etq).tolist()) - {0}) < 2:
                 continue
             area = int(np.count_nonzero(region))
-            # Una region que se come casi todo el cuadro solo es de fiar
-            # si el contorno SALE del cuadro (el objeto esta cortado por
-            # la imagen y el marco lo cierra). Si el contorno no sale,
-            # esta roto por el medio: el relleno se llevaria el fondo.
-            sale = _contorno_sale_del_cuadro(mapa_bordes, etq_paredes, muro)
+            # Una region que se come casi todo el cuadro no es de fiar:
+            # el contorno esta roto por el medio y el relleno se llevaria
+            # el fondo entero.
             if area > 0.85 * region.size and not sale:
                 continue
             separadores.append((area, muro))
