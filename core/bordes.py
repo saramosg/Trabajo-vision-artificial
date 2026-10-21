@@ -31,25 +31,84 @@ import numpy as np
 METODOS = ("canny", "sobel", "laplaciano")
 
 
+def radio_cierre(alto: int, ancho: int) -> int:
+    """Radio del cierre morfologico del mapa de bordes.
+
+    Proporcional al lado menor (5 %) para cerrar los huecos del
+    contorno, con TOPE de 45 px: en una foto de 4000 px un radio
+    proporcional (200 px) fundiria la textura de la piel en una sola
+    mancha y el mapa dejaria de servir. Medido sobre las fotos del
+    proyecto: con radio 5 % (tope 45) los rellenos que se comian la
+    foto entera pasan a ser 0.
+    """
+    return min(45, max(2, int(round(min(alto, ancho) * 0.05))))
+
+
+def cerrar_mapa(mapa: np.ndarray, radio: int) -> np.ndarray:
+    """Cierre morfologico del mapa de bordes (dilata y luego erosiona).
+
+    Une los extremos de la linea que estaban separados: el contorno de
+    un objeto sale con huecos de varios pixeles y, sin cerrarlos, el
+    interior se une con el fondo y el relleno se lleva la foto entera.
+    No engrosa la linea (por eso es cierre y no solo dilatacion).
+    """
+    if radio <= 0:
+        return mapa
+    kernel = cv2.getStructuringElement(
+        cv2.MORPH_ELLIPSE, (2 * radio + 1, 2 * radio + 1)
+    )
+    return cv2.morphologyEx(mapa, cv2.MORPH_CLOSE, kernel)
+
+
+def _histeresis(magnitud: np.ndarray, t1: int, t2: int) -> np.ndarray:
+    """Umbral con histeresis para Sobel y Laplaciano (como el de Canny).
+
+    Un pixel "debil" (entre t1 y t2) se conserva solo si esta conectado
+    a uno fuerte (>= t2). Con un solo umbral el contorno sale partido en
+    tropezones sueltos y t1 no hacia nada: con la histeresis los dos
+    sliders tienen sentido en los tres metodos.
+    """
+    bajo, fuerte = (t1, t2) if t1 <= t2 else (t2, t1)
+    if bajo <= 0:
+        return (magnitud >= fuerte).astype(np.uint8) * 255
+    mascara = (magnitud >= bajo).astype(np.uint8)
+    n, etiquetas = cv2.connectedComponents(mascara, connectivity=8)
+    Mask_ = magnitud >= fuerte
+    if not Mask_.any():
+        return np.zeros_like(magnitud, np.uint8)
+    etq_fuerte = etiquetas[Mask_]
+    etq_fuerte = etq_fuerte[etq_fuerte > 0]
+    if etq_fuerte.size == 0:
+        return np.zeros_like(magnitud, np.uint8)
+    conservar = np.zeros(n, bool)
+    conservar[etq_fuerte] = True
+    return np.where(conservar[etiquetas], 255, 0).astype(np.uint8)
+
+
 def detectar_bordes(imagen: np.ndarray, metodo: str, t1: int, t2: int) -> np.ndarray:
     """Mapa de bordes uint8 0/255 con la forma de `imagen` (2D uint8).
 
     - `canny`: cv2.Canny con (t1, t2) como (low, high).
-    - `sobel`: magnitud sqrt(Gx^2+Gy^2) y umbral en t2.
-    - `laplaciano`: |Laplace| y umbral en t2.
+    - `sobel`: magnitud sqrt(Gx^2+Gy^2) con histéresis (t1 bajo, t2 alto).
+    - `laplaciano`: |Laplace| con histéresis (t1 bajo, t2 alto).
+
+    El mapa sale CRUDO (sin cerrar): el cierre morfologico se hace en
+    `rellenar_bordes`, que es donde importa (el usuario ve el mapa tal
+    como lo detecta el metodo, y en fotos grandes cerrarlo aqui
+    fundiria la textura de la piel en una sola mancha).
     """
     if metodo not in METODOS:
         raise ValueError(f"metodo de bordes desconocido: {metodo!r}")
     blur = cv2.GaussianBlur(imagen, (5, 5), 0)
     if metodo == "canny":
-        return cv2.Canny(blur, t1, t2)
+        return cv2.Canny(blur, int(t1), int(t2))
     if metodo == "sobel":
         gx = cv2.Sobel(blur, cv2.CV_64F, 1, 0, ksize=3)
         gy = cv2.Sobel(blur, cv2.CV_64F, 0, 1, ksize=3)
         mag = cv2.convertScaleAbs(cv2.magnitude(gx, gy))
-        return np.where(mag >= t2, 255, 0).astype(np.uint8)
+        return _histeresis(mag, int(t1), int(t2))
     lap = cv2.convertScaleAbs(cv2.Laplacian(blur, cv2.CV_64F, ksize=3))
-    return np.where(lap >= t2, 255, 0).astype(np.uint8)
+    return _histeresis(lap, int(t1), int(t2))
 
 
 def _etiquetas_del_borde(etiquetas: np.ndarray) -> set:
@@ -270,9 +329,13 @@ def rellenar_bordes(
     if not (0 <= x < ancho and 0 <= y < alto):
         return base, False
 
-    # Paredes: los bordes detectados dilatados 3x3 para sellar huecos
-    # de 1-2 px (una linea de borde casi nunca es continua).
-    paredes = cv2.dilate((mapa_bordes > 0).astype(np.uint8), np.ones((3, 3), np.uint8))
+    # Paredes: el mapa de bordes CERRADO (une los huecos del contorno)
+    # y luego dilatado 3x3 para sellar los huecos de 1-2 px que quedan.
+    # El cierre va aqui y no en `detectar_bordes` a proposito: el mapa
+    # que ve el usuario sigue siendo el crudo y en fotos grandes
+    # cerrarlo ahi fundiria la textura de la piel en una sola mancha.
+    mapa = cerrar_mapa(mapa_bordes, radio_cierre(alto, ancho))
+    paredes = cv2.dilate((mapa > 0).astype(np.uint8), np.ones((3, 3), np.uint8))
     libre = (paredes == 0).astype(np.uint8)
     _n, etq_libre = cv2.connectedComponents(libre, connectivity=4)
     _n2, etq_paredes = cv2.connectedComponents(paredes, connectivity=8)

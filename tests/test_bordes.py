@@ -288,6 +288,53 @@ check(
     f"pixeles={int(np.count_nonzero(_mx))} de {_mx.size}",
 )
 
+print("=== deteccion: histeresis en sobel/laplaciano ===")
+# t1 = umbral bajo, t2 = umbral alto. Un pixel "debil" (entre t1 y t2)
+# se conserva solo si esta conectado a uno fuerte (>= t2), como en Canny.
+_fuerte = np.zeros((60, 60), np.uint8)
+_fuerte[:, 20:22] = 200  # borde fuerte (magnitud ~255)
+_fuerte[:, 27:29] = 30  # borde debil pegado (magnitud ~40)
+_mh = detectar_bordes(_fuerte, "sobel", 10, 100)
+check("histeresis: el borde fuerte se conserva", _mh[30, 20] > 0)
+check("histeresis: el borde debil pegado al fuerte se conserva", _mh[30, 27] > 0)
+
+# el mismo borde debil, pero separado del fuerte
+_sep = np.zeros((60, 60), np.uint8)
+_sep[:, 20:22] = 200
+_sep[:, 40:42] = 30
+_mh2 = detectar_bordes(_sep, "sobel", 10, 100)
+check("histeresis: el borde debil separado no se conserva", _mh2[30, 41] == 0)
+
+# sin ningun pixel fuerte no hay borde
+_solo_debil = np.zeros((60, 60), np.uint8)
+_solo_debil[:, 20:22] = 30
+_mh3 = detectar_bordes(_solo_debil, "sobel", 10, 200)
+check("histeresis: sin pixel fuerte no hay borde", not np.any(_mh3 > 0))
+
+# con t1 = t2 el borde debil se pierde aunque este pegado al fuerte
+_mh4 = detectar_bordes(_fuerte, "sobel", 100, 100)
+check(
+    "histeresis: con t1 = t2 solo queda el fuerte",
+    _mh4[30, 20] > 0 and _mh4[30, 27] == 0,
+)
+
+print("=== deteccion: cierre del contorno al rellenar ===")
+# Contorno en banda de 3 px (como el borde real de un objeto, que sale
+# con varios px de grosor) y un hueco de 6 px: la dilatacion 3x3 no lo
+# sella, pero el cierre morfologico si -> el objeto se rellena entero.
+_mapa_c = np.zeros((60, 60), np.uint8)
+_mapa_c[10:13, 10:50] = 255
+_mapa_c[47:50, 10:50] = 255
+_mapa_c[10:50, 10:13] = 255
+_mapa_c[10:50, 47:50] = 255
+_mapa_c[10:13, 27:33] = 0  # hueco de 6 px
+_mc2, hubo_c2 = rellenar_bordes(_mapa_c, None, (30, 30))
+check(
+    "el cierre une el hueco del contorno y el objeto se rellena",
+    hubo_c2 and np.count_nonzero(_mc2) > 1200,
+    f"pixeles={int(np.count_nonzero(_mc2))}",
+)
+
 print("\n" + "=" * 60)
 print(
     f"RESULTADO: {len(fallos)} fallo(s)"
