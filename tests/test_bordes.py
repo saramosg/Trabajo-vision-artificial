@@ -254,8 +254,9 @@ check(
 )
 
 # 4) contorno roto por el medio que NO sale del cuadro: el relleno no
-#    puede llevarse el fondo (seria la imagen entera). Con el hueco
-#    abierto, el interior se une con el fondo: no hay region cerrable.
+#    puede llevarse el FONDO. Con el hueco abierto, el interior se une
+#    con el fondo: lo que se rellena (si se rellena algo) es la parte
+#    que queda cerrada, nunca el fondo entero.
 _roto = np.zeros((60, 60), np.uint8)
 _roto[10, 10:50] = 255
 _roto[49, 10:50] = 255
@@ -264,9 +265,9 @@ _roto[10:50, 49] = 255
 _roto[10, 27:33] = 0  # hueco de 6 px: la dilatacion no lo sella
 _mr, hubo_r = rellenar_bordes(_roto, None, (30, 30))
 check(
-    "contorno roto sin salir del cuadro: no rellena el fondo",
-    hubo_r is False and not np.any(_mr),
-    f"pixeles={int(np.count_nonzero(_mr))}",
+    "contorno roto: el fondo NO se rellena",
+    np.count_nonzero(_mr) < 0.5 * _mr.size,
+    f"pixeles={int(np.count_nonzero(_mr))} de {_mr.size}",
 )
 
 # 5) UMBRALES BAJOS: los bordes forman una malla conectada que cubre la
@@ -333,6 +334,30 @@ check(
     "el cierre une el hueco del contorno y el objeto se rellena",
     hubo_c2 and np.count_nonzero(_mc2) > 1200,
     f"pixeles={int(np.count_nonzero(_mc2))}",
+)
+
+print("=== relleno segun el metodo ===")
+# El metodo NO cambia el algoritmo del relleno: cambia el mapa y, con
+# el, la guarda de "el clic esta en el fondo".
+#   - Con un mapa limpio (canny) el hueco cerrado del otro lado del muro
+#     es el objeto: un clic en el fondo no rellena nada.
+#   - Con sobel/laplaciano el objeto sale partido en bolsillos pequenos
+#     y el hueco puede ser cualquiera de ellos: solo se descarta si el
+#     hueco es grande.
+_mapa_f = np.zeros((32, 32), np.uint8)
+_mapa_f[10, 10:22] = 255
+_mapa_f[21, 10:22] = 255
+_mapa_f[10:22, 10] = 255
+_mapa_f[10:22, 21] = 255
+_mfc, hubo_fc = rellenar_bordes(_mapa_f, None, (1, 1), "canny")
+check(
+    "canny: el clic en el fondo no rellena nada",
+    hubo_fc is False and not np.any(_mfc),
+)
+_mfs, hubo_fs = rellenar_bordes(_mapa_f, None, (1, 1), "sobel")
+check(
+    "sobel: un hueco pequeno no se confunde con el objeto",
+    hubo_fs is True,
 )
 
 print("\n" + "=" * 60)

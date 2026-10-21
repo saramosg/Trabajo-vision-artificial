@@ -517,7 +517,7 @@ class VentanaHistograma(QWidget):
         if self._mapa_bordes is None:
             return
         nueva, hubo = core_bordes.rellenar_bordes(
-            self._mapa_bordes, self.estado.mascara, (ix, iy)
+            self._mapa_bordes, self.estado.mascara, (ix, iy), self._metodo
         )
         if hubo:
             self.estado.mascara = nueva

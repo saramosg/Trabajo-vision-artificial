@@ -1,4 +1,4 @@
-﻿"""Deteccion de bordes del canal activo y relleno por objeto y clics.
+"""Deteccion de bordes del canal activo y relleno por objeto y clics.
 
 `detectar_bordes` aplica uno de tres metodos (canny, sobel, laplaciano)
 sobre un componente 2D uint8 y devuelve el mapa binario 0/255. Los tres
@@ -223,6 +223,7 @@ def _objeto_con_marco(
     mapa_bordes: np.ndarray,
     sx: int,
     sy: int,
+    metodo: str = "canny",
 ) -> np.ndarray | None:
     """Region del objeto cuando el contorno NO cierra dentro del cuadro.
 
@@ -255,14 +256,6 @@ def _objeto_con_marco(
         # en dos partes. Un borde interno suelto no separa nada.
         separadores = []
         for muro in muros:
-            # El MARCO DE LA IMAGEN solo puede cerrar un contorno que SALE
-            # del cuadro (el objeto esta cortado por el borde de la
-            # imagen). Un contorno cerrado lo cierra el propio borde
-            # dibujado; uno roto por el medio no se puede cerrar de
-            # ninguna forma: rellenar con el marco se llevaria el fondo
-            # entero (o dejaria el objeto partido).
-            if not _contorno_sale_del_cuadro(mapa_bordes, etq_paredes, muro):
-                continue
             etq, etiqueta, region = _region_con_muro(
                 etq_paredes, muro, sx, sy, True, paso
             )
@@ -271,6 +264,13 @@ def _objeto_con_marco(
             if len(set(np.unique(etq).tolist()) - {0}) < 2:
                 continue
             area = int(np.count_nonzero(region))
+            # Una region que se come casi todo el cuadro solo es de fiar
+            # si el contorno SALE del cuadro (el objeto esta cortado por
+            # la imagen y el marco lo cierra). Si el contorno no sale,
+            # esta roto por el medio: el relleno se llevaria el fondo.
+            sale = _contorno_sale_del_cuadro(mapa_bordes, etq_paredes, muro)
+            if area > 0.85 * region.size and not sale:
+                continue
             separadores.append((area, muro))
         if separadores:
             elegido = max(separadores)[1]
@@ -278,9 +278,13 @@ def _objeto_con_marco(
     if elegido is None:
         return None
 
-    # Si al otro lado del muro hay una region CERRADA, el objeto es un
-    # agujero dentro del fondo: el clic esta en el fondo, no en el
-    # objeto, y no se rellena.
+    # Si al otro lado del muro hay una region CERRADA, puede ser el
+    # objeto (el clic esta en el fondo) o un bolsillo interno (el clic
+    # esta en el objeto).
+    #   - Con un mapa limpio (canny) el hueco es el objeto: se descarta.
+    #   - Con sobel/laplaciano el objeto sale partido en bolsillos
+    #     pequenos y el hueco puede ser cualquiera de ellos: solo se
+    #     descarta si el hueco es GRANDE (aun asi seria el objeto).
     etq_sin, etiqueta_sin, _r = _region_con_muro(
         etq_paredes, elegido, sx, sy, False, radio
     )
@@ -288,7 +292,15 @@ def _objeto_con_marco(
         otros = set(np.unique(etq_sin).tolist()) - {0, etiqueta_sin}
         cerrados = otros - _etiquetas_del_borde(etq_sin)
         if cerrados:
-            return None
+            if metodo == "canny":
+                return None
+            lado = int(np.count_nonzero(etq_sin == etiqueta_sin))
+            mayor = max(int(np.count_nonzero(etq_sin == e)) for e in cerrados)
+            # El hueco del otro lado es el OBJETO (el clic esta en el
+            # fondo) solo si es grande; un bolsillo interno del objeto es
+            # pequeno y no puede ser el objeto.
+            if mayor > 0.20 * lado:
+                return None
 
     _etq, etiqueta, region = _region_con_muro(etq_paredes, elegido, sx, sy, True, radio)
     if etiqueta == 0:
@@ -302,7 +314,10 @@ def _objeto_con_marco(
 
 
 def rellenar_bordes(
-    mapa_bordes: np.ndarray, mascara: np.ndarray | None, punto: tuple[int, int]
+    mapa_bordes: np.ndarray,
+    mascara: np.ndarray | None,
+    punto: tuple[int, int],
+    metodo: str = "canny",
 ) -> tuple[np.ndarray, bool]:
     """Rellena el objeto que encierran los bordes y lo acumula con OR.
 
@@ -388,7 +403,9 @@ def rellenar_bordes(
     else:
         # CASO ABIERTO: el contorno se escapa del cuadro. El marco de la
         # imagen hace de pared y el objeto se cierra con el borde.
-        region = _objeto_con_marco(paredes, etq_paredes, etq_libre, mapa_bordes, sx, sy)
+        region = _objeto_con_marco(
+            paredes, etq_paredes, etq_libre, mapa_bordes, sx, sy, metodo
+        )
         if region is None:
             return base, False
 

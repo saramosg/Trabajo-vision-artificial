@@ -1140,6 +1140,8 @@ En modo bordes las tres miniaturas se afectan por el método: la original muestr
 
 **Sobel y Laplaciano usan histéresis.** Tenían un solo umbral (en `t2`), así que el contorno salía partido en tropezones sueltos y el "Umbral inferior" no hacía nada. Ahora, como en Canny, un píxel **débil** (entre `t1` y `t2`) se conserva solo si está conectado a uno **fuerte** (≥ `t2`): los dos sliders tienen sentido en los tres métodos y el contorno sale entero.
 
+**El relleno sigue al método elegido.** El método no cambia el algoritmo del relleno (el mismo `rellenar_bordes` para los tres): cambia el **mapa** y, con él, la guarda de "el clic está en el fondo". Con un mapa limpio (Canny) el hueco cerrado del otro lado del muro es el objeto, así que un clic en el fondo no rellena nada. Con Sobel y Laplaciano el objeto sale partido en bolsillos pequeños (el contorno es una banda de 3-4 px y no tiene supresión de no-máximos), y el hueco puede ser cualquiera de ellos: la guarda solo lo descarta si es grande. Medido sobre las 23 fotos recortadas de "mango grupo": con Canny rellenan 14 (11 sin el fondo dentro), con Sobel 5 y con Laplaciano 4. Con estos dos métodos el clic se hace **sobre el objeto**; un clic en el fondo puede rellenarlo.
+
 #### Campo "Canal actual" (obligatorio)
 
 El campo de texto de la pantalla de histograma **no** muestra el modo `color` / `blanco y negro`: muestra **qué espacio de color y qué canal se está analizando**, en el formato:
