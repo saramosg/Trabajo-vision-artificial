@@ -269,6 +269,25 @@ check(
     f"pixeles={int(np.count_nonzero(_mr))}",
 )
 
+# 5) UMBRALES BAJOS: los bordes forman una malla conectada que cubre la
+#    foto entera. El "objeto" no puede ser la imagen completa: al
+#    seleccionar una parte se rellena SOLO esa parte.
+_ruido = np.zeros((120, 120), np.uint8)
+_aleatorio = np.random.default_rng(7)
+_ruido[:] = (_aleatorio.random((120, 120)) * 255).astype(np.uint8)
+_ruido[40:80, 40:80] = 255
+_mapa_ruido = detectar_bordes(_ruido, "canny", 10, 30)
+_mx, hubo_x = rellenar_bordes(_mapa_ruido, None, (60, 60))
+check(
+    "umbrales bajos: hay relleno",
+    hubo_x is True,
+)
+check(
+    "umbrales bajos: no se rellena la foto entera",
+    np.count_nonzero(_mx) < 0.5 * _mx.size,
+    f"pixeles={int(np.count_nonzero(_mx))} de {_mx.size}",
+)
+
 print("\n" + "=" * 60)
 print(
     f"RESULTADO: {len(fallos)} fallo(s)"

@@ -295,7 +295,7 @@ def rellenar_bordes(
         # OBJETOS: todo lo que no es fondo (paredes + bolsillos). Con
         # conectividad 8 los bolsillos de un mismo objeto quedan en un
         # solo componente: los une la pared que los encierra. Asi los
-        # bordes internos dejan de partir el interior en regions.
+        # bordes internos dejan de partir el interior en regiones.
         objetos = np.where(np.isin(etq_libre, list(fondo_ids)), 0, 255).astype(np.uint8)
         _n3, etq_obj = cv2.connectedComponents(objetos, connectivity=8)
         componente = int(etq_obj[sy, sx])
@@ -312,6 +312,16 @@ def rellenar_bordes(
         if not np.any((region > 0) & (libre > 0)):
             # Solo es una arista suelta del fondo: no encierra region.
             return base, False
+        # GUARDA DE DENSIDAD: con los umbrales bajos los bordes forman
+        # una malla conectada que cubre la foto entera y el "objeto"
+        # seria la imagen completa. Cuando pasa eso, el mapa no delima
+        # ningun objeto: se rellena SOLO la parte que hay bajo el clic
+        # (el bolsillo local), que es lo que el usuario quiere al
+        # "seleccionar una parte".
+        if np.count_nonzero(region) > 0.85 * region.size:
+            local = (etq_libre == int(etq_libre[sy, sx])).astype(np.uint8) * 255
+            if np.any((local > 0) & (libre > 0)):
+                region = local
     else:
         # CASO ABIERTO: el contorno se escapa del cuadro. El marco de la
         # imagen hace de pared y el objeto se cierra con el borde.

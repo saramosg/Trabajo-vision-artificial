@@ -1134,6 +1134,8 @@ En modo bordes las tres miniaturas se afectan por el método: la original muestr
 
 **"Quitar fondo" en modo bordes.** El botón (el mismo que en umbral, movido debajo del cuadro "Canal activo") alterna el **preview local** con la máscara acumulada: "Quitar fondo" deja en la miniatura original y en el canal activo **solo el objeto relleno, con el fondo en negro** (los bordes que quedan fuera del objeto tampoco se dibujan); "Restaurar original" vuelve a la vista normal, donde la imagen original muestra el relleno marcado en el color de acento. Como en umbral, es **solo preview**: no escribe `estado`. Si todavía no hay nada relleno el botón **no hace nada y avisa** ("no hay relleno: haz clic en el contorno para llenar el objeto"): sin máscara no hay fondo que quitar y la imagen no debe quedar en negro. Al cambiar de modo el preview se reinicia (el relleno acumulado no se pierde).
 
+**Guarda de densidad (umbrales bajos).** Con `t1` y `t2` muy bajos los bordes dejan de ser el contorno del objeto y forman una **malla conectada que cubre la foto entera**: el relleno "por objeto" se comía la imagen completa y al seleccionar una parte se rellenaba todo. Cuando la región encerrada por los bordes cubre más del 85 % del cuadro, el mapa **no delimita ningún objeto**: el relleno se limita a la **parte que hay bajo el clic** (el bolsillo local). La señal para el usuario es que solo se rellena un trozo, no la fruta entera: la solución es subir los umbrales (§6.4 "Método").
+
 #### Campo "Canal actual" (obligatorio)
 
 El campo de texto de la pantalla de histograma **no** muestra el modo `color` / `blanco y negro`: muestra **qué espacio de color y qué canal se está analizando**, en el formato:
