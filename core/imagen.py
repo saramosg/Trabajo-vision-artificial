@@ -38,15 +38,35 @@ class EstadoImagen:
         """Borra la vista previa (§6.5 regla 12). No limpia `recorte`."""
         self.vista_previa = None
 
+def _imread_unicode(ruta: str) -> np.ndarray | None:
+    """Lee una imagen mediante buffer en memoria para soportar tildes/espacios en Windows."""
+    try:
+        with open(ruta, "rb") as f:
+            bytes_img = bytearray(f.read())
+            arr = np.asarray(bytes_img, dtype=np.uint8)
+            return cv2.imdecode(arr, cv2.IMREAD_COLOR)
+    except Exception:
+        return None
 
+"""
 def cargar_imagen(ruta: str) -> np.ndarray:
-    """Carga SIEMPRE 8 bits y 3 canales en orden RGB.
+    #Carga SIEMPRE 8 bits y 3 canales en orden RGB.
 
-    IMREAD_COLOR fuerza 8 bits y 3 canales, venga lo que venga el archivo.
-    """
+    #IMREAD_COLOR fuerza 8 bits y 3 canales, venga lo que venga el archivo.
+    
     bgr = cv2.imread(ruta, cv2.IMREAD_COLOR)
     if bgr is None:
         raise FileNotFoundError(ruta)
+    return cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+"""
+def cargar_imagen(ruta: str) -> np.ndarray:
+    """Carga SIEMPRE 8 bits y 3 canales en orden RGB.
+
+    Usa lectura segura de bytes para soportar tildes y caracteres especiales en la ruta.
+    """
+    bgr = _imread_unicode(ruta)
+    if bgr is None:
+        raise FileNotFoundError(f"No se pudo cargar la imagen en la ruta: {ruta}")
     return cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
 
 

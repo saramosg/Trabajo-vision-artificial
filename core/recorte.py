@@ -31,5 +31,5 @@ def recorte_libre(imagen: np.ndarray, x: int, y: int, ancho: int, alto: int,
     matriz = np.array([[lado / ancho, 0, -x * lado / ancho],
                        [0, lado / alto, -y * lado / alto]], np.float64)
     return cv2.warpAffine(imagen, matriz, (lado, lado),
-                         flags=cv2.INTER_LINEAR,
-                         borderMode=cv2.BORDER_CONSTANT, borderValue=fondo)
+                        flags=cv2.INTER_LINEAR,
+                        borderMode=cv2.BORDER_CONSTANT, borderValue=fondo)
