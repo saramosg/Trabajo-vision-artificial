@@ -1,0 +1,8 @@
+cd "Trabajo_1\Trabajo-vision-artificial"
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+.\.venv\Scripts\Activate.ps1
+pip install PySide6 opencv-python numpy pillow matplotlib
+
+python main.py
+python app_modern.py
+python -m modern_ui.app_modern
